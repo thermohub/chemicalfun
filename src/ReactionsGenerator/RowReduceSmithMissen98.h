@@ -1,7 +1,7 @@
 #ifndef ROWREDUCESMITHMISSEN98_H
 #define ROWREDUCESMITHMISSEN98_H
 
-#include "MatrixUtils.h"
+#include "ChemicalFun/ReactionsGenerator/MatrixUtils.h"
 
 namespace ChemicalFun {
 

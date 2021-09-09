@@ -2,7 +2,7 @@
 #include "ChemicalFun/FormulaParser/formuladata.h"
 #include "ChemicalFun/FormulaParser/formulaparser.h"
 //#include "Element.h"
-#include "ChemicalFun/Common/Exception.h"
+#include "Common/Exception.h"
 // JSON
 #include <nlohmann/json.hpp>
 

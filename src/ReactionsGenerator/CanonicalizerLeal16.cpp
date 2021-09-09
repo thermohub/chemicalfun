@@ -1,4 +1,4 @@
-#include "ChemicalFun/ReactionsGenerator/CanonicalizerLeal16.h"
+#include "CanonicalizerLeal16.h"
 
 namespace ChemicalFun {
 

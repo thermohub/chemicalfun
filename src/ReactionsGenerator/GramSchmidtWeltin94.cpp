@@ -1,4 +1,4 @@
-#include "ChemicalFun/ReactionsGenerator/GramSchmidtWeltin94.h"
+#include "ReactionsGenerator/GramSchmidtWeltin94.h"
 #include <iostream>
 
 namespace ChemicalFun {

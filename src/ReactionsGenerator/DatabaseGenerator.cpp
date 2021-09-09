@@ -1,6 +1,6 @@
 #include "ChemicalFun/ReactionsGenerator/DatabaseGenerator.h"
 #include "ChemicalFun/ReactionsGenerator/Generator.h"
-#include "ChemicalFun/Common/Exception.h"
+#include "Common/Exception.h"
 
 #include "fstream"
 #include "iostream"

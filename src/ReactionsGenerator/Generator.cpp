@@ -1,7 +1,7 @@
 #include "ChemicalFun/ReactionsGenerator/Generator.h"
-#include "ChemicalFun/ReactionsGenerator/GramSchmidtWeltin94.h"
-#include "ChemicalFun/ReactionsGenerator/RowReduceSmithMissen98.h"
-#include "ChemicalFun/ReactionsGenerator/CanonicalizerLeal16.h"
+#include "GramSchmidtWeltin94.h"
+#include "RowReduceSmithMissen98.h"
+#include "CanonicalizerLeal16.h"
 
 namespace ChemicalFun {
 

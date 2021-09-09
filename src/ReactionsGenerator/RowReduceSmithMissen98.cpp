@@ -1,4 +1,4 @@
-#include "ChemicalFun/ReactionsGenerator/RowReduceSmithMissen98.h"
+#include "RowReduceSmithMissen98.h"
 
 namespace ChemicalFun {
 

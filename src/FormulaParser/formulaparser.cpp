@@ -1,5 +1,5 @@
 #include "ChemicalFun/FormulaParser/formulaparser.h"
-#include "ChemicalFun/Common/Exception.h"
+#include "Common/Exception.h"
 
 namespace ChemicalFun {
 

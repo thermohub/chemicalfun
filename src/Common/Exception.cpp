@@ -1,4 +1,4 @@
-#include "ChemicalFun/Common/Exception.h"
+#include "Exception.h"
 
 // C++ includes
 #include <algorithm>
