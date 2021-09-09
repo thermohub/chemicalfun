@@ -6,7 +6,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace ReactionsGenerator {
+namespace ChemicalFun {
 
 /// Provides a convenient way to initialized an exception with helpful error messages.
 struct Exception
@@ -37,7 +37,7 @@ std::string message(const Exception& exception, const std::string& file, int lin
 /// @see Exception
 /// @ingroup Common
 #define RaiseError(exception) \
-    throw std::runtime_error(ReactionsGenerator::internal::message(exception, __FILE__, __LINE__));
+    throw std::runtime_error(ChemicalFun::internal::message(exception, __FILE__, __LINE__));
 
 /// Define a macro to raise a runtime exception from a error string and a reason string.
 /// @see Exception
@@ -65,6 +65,9 @@ std::string message(const Exception& exception, const std::string& file, int lin
 
 auto errorSubstanceNotFound(std:: string function, std::string name, int line) -> void;
 
+auto funError(const std::string& error, const std::string& reason, const int& line, const std::string& file) -> void;
+
+auto funErrorIf(bool condition, const std::string& error, const std::string& reason, const int& line, const std::string& file) -> void;
 
 } // namespace ThermoFun
 

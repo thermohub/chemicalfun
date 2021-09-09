@@ -1,6 +1,7 @@
-#include "formulaparser.h"
-#include "Exception.h"
-namespace ThermoFun {
+#include "ChemicalFun/FormulaParser/formulaparser.h"
+#include "ChemicalFun/Common/Exception.h"
+
+namespace ChemicalFun {
 
 const int MAXICNAME = 10;
 const char* NOISOTOPE_CLASS  ="n";

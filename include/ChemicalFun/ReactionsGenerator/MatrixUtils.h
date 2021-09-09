@@ -12,7 +12,7 @@ using namespace Eigen;
 
 using ChargeCoeffMap = std::map<int, double>;
 
-namespace ReactionsGenerator {
+namespace ChemicalFun {
 
 /// Threshold viarable below which the matrix coefficients are considered 0
 static const double thresholdCoeffZero = 1e-05;

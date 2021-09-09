@@ -1,6 +1,6 @@
-#include "MatrixUtils.h"
+#include "ChemicalFun/ReactionsGenerator/MatrixUtils.h"
 
-namespace ReactionsGenerator {
+namespace ChemicalFun {
 
 // Return a vector of indices with values from 0 up to a given length.
 auto indices(Index length) -> Indices

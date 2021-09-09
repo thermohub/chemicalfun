@@ -1,10 +1,10 @@
-#include "Exception.h"
+#include "ChemicalFun/Common/Exception.h"
 
 // C++ includes
 #include <algorithm>
 #include <sstream>
 
-namespace ReactionsGenerator {
+namespace ChemicalFun {
 namespace internal {
 /// Creates the location string from the file name and line number.
 /// The result of this function on the file `/home/user/gitThermoFun/ThermoFun/src/Substance.cpp`
@@ -58,5 +58,21 @@ auto errorSubstanceNotFound(std::string function, std::string name, int line) ->
 //    exception.line = line;
 //    RaiseError(exception);
 //}
+
+auto funError(const std::string& error, const std::string& reason, const int& line, const std::string& file) -> void
+{
+    Exception exception;
+    exception.error << error;
+    exception.reason << reason;
+    exception.line = line;
+    RaiseError(exception);
+}
+
+auto funErrorIf(bool condition, const std::string& error, const std::string& reason, const int& line, const std::string& file) -> void
+{
+    if (condition)
+        funError(error, reason, line, file);
+}
+
 
 } // namespace ThermoFun

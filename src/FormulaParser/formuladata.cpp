@@ -1,8 +1,8 @@
 #include <math.h>
-#include "formuladata.h"
-#include "formulaparser.h"
-#include "Element.h"
-#include "Exception.h"
+#include "ChemicalFun/FormulaParser/formuladata.h"
+#include "ChemicalFun/FormulaParser/formulaparser.h"
+//#include "Element.h"
+#include "ChemicalFun/Common/Exception.h"
 // JSON
 #include <nlohmann/json.hpp>
 
@@ -10,8 +10,8 @@ using json = nlohmann::json;
 
 using namespace  std;
 
-namespace ThermoFun {
-using ElementsMap   = std::map<std::string, Element>;
+namespace ChemicalFun {
+///S using ElementsMap   = std::map<std::string, Element>;
 const short SHORT_EMPTY_  = -32768;
 
 DBElementsData ChemicalFormula::dbElements= DBElementsData();
@@ -394,6 +394,7 @@ vector<vector<double>> ChemicalFormula::calcStoichiometryMatrixOld(  const vecto
    return matrA;
 }
 
+/*
 void ChemicalFormula::setDBElements(ElementsMap elements )
 {
     for (auto e : elements)
@@ -444,6 +445,6 @@ auto elementKeyToElement(ElementKey elementKey) -> Element
 
     return e;
 }
-
+*/
 
 }

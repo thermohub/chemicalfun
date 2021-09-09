@@ -7,7 +7,7 @@
 // ReactionGenerator includes
 #include "MatrixUtils.h"
 
-namespace ReactionsGenerator {
+namespace ChemicalFun {
 
 enum Method { GramSchmidt, GramSchmidtWe94, RowReduceSmMi98, CanonicalLe16 };
 

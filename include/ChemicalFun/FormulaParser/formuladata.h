@@ -6,7 +6,7 @@
 #include <set>
 #include "formulaparser.h"
 
-namespace ThermoFun {
+namespace ChemicalFun {
 
 class Element;
 
@@ -178,7 +178,7 @@ public:
 
 };
 
-auto elementKeyToElement(ElementKey elementKey) -> Element;
+///S auto elementKeyToElement(ElementKey elementKey) -> Element;
 
 /// Elements values, loaded from Database
 struct ElementValues
@@ -300,7 +300,7 @@ class ChemicalFormula
   /// Loading from database elements
   static  DBElementsData dbElements;
   static  std::vector<std::string> queryFields;
-  static void addOneElement(Element element);
+  ///S static void addOneElement(Element element);
 
  public:
 
@@ -311,7 +311,7 @@ class ChemicalFormula
      return dbElements;
   }
 
-  static void setDBElements(std::map<std::string, Element> elements );
+  ///S static void setDBElements(std::map<std::string, Element> elements );
   static std::vector<ElementKey> elementsRow();
   static std::map<ElementKey, double> extractElements_map(  const std::vector<std::string>& formulalist );
   static std::set<ElementKey>         extractElements(  const std::vector<std::string>& formulalist );

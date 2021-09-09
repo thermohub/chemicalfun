@@ -1,6 +1,6 @@
-#include "RowReduceSmithMissen98.h"
+#include "ChemicalFun/ReactionsGenerator/RowReduceSmithMissen98.h"
 
-namespace ReactionsGenerator {
+namespace ChemicalFun {
 
 // Row reduce algorithm
 // http://codegolf.stackexchange.com/questions/59307/reduced-row-echelon-form-of-a-matrix

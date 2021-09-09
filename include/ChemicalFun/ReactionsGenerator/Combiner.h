@@ -7,7 +7,7 @@
 // ReactionGenerator includes
 #include "MatrixUtils.h"
 
-namespace ReactionsGenerator {
+namespace ChemicalFun {
 
 class Reaction;
 

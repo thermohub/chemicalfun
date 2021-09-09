@@ -1,11 +1,11 @@
-#include "DatabaseGenerator.h"
-#include "Generator.h"
-#include "Exception.h"
+#include "ChemicalFun/ReactionsGenerator/DatabaseGenerator.h"
+#include "ChemicalFun/ReactionsGenerator/Generator.h"
+#include "ChemicalFun/Common/Exception.h"
 
 #include "fstream"
 #include "iostream"
 
-namespace ReactionsGenerator {
+namespace ChemicalFun {
 
 struct DatabaseGenerator::Impl
 {

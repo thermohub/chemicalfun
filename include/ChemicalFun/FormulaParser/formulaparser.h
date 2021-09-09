@@ -23,7 +23,7 @@
 #include <list>
 #include <vector>
 
-namespace ThermoFun {
+namespace ChemicalFun {
 
 extern const char* NOISOTOPE_CLASS;
 extern const char* CHARGE_CLASS;

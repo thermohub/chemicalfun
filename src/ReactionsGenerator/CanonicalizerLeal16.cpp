@@ -1,6 +1,6 @@
-#include "CanonicalizerLeal16.h"
+#include "ChemicalFun/ReactionsGenerator/CanonicalizerLeal16.h"
 
-namespace ReactionsGenerator {
+namespace ChemicalFun {
 
 /// Define an alias to a permutation matrix type of the Eigen library
 using PermutationMatrix = Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic>;
