@@ -1,0 +1,34 @@
+name: chemicalfun
+
+{% set python_version = os.environ.get("PY_VER", "3.7") %}
+
+dependencies:
+  - pip
+  - gxx_linux-64=7.3.0  # [linux]
+  - cmake>=3.13
+  - ninja
+  - ccache  # [unix]
+  - pybind11
+  - eigen
+  - nlohmann_json
+  - python={{ python_version }}
+  - pytest
+  - pip:
+    - mkdocs
+    - mkdocs-material
+    - mkdocs-macros-plugin
+
+environment:
+
+  PYTHONPATH:
+    - {{ root }}/artifacts/python/lib/python{{ python_version }}/site-packages   # [unix]
+    - {{ root }}/build/lib/python{{ python_version }}/site-packages              # [unix]
+    - {{ root }}/build/lib64/python{{ python_version }}/site-packages            # [unix]
+    - {{ root }}\artifacts\python\Lib\site-packages                              # [win]
+    - {{ root }}\build\lib\python{{ python_version }}\site-packages              # [win]
+
+  LD_LIBRARY_PATH:                                                   # [unix]
+    - {{ root }}/artifacts/lib                                       # [unix]
+
+  PATH:                                                              # [win]
+    - {{ root }}\artifacts\bin                                       # [win]
