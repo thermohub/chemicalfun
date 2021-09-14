@@ -51,6 +51,5 @@ OBJECTS_DIR   = obj
 include($$CHEMICALFUN_DIR/chemicalfun.pri)
 
 SOURCES += \
-#      main.cpp
       examples/formula_parser_example.cpp
 

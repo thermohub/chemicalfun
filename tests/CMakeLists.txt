@@ -13,14 +13,17 @@ add_subdirectory(googletest REQUIRED)
 add_executable(test_main  main.cpp )
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
       target_link_libraries( test_main
+            PUBLIC ${PROJECT_NAME}
             PUBLIC gtest )
 elseif(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
 
      target_link_libraries( test_main
-            PUBLIC gtest )
+                PUBLIC ${PROJECT_NAME}
+                PUBLIC gtest )
 else()
       target_link_libraries( test_main
-           PUBLIC gtest )
+                PUBLIC ${PROJECT_NAME}
+                PUBLIC gtest )
 endif()
 
 target_include_directories(test_main PRIVATE

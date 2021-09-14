@@ -22,6 +22,7 @@
 #include <string>
 #include <list>
 #include <vector>
+#include <iostream>
 
 namespace ChemicalFun {
 
@@ -85,7 +86,27 @@ struct ICTERM
         ick = data.ick;
         ick_iso = data.ick_iso;
     }
+
+    const std::string& ic_name() const {
+      return  ick;
+    }
+    const std::string& isotope() const {
+      return  ick_iso;
+    }
+    int valence() const {
+      return  val;
+    }
+    double stoich_coef() const {
+      return  stoich;
+    }
+    bool no_isotope() const;
+    bool default_valence() const;
+    bool is_charge() const;
+    std::string to_string() const;
+    friend std::ostream& operator<<(std::ostream& os, const ICTERM& dt);
 };
+
+std::ostream& operator<<(std::ostream& os, const ICTERM& dt);
 
 /// Parser for Chemical Formula
 class ChemicalFormulaParser : public BaseParser
