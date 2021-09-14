@@ -34,12 +34,31 @@ std::vector<std::string> testFormulas = {
     "/3/H2/18/O"
 };
 
+std::vector<std::string> testMoieties = {
+    "{K}:{Fe}:{Fe}2:{Al}{Si}:Si2O10(OH)2",
+    "{K}:{Mg}:{Mg}2:{Al}{Si}:Si2O10(OH)2",
+    "{Fe}3:{Al}2{Si}3:O12",
+    "{Ca}3:{Al}2{Si}3:O12",
+    "{Mg}3:{Al}2{Si}3:O12",
+};
+
 void test_parse( const std::string& chemical_formula ) {
 
     std::cout << "\nTested: " << chemical_formula;
     ChemicalFun::ChemicalFormulaParser formparser;
     auto icterms = formparser.parse( chemical_formula );
     for( const auto& term: icterms) {
+       std::cout << "\n   " << term;
+    }
+}
+
+void test_parse_moieties( const std::string& chemical_formula ) {
+
+    std::vector<ChemicalFun::MOITERM>  moieties;
+    ChemicalFun::MoityParser moiparser;
+    auto nsites = moiparser.parse( chemical_formula, moieties );
+    std::cout << "\nTested: " << chemical_formula << " " << nsites;
+    for( const auto& term: moieties) {
        std::cout << "\n   " << term;
     }
 }
@@ -57,6 +76,11 @@ int main(int argc, char* argv[])
             for( const auto& formula: testFormulas ) {
                 test_parse(formula);
             }
+            std::cout <<  "\n\n---------\n" <<  std::endl;
+            for( const auto& formula: testMoieties ) {
+                test_parse_moieties(formula);
+            }
+            std::cout <<  "\n\n---------\n" <<  std::endl;
         }
         else {
             test_parse(test_formula);

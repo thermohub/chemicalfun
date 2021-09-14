@@ -392,3 +392,35 @@ TEST(FormulaParser, ParserError)
     EXPECT_THROW( formparser.parse( "FeS|1234|S|-2|" ) , std::exception );
     EXPECT_THROW( formparser.parse( "FeS|1.2|S|-2|" ) , std::exception );
 }
+
+TEST(MoityParser, Parser)
+{
+    std::vector<ChemicalFun::MOITERM>  moieties;
+    ChemicalFun::MoityParser moiparser;
+
+    auto nsites = moiparser.parse( "{K}:{Fe}:{Fe}2:{Al}{Si}:Si2O10(OH)2", moieties );
+    EXPECT_EQ(nsites, 4);
+    EXPECT_EQ(moieties.size(), 5);
+    EXPECT_EQ(moieties[0].name(), "{K}0");
+    EXPECT_EQ(moieties[0].moiety_site_occupancy(), 1);
+    EXPECT_EQ(moieties[1].name(), "{Fe}1");
+    EXPECT_EQ(moieties[1].moiety_site_occupancy(), 1);
+    EXPECT_EQ(moieties[2].name(), "{Fe}2");
+    EXPECT_EQ(moieties[2].moiety_site_occupancy(), 2);
+    EXPECT_EQ(moieties[3].name(), "{Al}3");
+    EXPECT_EQ(moieties[3].moiety_site_occupancy(), 1);
+    EXPECT_EQ(moieties[4].name(), "{Si}3");
+    EXPECT_EQ(moieties[4].moiety_site_occupancy(), 1);
+
+    nsites = moiparser.parse( "{Fe}3:{Al}2{Si}3:O12", moieties );
+    EXPECT_EQ(nsites, 2);
+    EXPECT_EQ(moieties.size(), 3);
+    EXPECT_EQ(moieties[0].name(), "{Fe}0");
+    EXPECT_EQ(moieties[0].sublattice_site(), 0);
+    EXPECT_EQ(moieties[0].moiety_site_occupancy(), 3);
+    EXPECT_EQ(moieties[1].name(), "{Al}1");
+    EXPECT_EQ(moieties[1].sublattice_site(), 1);
+    EXPECT_EQ(moieties[1].moiety_site_occupancy(), 2);
+    EXPECT_EQ(moieties[2].name(), "{Si}1");
+    EXPECT_EQ(moieties[2].moiety_site_occupancy(), 3);
+}

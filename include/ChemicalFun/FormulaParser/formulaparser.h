@@ -150,22 +150,37 @@ public:
 /// Description of Moiety element
 struct MOITERM
 {
-    std::string name;
+    std::string mname;
     int  site;          // sublattice site
     double nj;          // moiety-site occupancy.
 
     MOITERM( const char* aName, int aSite, double aNj ):
        site(aSite), nj(aNj)
     {
-       name = "{" + std::string(aName) + "}" + std::to_string(site);
+       mname = "{" + std::string(aName) + "}" + std::to_string(site);
     }
 
     MOITERM( const MOITERM& data ):
        site(data.site), nj(data.nj)
     {
-        name = data.name;
+        mname = data.mname;
     }
+
+
+    const std::string& name() const {
+      return  mname;
+    }
+    int sublattice_site() const {
+      return  site;
+    }
+    double moiety_site_occupancy() const {
+      return  nj;
+    }
+    std::string to_string() const;
+    friend std::ostream& operator<<(std::ostream& os, const MOITERM& dt);
 };
+
+std::ostream &operator<<(std::ostream& os, const MOITERM& dt);
 
 
 /// Parser for Moity

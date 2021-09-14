@@ -396,5 +396,18 @@ int MoityParser::parse( const std::string& aformula, std::vector<MOITERM>&  moit
     return nSites;
 }
 
+std::string MOITERM::to_string() const
+{
+    std::stringstream s_stream;
+    s_stream << *this;
+    return s_stream.str();
+}
+
+std::ostream &operator<<(std::ostream &os, const MOITERM &moi_data)
+{
+    os << moi_data.name() <<  ":" << std::setprecision(15) << moi_data.moiety_site_occupancy();
+    return os;
+}
+
 
 }
