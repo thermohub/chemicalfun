@@ -1,14 +1,17 @@
 ﻿#ifndef FORMULADATA_H
 #define FORMULADATA_H
 
-#include <iostream>
+#include <vector>
 #include <map>
 #include <set>
-#include "formulaparser.h"
+#include <string>
+#include <list>
+#include <iostream>
 
 namespace ChemicalFun {
 
 class Element;
+class ElementsTerm;
 
 const std::map<std::string, int> elements_valences = {
     {"Ac",	3},
@@ -237,7 +240,7 @@ class FormulaToken
 protected:
 
     void clear();
-    void unpack( std::list<ICTERM>& itt_ );
+    void unpack( std::list<ElementsTerm>& itt_ );
 
 public:
 

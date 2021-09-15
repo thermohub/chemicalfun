@@ -1,6 +1,6 @@
 #include <math.h>
 #include "ChemicalFun/FormulaParser/formuladata.h"
-#include "ChemicalFun/FormulaParser/formulaparser.h"
+#include "ChemicalFun/FormulaParser/ChemicalFormulaParser.h"
 //#include "Element.h"
 #include "Common/Exception.h"
 // JSON
@@ -12,7 +12,10 @@ using namespace  std;
 
 namespace ChemicalFun {
 ///S using ElementsMap   = std::map<std::string, Element>;
-const short SHORT_EMPTY_  = -32768;
+static const short SHORT_EMPTY_  = -32768;
+static const char* NOISOTOPE_CLASS  ="n";
+static const char* CHARGE_CLASS   ="z";
+
 
 DBElementsData ChemicalFormula::dbElements= DBElementsData();
 //vector<string> ChemicalFormula::queryFields =
@@ -144,32 +147,32 @@ void FormulaToken::setFormula( const string& aformula )
   formula = aformula;
   formula.erase(std::remove(formula.begin(), formula.end(), '\"'), formula.end());
   ChemicalFormulaParser formparser;
-  list<ICTERM> icterms = formparser.parse( formula );
+  auto icterms = formparser.parse( formula );
   unpack( icterms );
   aZ = calculateCharge();
 }
 
 
 // unpack list of terms to data
-void FormulaToken::unpack( list<ICTERM>& itt_ )
+void FormulaToken::unpack( list<ElementsTerm>& itt_ )
 {
-    list<ICTERM>::iterator itr;
-    itr = itt_.begin();
+    auto itr = itt_.begin();
     while( itr != itt_.end() )
     {
-        ElementKey key( itr->ick, itr->ick_iso );
+        ElementKey key( itr->name(), itr->isotope() );
 
-        if( itr->val == SHORT_EMPTY_ )
-        {    auto itrdb = ChemicalFormula::getDBElements().find(key);
+        if( itr->valence() == SHORT_EMPTY_ )
+        {
+             auto itrdb = ChemicalFormula::getDBElements().find(key);
              if( itrdb !=  ChemicalFormula::getDBElements().end() )
-                itr->val = itrdb->second.valence;
+                itr->element_valence = itrdb->second.valence;
         }
-        datamap.push_back( FormulaValues( key, itr->stoich, itr->val ));
+        datamap.push_back( FormulaValues( key, itr->stoich_coef(), itr->valence() ));
         elements.insert(key);
         if (elements_map.find(key) != elements_map.end())
-            elements_map.at(key) += itr->stoich;
+            elements_map.at(key) += itr->stoich_coef();
         else
-            elements_map.insert(pair<ElementKey,double>(key,itr->stoich));
+            elements_map.insert(pair<ElementKey,double>(key,itr->stoich_coef()));
 //        coefficients.push_back(itr->stoich);
         itr++;
     }

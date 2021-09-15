@@ -20,7 +20,7 @@ std::string location(const std::string& file, int line)
     return ss.str();
 }
 
-std::string message(const Exception& exception, const std::string& file, int line)
+std::string message(const Exception& exception, const std::string& file, int /*line*/)
 {
     std::string error = exception.error.str();
     std::string reason = exception.reason.str();

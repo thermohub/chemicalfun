@@ -3,7 +3,8 @@ HEADERS += \
     $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/FormulaParser.h \
     $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/ReactionsGenerator.h \
     $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/FormulaParser/formuladata.h \
-    $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/FormulaParser/formulaparser.h \
+    $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/FormulaParser/ChemicalFormulaParser.h \
+    $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/FormulaParser/MoityParser.h \
     $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/ReactionsGenerator/Combiner.h \
     $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/ReactionsGenerator/DatabaseGenerator.h \
     $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/ReactionsGenerator/Generator.h \
@@ -17,7 +18,8 @@ HEADERS += \
 SOURCES += \
     $$CHEMICALFUN_DIR/Common/Exception.cpp \
     $$CHEMICALFUN_DIR/FormulaParser/formuladata.cpp \
-    $$CHEMICALFUN_DIR/FormulaParser/formulaparser.cpp \
+    $$CHEMICALFUN_DIR/FormulaParser/ChemicalFormulaParser.cpp \
+    $$CHEMICALFUN_DIR/FormulaParser/MoityParser.cpp \
     $$CHEMICALFUN_DIR/ReactionsGenerator/CanonicalizerLeal16.cpp \
     $$CHEMICALFUN_DIR/ReactionsGenerator/Combiner.cpp \
     $$CHEMICALFUN_DIR/ReactionsGenerator/DatabaseGenerator.cpp \

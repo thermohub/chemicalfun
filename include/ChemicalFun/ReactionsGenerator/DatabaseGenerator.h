@@ -22,7 +22,7 @@ public:
     /// Construct a Database instance with given formula matrix.
     DatabaseGenerator(std::vector<std::vector<double>> A);
 
-        /// Construct a Database instance with given formula matrix and substances (columns) list.
+    /// Construct a Database instance with given formula matrix and substances (columns) list.
     DatabaseGenerator(MatrixXd A, std::vector<std::string> substancesList);
 
     /// Construct a copy of a Database instance.

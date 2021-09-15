@@ -13,12 +13,12 @@ TEST(FormulaParser, parser)
     auto icterms = formparser.parse( "Al+3" );
     EXPECT_EQ(icterms.size(), 2);
     auto ic_itr = icterms.begin();
-    EXPECT_EQ(ic_itr->ic_name(), "Al");
+    EXPECT_EQ(ic_itr->name(), "Al");
     EXPECT_TRUE(ic_itr->no_isotope());
     EXPECT_TRUE(ic_itr->default_valence());
     EXPECT_EQ(ic_itr->stoich_coef(), 1);
     ic_itr++;
-    EXPECT_EQ(ic_itr->ic_name(), CHARGE_NAME);
+    EXPECT_EQ(ic_itr->name(), CHARGE_NAME);
     EXPECT_TRUE(ic_itr->is_charge());
     EXPECT_EQ(ic_itr->valence(),1);
     EXPECT_EQ(ic_itr->stoich_coef(), 3);
@@ -26,26 +26,25 @@ TEST(FormulaParser, parser)
     icterms = formparser.parse( "Al(OH)2+" );
     EXPECT_EQ(icterms.size(), 4);
     ic_itr = icterms.begin();
-    EXPECT_EQ(ic_itr->ic_name(), "Al");
+    EXPECT_EQ(ic_itr->name(), "Al");
     EXPECT_TRUE(ic_itr->no_isotope());
     EXPECT_TRUE(ic_itr->default_valence());
     EXPECT_EQ(ic_itr->stoich_coef(), 1);
     ic_itr++;
-    EXPECT_EQ(ic_itr->ic_name(), "H");
+    EXPECT_EQ(ic_itr->name(), "H");
     EXPECT_FALSE(ic_itr->is_charge());
     EXPECT_TRUE(ic_itr->default_valence());
     EXPECT_EQ(ic_itr->stoich_coef(), 2);
     ic_itr++;
-    EXPECT_EQ(ic_itr->ic_name(), "O");
+    EXPECT_EQ(ic_itr->name(), "O");
     EXPECT_TRUE(ic_itr->no_isotope());
     EXPECT_TRUE(ic_itr->default_valence());
     EXPECT_EQ(ic_itr->stoich_coef(), 2);
     ic_itr++;
-    EXPECT_EQ(ic_itr->ic_name(), CHARGE_NAME);
+    EXPECT_EQ(ic_itr->name(), CHARGE_NAME);
     EXPECT_TRUE(ic_itr->is_charge());
     EXPECT_EQ(ic_itr->valence(),1);
     EXPECT_EQ(ic_itr->stoich_coef(), 1);
-
 }
 
 TEST(FormulaParser, ParserStrings)
@@ -276,13 +275,13 @@ TEST(FormulaParser, Isotope)
     auto icterms = formparser.parse( "/3/H2/18/O" );
     EXPECT_EQ(icterms.size(), 2);
     auto ic_itr = icterms.begin();
-    EXPECT_EQ(ic_itr->ic_name(), "H");
+    EXPECT_EQ(ic_itr->name(), "H");
     EXPECT_FALSE(ic_itr->no_isotope());
     EXPECT_EQ(ic_itr->isotope(), "3");
     EXPECT_TRUE(ic_itr->default_valence());
     EXPECT_EQ(ic_itr->stoich_coef(), 2);
     ic_itr++;
-    EXPECT_EQ(ic_itr->ic_name(), "O");
+    EXPECT_EQ(ic_itr->name(), "O");
     EXPECT_FALSE(ic_itr->no_isotope());
     EXPECT_FALSE(ic_itr->is_charge());
     EXPECT_EQ(ic_itr->isotope(), "18");
@@ -298,16 +297,16 @@ TEST(FormulaParser, Valence)
     auto icterms = formparser.parse( "FeS|0|S|-2|" );
     EXPECT_EQ(icterms.size(), 3);
     auto ic_itr = icterms.begin();
-    EXPECT_EQ(ic_itr->ic_name(), "Fe");
+    EXPECT_EQ(ic_itr->name(), "Fe");
     EXPECT_TRUE(ic_itr->no_isotope());
     EXPECT_TRUE(ic_itr->default_valence());
     ic_itr++;
-    EXPECT_EQ(ic_itr->ic_name(), "S");
+    EXPECT_EQ(ic_itr->name(), "S");
     EXPECT_TRUE(ic_itr->no_isotope());
     EXPECT_FALSE(ic_itr->default_valence());
     EXPECT_EQ(ic_itr->valence(), -2);
     ic_itr++;
-    EXPECT_EQ(ic_itr->ic_name(), "S");
+    EXPECT_EQ(ic_itr->name(), "S");
     EXPECT_TRUE(ic_itr->no_isotope());
     EXPECT_FALSE(ic_itr->default_valence());
     EXPECT_EQ(ic_itr->valence(), 0);
@@ -316,30 +315,30 @@ TEST(FormulaParser, Valence)
     icterms = formparser.parse( "FeFe|3|2O4" );
     EXPECT_EQ(icterms.size(), 3);
     ic_itr = icterms.begin();
-    EXPECT_EQ(ic_itr->ic_name(), "Fe");
+    EXPECT_EQ(ic_itr->name(), "Fe");
     EXPECT_TRUE(ic_itr->default_valence());
     ic_itr++;
-    EXPECT_EQ(ic_itr->ic_name(), "Fe");
+    EXPECT_EQ(ic_itr->name(), "Fe");
     EXPECT_FALSE(ic_itr->default_valence());
     EXPECT_EQ(ic_itr->valence(), 3);
     ic_itr++;
-    EXPECT_EQ(ic_itr->ic_name(), "O");
+    EXPECT_EQ(ic_itr->name(), "O");
     EXPECT_TRUE(ic_itr->default_valence());
 
     icterms = formparser.parse( "HOO|0|-" );
     EXPECT_EQ(icterms.size(), 4);
     ic_itr = icterms.begin();
-    EXPECT_EQ(ic_itr->ic_name(), "H");
+    EXPECT_EQ(ic_itr->name(), "H");
     EXPECT_TRUE(ic_itr->default_valence());
     ic_itr++;
-    EXPECT_EQ(ic_itr->ic_name(), "O");
+    EXPECT_EQ(ic_itr->name(), "O");
     EXPECT_TRUE(ic_itr->default_valence());
     ic_itr++;
-    EXPECT_EQ(ic_itr->ic_name(), "O");
+    EXPECT_EQ(ic_itr->name(), "O");
     EXPECT_FALSE(ic_itr->default_valence());
     EXPECT_EQ(ic_itr->valence(), 0);
     ic_itr++;
-    EXPECT_EQ(ic_itr->ic_name(), CHARGE_NAME);
+    EXPECT_EQ(ic_itr->name(), CHARGE_NAME);
     EXPECT_FALSE(ic_itr->default_valence());
 }
 
@@ -351,22 +350,22 @@ TEST(FormulaParser, ParserBase)
     auto icterms = formparser.parse( " Al ( OH) 2 + " );
     EXPECT_EQ(icterms.size(), 4);
     auto ic_itr = icterms.begin();
-    EXPECT_EQ(ic_itr->ic_name(), "Al");
+    EXPECT_EQ(ic_itr->name(), "Al");
     EXPECT_TRUE(ic_itr->no_isotope());
     EXPECT_TRUE(ic_itr->default_valence());
     EXPECT_EQ(ic_itr->stoich_coef(), 1);
     ic_itr++;
-    EXPECT_EQ(ic_itr->ic_name(), "H");
+    EXPECT_EQ(ic_itr->name(), "H");
     EXPECT_FALSE(ic_itr->is_charge());
     EXPECT_TRUE(ic_itr->default_valence());
     EXPECT_EQ(ic_itr->stoich_coef(), 2);
     ic_itr++;
-    EXPECT_EQ(ic_itr->ic_name(), "O");
+    EXPECT_EQ(ic_itr->name(), "O");
     EXPECT_TRUE(ic_itr->no_isotope());
     EXPECT_TRUE(ic_itr->default_valence());
     EXPECT_EQ(ic_itr->stoich_coef(), 2);
     ic_itr++;
-    EXPECT_EQ(ic_itr->ic_name(), CHARGE_NAME);
+    EXPECT_EQ(ic_itr->name(), CHARGE_NAME);
     EXPECT_TRUE(ic_itr->is_charge());
     EXPECT_EQ(ic_itr->valence(),1);
     EXPECT_EQ(ic_itr->stoich_coef(), 1);
@@ -395,10 +394,10 @@ TEST(FormulaParser, ParserError)
 
 TEST(MoityParser, Parser)
 {
-    std::vector<ChemicalFun::MOITERM>  moieties;
     ChemicalFun::MoityParser moiparser;
 
-    auto nsites = moiparser.parse( "{K}:{Fe}:{Fe}2:{Al}{Si}:Si2O10(OH)2", moieties );
+    int nsites=0;
+    auto moieties = moiparser.parse( "{K}:{Fe}:{Fe}2:{Al}{Si}:Si2O10(OH)2", nsites );
     EXPECT_EQ(nsites, 4);
     EXPECT_EQ(moieties.size(), 5);
     EXPECT_EQ(moieties[0].name(), "{K}0");
@@ -412,7 +411,7 @@ TEST(MoityParser, Parser)
     EXPECT_EQ(moieties[4].name(), "{Si}3");
     EXPECT_EQ(moieties[4].moiety_site_occupancy(), 1);
 
-    nsites = moiparser.parse( "{Fe}3:{Al}2{Si}3:O12", moieties );
+    moieties = moiparser.parse( "{Fe}3:{Al}2{Si}3:O12", nsites );
     EXPECT_EQ(nsites, 2);
     EXPECT_EQ(moieties.size(), 3);
     EXPECT_EQ(moieties[0].name(), "{Fe}0");
