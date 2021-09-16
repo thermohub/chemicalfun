@@ -10,147 +10,32 @@
 
 namespace ChemicalFun {
 
-class Element;
 class ElementsTerm;
 
-const std::map<std::string, int> elements_valences = {
-    {"Ac",	3},
-    {"Ag",	1},
-    {"Al",	3},
-    {"Ar",	0},
-    {"Am",	3},
-    {"As",	5},
-    {"Au",	1},
-    {"B",	3},
-    {"Ba",	2},
-    {"Be",	2},
-    {"Bi",	3},
-    {"Br",	-1},
-    {"C",	4},
-    {"Ca",	2},
-    {"Cd",	2},
-    {"Ce",	3},
-    {"Cf",	3},
-    {"Cit",	-3},
-    {"Cl",	-1},
-    {"Co",	2},
-    {"Cr",	3},
-    {"Cm",	3},
-    {"Cs",	1},
-    {"Cu",	2},
-    {"Dy",	3},
-    {"Edta",	-4},
-    {"Er",	3},
-    {"Eu",	3},
-    {"F",	-1},
-    {"Fr",  1},
-    {"Fe",	2},
-    {"Ga",	3},
-    {"Gd",	3},
-    {"Ge",	4},
-    {"H",	1},
-    {"He",	0},
-    {"Hf",	4},
-    {"Hg",	2},
-    {"Ho",	3},
-    {"I",	-1},
-    {"In",	3},
-    {"Isa",	-4},
-    {"Ir",	4},
-    {"K",	1},
-    {"Kr",	0},
-    {"La",	3},
-    {"Li",	1},
-    {"Lu",	3},
-    {"Mg",	2},
-    {"Mn",	2},
-    {"Mo",	6},
-    {"N",	5},
-    {"N_atm",	0},
-    {"Na",	1},
-    {"Nb",	5},
-    {"Nd",	3},
-    {"Ne",	0},
-    {"Ni",	2},
-    {"Np",	6},
-    {"O",	-2},
-    {"Os",	4},
-    {"Ox",	-2},
-    {"P",	5},
-    {"Pa",	5},
-    {"Pb",	2},
-    {"Pd",	2},
-    {"Po",	4},
-    {"Pu",	6},
-    {"Pr",	3},
-    {"Pm",	3},
-    {"Pt",	2},
-    {"Ra",	2},
-    {"Rb",	1},
-    {"Re",	4},
-    {"Rh",	2},
-    {"Rn",	0},
-    {"Ru",	2},
-    {"S",	6},
-    {"Sb",	3},
-    {"Sc",	3},
-    {"Se",	4},
-    {"Si",	4},
-    {"Sm",	3},
-    {"Sn",	2},
-    {"Sr",	2},
-    {"Ta",	5},
-    {"Tb",	3},
-    {"Tc",	7},
-    {"Te",	6},
-    {"Th",	4},
-    {"Ti",	4},
-    {"Tl",	1},
-    {"Tm",	3},
-    {"U",	6},
-    {"V",	5},
-    {"W",	6},
-    {"Xe",	0},
-    {"Y",	3},
-    {"Yb",	3},
-    {"Zn",	2},
-    {"Zr",	4},
-    {"Zz",	0}
-};
 
-
-/// Key fields of Element vertex
-class ElementKey
+/// Key fields of Element descriptions
+class ElementKey final
 {
-
-  std::string symbol;
-  int class_;
-  int isotope;
-
-  void classIsotopeFrom(const std::string& line );
 
 public:
 
-//  static int index_from_map(std::string map);
+    /// Constructor
+    ElementKey(const std::string& asymbol, int aclass, int aisotope):
+     symbol(asymbol), class_(aclass), isotope(aisotope)
+    { }
+
 
   /// Construct key from elements JSON document string
-  ElementKey( const std::string& element )
+  ElementKey(const std::string& element)
   {
-      fromElementNode(element);
+      element_from_json_string(element);
   }
 
   /// Construct key from elements document fields values
-  ElementKey( const std::string& asymbol, const std::string& aclass_, const std::string& aisotope  );
-
-  /// Constructor
-  ElementKey( const std::string& asymbol, int aclass /*ELEMENT*/, int aisotope ):
-   symbol(asymbol), class_(aclass), isotope(aisotope)
-  { }
+  ElementKey(const std::string& asymbol, const std::string& aclass_, const std::string& aisotope);
 
   /// Construct key from formula parser
-  ElementKey( const std::string& asymbol, const std::string& typeline ):
-      symbol(asymbol)
-  { classIsotopeFrom(typeline); }
+  ElementKey(const std::string& asymbol, const std::string& typeline);
 
 
   const std::string& Symbol() const
@@ -172,14 +57,26 @@ public:
   std::string formulaKey() const;
 
   /// ElementKey from element record
-  void fromElementNode( const std::string& element );
+  void fromElementNode(const std::string& element);
 
-  friend bool operator <( const ElementKey&,  const ElementKey& );
-  friend bool operator >( const ElementKey&,  const ElementKey& );
-  friend bool operator==( const ElementKey&,  const ElementKey& );
-  friend bool operator!=( const ElementKey&,  const ElementKey& );
+  friend bool operator==(const ElementKey& lhs, const ElementKey& rhs);
+  friend bool operator!=(const ElementKey& lhs, const ElementKey& rhs){return !operator==(lhs,rhs);}
+  friend bool operator< (const ElementKey& lhs, const ElementKey& rhs);
+  friend bool operator> (const ElementKey& lhs, const ElementKey& rhs){return  operator< (rhs,lhs);}
+  friend bool operator<=(const ElementKey& lhs, const ElementKey& rhs){return !operator> (lhs,rhs);}
+  friend bool operator>=(const ElementKey& lhs, const ElementKey& rhs){return !operator< (lhs,rhs);}
 
+protected:
+  std::string symbol;
+  int class_;
+  int isotope;
+
+  void element_from_json_string(const std::string& json_string);
+  void class_isotope_from(const std::string& line);
 };
+
+
+
 
 ///S auto elementKeyToElement(ElementKey elementKey) -> Element;
 
@@ -187,12 +84,12 @@ public:
 struct ElementValues
 {
   std::string recid;            // Record id
-  double atomic_mass;   // "Atomic (molar) mass, g/atom (g/mole)"
-  double entropy;   // "Atomic entropy S0 at standard state, J/mole/K"
-  double heat_capacity;   // "Atomic heat capacity Cp0 at standard state, J/mole/K"
-  double volume;   // "Atomic volume V0 at standard state, cm3/mole"
-  int valence;   // "Default valence number (charge) in compounds"
-  int number;     // "Index in Periodical (Mendeleev's) table"
+  double atomic_mass = 0;   // "Atomic (molar) mass, g/atom (g/mole)"
+  double entropy = 0;   // "Atomic entropy S0 at standard state, J/mole/K"
+  double heat_capacity = 0;   // "Atomic heat capacity Cp0 at standard state, J/mole/K"
+  double volume = 0;   // "Atomic volume V0 at standard state, cm3/mole"
+  int valence = 0;   // "Default valence number (charge) in compounds"
+  int number = 0;     // "Index in Periodical (Mendeleev's) table"
   std::string name;
   // ...
 };
@@ -302,7 +199,7 @@ class ChemicalFormula
 
   /// Loading from database elements
   static  DBElementsData dbElements;
-  static  std::vector<std::string> queryFields;
+  ///S static  std::vector<std::string> queryFields;
   ///S static void addOneElement(Element element);
 
  public:
@@ -332,6 +229,8 @@ class ChemicalFormula
       return itr->second;
   }
 
+  static void readDBElements(const std::string &json_array);
+  static std::string writeDBElements();
 };
 
 }

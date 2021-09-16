@@ -48,7 +48,7 @@ std::ostream &operator<<(std::ostream &os, const ElementsTerm &term_data)
 
 //------------------------------------------------------------------------------------------------
 
-void BaseParser::xblanc( std::string& str )
+void BaseParser::xblanc(std::string& str)
 {
     if(str.empty()) {
         return;
@@ -135,7 +135,7 @@ void ChemicalFormulaParser::add_element(std::list<ElementsTerm>& terms_list,
     terms_list.insert(itr, new_term);
 }
 
-void ChemicalFormulaParser::scan_charge( )
+void ChemicalFormulaParser::scan_charge()
 {
     size_t ti = formula.find_last_of(CHARGE_TOK );
     if( ti == std::string::npos ) {
@@ -195,7 +195,6 @@ void ChemicalFormulaParser::scan_formula(std::list<ElementsTerm>& terms_list, st
                 el_term.element_stoich_coef *= st_coef;
             }
         }
-
         // added elements list to top level elements
         for(const auto& el_term: el_list) {
             add_element(  terms_list, el_term );

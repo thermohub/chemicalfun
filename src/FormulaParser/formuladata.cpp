@@ -1,42 +1,210 @@
-#include <math.h>
+//#include <math.h>
 #include "ChemicalFun/FormulaParser/formuladata.h"
 #include "ChemicalFun/FormulaParser/ChemicalFormulaParser.h"
-//#include "Element.h"
 #include "Common/Exception.h"
-// JSON
 #include <nlohmann/json.hpp>
-
 using json = nlohmann::json;
 
-using namespace  std;
+using namespace std;
 
 namespace ChemicalFun {
 ///S using ElementsMap   = std::map<std::string, Element>;
 static const short SHORT_EMPTY_  = -32768;
 static const char* NOISOTOPE_CLASS  ="n";
 static const char* CHARGE_CLASS   ="z";
-
-
 DBElementsData ChemicalFormula::dbElements= DBElementsData();
-//vector<string> ChemicalFormula::queryFields =
-//{
-//      "_id",
-//      "_type",
-//      "_label",
-//      "properties.symbol",
-//      "properties.class_" ,
-//      "properties.isotope_mass",
-//      "properties.atomic_mass.values.0",
-//      "properties.entropy.values.0",
-//      "properties.heat_capacity.values.0",
-//      "properties.volume.values.0",
-//      "properties.valences.0",
-//      "properties.number",
-//      "properties.name"
-//};
+
+
+const std::map<std::string, int> map_elements_valences = {
+    {"Ac",	3},
+    {"Ag",	1},
+    {"Al",	3},
+    {"Ar",	0},
+    {"Am",	3},
+    {"As",	5},
+    {"Au",	1},
+    {"B",	3},
+    {"Ba",	2},
+    {"Be",	2},
+    {"Bi",	3},
+    {"Br",	-1},
+    {"C",	4},
+    {"Ca",	2},
+    {"Cd",	2},
+    {"Ce",	3},
+    {"Cf",	3},
+    {"Cit",	-3},
+    {"Cl",	-1},
+    {"Co",	2},
+    {"Cr",	3},
+    {"Cm",	3},
+    {"Cs",	1},
+    {"Cu",	2},
+    {"Dy",	3},
+    {"Edta", -4},
+    {"Er",	3},
+    {"Eu",	3},
+    {"F",	-1},
+    {"Fr",  1},
+    {"Fe",	2},
+    {"Ga",	3},
+    {"Gd",	3},
+    {"Ge",	4},
+    {"H",	1},
+    {"He",	0},
+    {"Hf",	4},
+    {"Hg",	2},
+    {"Ho",	3},
+    {"I",	-1},
+    {"In",	3},
+    {"Isa",	-4},
+    {"Ir",	4},
+    {"K",	1},
+    {"Kr",	0},
+    {"La",	3},
+    {"Li",	1},
+    {"Lu",	3},
+    {"Mg",	2},
+    {"Mn",	2},
+    {"Mo",	6},
+    {"N",	5},
+    {"N_atm",	0},
+    {"Na",	1},
+    {"Nb",	5},
+    {"Nd",	3},
+    {"Ne",	0},
+    {"Ni",	2},
+    {"Np",	6},
+    {"O",	-2},
+    {"Os",	4},
+    {"Ox",	-2},
+    {"P",	5},
+    {"Pa",	5},
+    {"Pb",	2},
+    {"Pd",	2},
+    {"Po",	4},
+    {"Pu",	6},
+    {"Pr",	3},
+    {"Pm",	3},
+    {"Pt",	2},
+    {"Ra",	2},
+    {"Rb",	1},
+    {"Re",	4},
+    {"Rh",	2},
+    {"Rn",	0},
+    {"Ru",	2},
+    {"S",	6},
+    {"Sb",	3},
+    {"Sc",	3},
+    {"Se",	4},
+    {"Si",	4},
+    {"Sm",	3},
+    {"Sn",	2},
+    {"Sr",	2},
+    {"Ta",	5},
+    {"Tb",	3},
+    {"Tc",	7},
+    {"Te",	6},
+    {"Th",	4},
+    {"Ti",	4},
+    {"Tl",	1},
+    {"Tm",	3},
+    {"U",	6},
+    {"V",	5},
+    {"W",	6},
+    {"Xe",	0},
+    {"Y",	3},
+    {"Yb",	3},
+    {"Zn",	2},
+    {"Zr",	4},
+    {"Zz",	0}
+};
+
+
+// Writes ElementKey data to json
+json element_key_to(const ElementKey& key)
+{
+    auto object = json::object();
+    object["symbol"] = key.Symbol();
+    if( key.Isotope() != 0 )
+        object["isotope_mass"] =  key.Isotope();
+    if( key.Class()!= 0 )
+        object["class_"] = key.Class();
+    return object;
+}
+
+// Reads ElementKey data from json
+static ElementKey element_key_from(const json& key_object)
+{
+    std::string symbol;
+    int class_ = 0;
+    int isotope = 0;
+
+    if (key_object.contains("symbol")) {
+        symbol = key_object["symbol"].get<string>();
+    }
+    if (key_object.contains("isotope_mass")) {
+        isotope = key_object["isotope_mass"].get<int>();
+    }
+    if (key_object.contains("class_")) {
+        isotope = key_object["class_"].get<int>();
+    }
+
+    funErrorIf( symbol.empty(), "Undefined symbol.", "Element ", __LINE__, __FILE__ );
+    return ElementKey{ symbol, class_, isotope };
+}
+
+// Writes ElementKey data to json
+json element_values_to(const ElementValues& values)
+{
+    auto object = json::object();
+    object["recid"] = values.recid;
+    object["atomic_mass"] = values.atomic_mass;
+    object["entropy"] = values.entropy;
+    object["heat_capacity"] = values.heat_capacity;
+    object["volume"] = values.volume;
+    object["valence"] = values.valence;
+    object["number"] = values.number;
+    object["name"] = values.name;
+    return object;
+}
+
+
+static ElementValues element_values_from(const json& val_object)
+{
+    ElementValues data;
+
+    if (val_object.contains("recid")) {
+        data.recid = val_object["recid"].get<string>();
+    }
+    if (val_object.contains("atomic_mass")) {
+        data.atomic_mass = val_object["atomic_mass"].get<double>();
+    }
+    if (val_object.contains("entropy")) {
+        data.entropy = val_object["entropy"].get<double>();
+    }
+    if (val_object.contains("heat_capacity")) {
+        data.heat_capacity = val_object["heat_capacity"].get<double>();
+    }
+    if (val_object.contains("volume")) {
+        data.volume = val_object["volume"].get<double>();
+    }
+    if (val_object.contains("valence")) {
+        data.valence = val_object["valence"].get<int>();
+    }
+    if (val_object.contains("number")) {
+        data.number = val_object["number"].get<int>();
+    }
+    if (val_object.contains("name")) {
+        data.name = val_object["name"].get<string>();
+    }
+    return data;
+}
+
+//-------------------------------------------------------------------------------
 
 // Construct key from elements document values
-ElementKey::ElementKey(const std::string& asymbol, const string &aclass_, const std::string& aisotope  ):
+ElementKey::ElementKey(const std::string& asymbol, const std::string& aclass_, const std::string& aisotope):
     symbol(asymbol)
 {
     json j = json::parse(aclass_);
@@ -46,7 +214,7 @@ ElementKey::ElementKey(const std::string& asymbol, const string &aclass_, const 
     class_  = stoi(j.begin().key());
 }
 
-void ElementKey::classIsotopeFrom(const string& typeline)
+void ElementKey::class_isotope_from(const string& typeline)
 {
   class_ = 0;  // ElementClass::ELEMENT schema.enumdef->getId( "ELEMENT" );
   isotope = 0;
@@ -66,6 +234,30 @@ void ElementKey::classIsotopeFrom(const string& typeline)
   //cout << typeline << " class_ " << class_ << " isotope " << isotope << endl;
 
 }
+
+//// Writes data to json (only key)
+//jsonio17::JsonFree toKeyNode(  ElementKey el_key )
+//{
+//    jsonio17::JsonFree object = jsonio17::JsonFree::object();
+//    object[ "symbol" ] = el_key.Symbol();
+//    if( el_key.Isotope() != 0 )
+//        object["isotope_mass"] =  el_key.Isotope();
+//    if( el_key.Class()!= 0 )
+//        object["class_"] = el_key.Class();
+//    return object;
+//}
+
+//// Reads data from JsonDom (only key)
+//auto fromKeyNode( const jsonio17::JsonBase& object ) -> ElementKey
+//{
+//    std::string symbol;
+//    int isotope, class_;
+//    if(!object.get_value_via_path<std::string>( "symbol", symbol, "" ) )
+//        jsonio17::JSONIO_THROW( "ElementKey", 102, "Undefined symbol.");
+//    object.get_value_via_path( "isotope_mass", isotope, 0 );
+//    object.get_value_via_path("class_", class_, 0 );
+//    return ElementKey(symbol,class_,isotope);
+//}
 
 string ElementKey::formulaKey() const
 {
@@ -97,47 +289,36 @@ void ElementKey::fromElementNode( const std::string& element )
     class_ = 0;
 }
 
-bool operator <( const ElementKey& iEl,  const ElementKey& iEr)
+bool operator<(const ElementKey &lhs, const ElementKey &rhs)
 {
-   if( iEl.symbol < iEr.symbol )
-      return true;
-    if(iEl.symbol == iEr.symbol )
-    {
-       if( iEl.class_ < iEr.class_ )
-          return true;
-       else
-           if( iEl.class_ == iEr.class_ )
-             return ( iEl.isotope < iEr.isotope );
+    if(lhs.symbol < rhs.symbol) {
+        return true;
+    }
+    if(lhs.symbol == rhs.symbol) {
+        if(lhs.class_ < rhs.class_) {
+            return true;
+        }
+        else {
+            if(lhs.class_ == rhs.class_) {
+                return (lhs.isotope < rhs.isotope);
+            }
+        }
     }
     return false;
 }
 
-bool operator >( const ElementKey& iEl,  const ElementKey& iEr)
+
+bool operator==(const ElementKey &lhs, const ElementKey &rhs)
 {
-    if( iEl.symbol > iEr.symbol )
-      return true;
-    if(iEl.symbol == iEr.symbol )
-    {
-        if( iEl.class_ > iEr.class_ )
-          return true;
-        else
-         if( iEl.class_ == iEr.class_ )
-           return ( iEl.isotope > iEr.isotope );
-    }
-    return false;
+    return (lhs.symbol == rhs.symbol) &&
+           (lhs.class_ == rhs.class_) &&
+           (lhs.isotope == rhs.isotope);
 }
 
-bool operator ==( const ElementKey& iEl,  const ElementKey& iEr)
-{
-    return (iEl.symbol == iEr.symbol) &&
-           (iEl.class_ == iEr.class_) &&
-           (iEl.isotope == iEr.isotope) ;
-}
+ElementKey::ElementKey(const std::string &asymbol, const std::string &typeline):
+    symbol(asymbol)
+{ class_isotope_from(typeline); }
 
-bool operator !=( const ElementKey& iEl,  const ElementKey& iEr)
-{
-    return !(iEl==iEr);
-}
 
 //-------------------------------------------------------------
 
@@ -396,6 +577,35 @@ vector<vector<double>> ChemicalFormula::calcStoichiometryMatrixOld(  const vecto
 
    return matrA;
 }
+
+void ChemicalFormula::readDBElements(const std::string &json_array)
+{
+    auto elements_json = json::parse(json_array);
+    for( const auto& el_json: elements_json) {
+
+        dbElements[element_key_from(el_json["element"])] =
+                element_values_from(el_json["properties"]);
+    }
+}
+
+std::string ChemicalFormula::writeDBElements()
+{
+    auto elements_json = json::array();
+    for( const auto& element: dbElements) {
+        auto elem = json::object();
+        elem["element"] = element_key_to(element.first);
+        elem["properties"] = element_values_to(element.second);
+        elements_json.push_back(elem);
+    }
+    return elements_json.dump();
+}
+
+
+
+
+
+
+
 
 /*
 void ChemicalFormula::setDBElements(ElementsMap elements )

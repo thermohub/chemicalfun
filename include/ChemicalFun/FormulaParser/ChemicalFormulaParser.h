@@ -19,9 +19,9 @@
 
 #pragma once
 
+#include <iostream>
 #include <string>
 #include <list>
-#include <iostream>
 
 namespace ChemicalFun {
 
@@ -90,19 +90,19 @@ protected:
     };
 
     /// Is capital letter
-    bool is_capital( char ch ) const
+    bool is_capital(char ch) const
     {
         return (ch>='A' && ch<='Z') || ch=='$';
     }
     /// Is lowercase letter
-    bool is_lowercase( char ch ) const
+    bool is_lowercase(char ch) const
     {
         return (ch>='a' && ch<='z') ||  ch == '_';
     }
     /// Skip escape sequences  (" \n\t\r")
-    virtual void xblanc( std::string& str );
+    virtual void xblanc(std::string& str);
     /// Read next real from string
-    virtual void get_real( double& real, std::string& cur);
+    virtual void get_real(double& real, std::string& cur);
 };
 
 

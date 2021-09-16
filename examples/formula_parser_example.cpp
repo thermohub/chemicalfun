@@ -1,6 +1,3 @@
-#include <iostream>
-#include <vector>
-#include <string>
 #include "ChemicalFun/FormulaParser.h"
 using namespace std;
 
@@ -54,9 +51,9 @@ void test_parse( const std::string& chemical_formula ) {
 
 void test_parse_moieties( const std::string& chemical_formula ) {
 
-    std::vector<ChemicalFun::MOITERM>  moieties;
     ChemicalFun::MoityParser moiparser;
-    auto nsites = moiparser.parse( chemical_formula, moieties );
+    int nsites = 0;
+    auto moieties = moiparser.parse( chemical_formula, nsites );
     std::cout << "\nTested: " << chemical_formula << " " << nsites;
     for( const auto& term: moieties) {
        std::cout << "\n   " << term;
