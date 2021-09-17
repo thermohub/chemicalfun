@@ -2,7 +2,7 @@
      {
           "element" :   {
                "symbol" :   "Ag",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -19,7 +19,7 @@
      {
           "element" :   {
                "symbol" :   "Al",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -36,7 +36,7 @@
      {
           "element" :   {
                "symbol" :   "Am",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -53,7 +53,7 @@
      {
           "element" :   {
                "symbol" :   "Ar",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -70,7 +70,7 @@
      {
           "element" :   {
                "symbol" :   "As",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -87,7 +87,7 @@
      {
           "element" :   {
                "symbol" :   "Au",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -104,7 +104,7 @@
      {
           "element" :   {
                "symbol" :   "B",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -121,7 +121,7 @@
      {
           "element" :   {
                "symbol" :   "Ba",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -138,7 +138,7 @@
      {
           "element" :   {
                "symbol" :   "Be",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -155,7 +155,7 @@
      {
           "element" :   {
                "symbol" :   "Bi",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -172,7 +172,7 @@
      {
           "element" :   {
                "symbol" :   "Br",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -189,7 +189,7 @@
      {
           "element" :   {
                "symbol" :   "C",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -206,7 +206,7 @@
      {
           "element" :   {
                "symbol" :   "Ca",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -223,7 +223,7 @@
      {
           "element" :   {
                "symbol" :   "Cd",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -240,7 +240,7 @@
      {
           "element" :   {
                "symbol" :   "Ce",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -257,7 +257,7 @@
      {
           "element" :   {
                "symbol" :   "Cl",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -274,7 +274,7 @@
      {
           "element" :   {
                "symbol" :   "Cm",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -291,7 +291,7 @@
      {
           "element" :   {
                "symbol" :   "Co",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -308,7 +308,7 @@
      {
           "element" :   {
                "symbol" :   "Cr",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -325,7 +325,7 @@
      {
           "element" :   {
                "symbol" :   "Cs",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -342,7 +342,7 @@
      {
           "element" :   {
                "symbol" :   "Cu",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -359,7 +359,7 @@
      {
           "element" :   {
                "symbol" :   "Dy",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -376,7 +376,7 @@
      {
           "element" :   {
                "symbol" :   "Er",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -393,7 +393,7 @@
      {
           "element" :   {
                "symbol" :   "Eu",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -410,7 +410,7 @@
      {
           "element" :   {
                "symbol" :   "F",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -427,7 +427,7 @@
      {
           "element" :   {
                "symbol" :   "Fe",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -444,7 +444,7 @@
      {
           "element" :   {
                "symbol" :   "Ga",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -461,7 +461,7 @@
      {
           "element" :   {
                "symbol" :   "Gd",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -478,7 +478,7 @@
      {
           "element" :   {
                "symbol" :   "Ge",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -495,7 +495,7 @@
      {
           "element" :   {
                "symbol" :   "H",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -512,7 +512,7 @@
      {
           "element" :   {
                "symbol" :   "He",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -529,7 +529,7 @@
      {
           "element" :   {
                "symbol" :   "Hf",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -546,7 +546,7 @@
      {
           "element" :   {
                "symbol" :   "Hg",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -563,7 +563,7 @@
      {
           "element" :   {
                "symbol" :   "Ho",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -580,7 +580,7 @@
      {
           "element" :   {
                "symbol" :   "I",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -597,7 +597,7 @@
      {
           "element" :   {
                "symbol" :   "In",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -614,7 +614,7 @@
      {
           "element" :   {
                "symbol" :   "Ir",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -631,7 +631,7 @@
      {
           "element" :   {
                "symbol" :   "K",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -648,7 +648,7 @@
      {
           "element" :   {
                "symbol" :   "Kr",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -665,7 +665,7 @@
      {
           "element" :   {
                "symbol" :   "La",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -682,7 +682,7 @@
      {
           "element" :   {
                "symbol" :   "Li",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -699,7 +699,7 @@
      {
           "element" :   {
                "symbol" :   "Lu",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -716,7 +716,7 @@
      {
           "element" :   {
                "symbol" :   "Mg",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -733,7 +733,7 @@
      {
           "element" :   {
                "symbol" :   "Mn",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -750,7 +750,7 @@
      {
           "element" :   {
                "symbol" :   "Mo",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -767,7 +767,7 @@
      {
           "element" :   {
                "symbol" :   "N",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -784,7 +784,7 @@
      {
           "element" :   {
                "symbol" :   "Na",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -801,7 +801,7 @@
      {
           "element" :   {
                "symbol" :   "Nb",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -818,7 +818,7 @@
      {
           "element" :   {
                "symbol" :   "Nd",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -835,7 +835,7 @@
      {
           "element" :   {
                "symbol" :   "Ne",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -852,7 +852,7 @@
      {
           "element" :   {
                "symbol" :   "Ni",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -869,7 +869,7 @@
      {
           "element" :   {
                "symbol" :   "Nia",
-               "class" :   2,
+               "class_" :   2,
                "isotope" :   0
           },
           "properties" :   {
@@ -886,7 +886,7 @@
      {
           "element" :   {
                "symbol" :   "Nit",
-               "class" :   2,
+               "class_" :   2,
                "isotope" :   0
           },
           "properties" :   {
@@ -903,7 +903,7 @@
      {
           "element" :   {
                "symbol" :   "Np",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -920,7 +920,7 @@
      {
           "element" :   {
                "symbol" :   "O",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -937,7 +937,7 @@
      {
           "element" :   {
                "symbol" :   "Os",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -954,7 +954,7 @@
      {
           "element" :   {
                "symbol" :   "P",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -971,7 +971,7 @@
      {
           "element" :   {
                "symbol" :   "Pa",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -988,7 +988,7 @@
      {
           "element" :   {
                "symbol" :   "Pb",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1005,7 +1005,7 @@
      {
           "element" :   {
                "symbol" :   "Pd",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1022,7 +1022,7 @@
      {
           "element" :   {
                "symbol" :   "Po",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1039,7 +1039,7 @@
      {
           "element" :   {
                "symbol" :   "Pr",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1056,7 +1056,7 @@
      {
           "element" :   {
                "symbol" :   "Pt",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1073,7 +1073,7 @@
      {
           "element" :   {
                "symbol" :   "Pu",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1090,7 +1090,7 @@
      {
           "element" :   {
                "symbol" :   "Ra",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1107,7 +1107,7 @@
      {
           "element" :   {
                "symbol" :   "Rb",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1124,7 +1124,7 @@
      {
           "element" :   {
                "symbol" :   "Re",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1141,7 +1141,7 @@
      {
           "element" :   {
                "symbol" :   "Rh",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1158,7 +1158,7 @@
      {
           "element" :   {
                "symbol" :   "Rn",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1175,7 +1175,7 @@
      {
           "element" :   {
                "symbol" :   "Ru",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1192,7 +1192,7 @@
      {
           "element" :   {
                "symbol" :   "S",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1209,7 +1209,7 @@
      {
           "element" :   {
                "symbol" :   "Sb",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1226,7 +1226,7 @@
      {
           "element" :   {
                "symbol" :   "Sc",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1243,7 +1243,7 @@
      {
           "element" :   {
                "symbol" :   "Se",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1260,7 +1260,7 @@
      {
           "element" :   {
                "symbol" :   "Si",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1277,7 +1277,7 @@
      {
           "element" :   {
                "symbol" :   "Sm",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1294,7 +1294,7 @@
      {
           "element" :   {
                "symbol" :   "Sn",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1311,7 +1311,7 @@
      {
           "element" :   {
                "symbol" :   "Sr",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1328,7 +1328,7 @@
      {
           "element" :   {
                "symbol" :   "Ta",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1345,7 +1345,7 @@
      {
           "element" :   {
                "symbol" :   "Tb",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1362,7 +1362,7 @@
      {
           "element" :   {
                "symbol" :   "Tc",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1379,7 +1379,7 @@
      {
           "element" :   {
                "symbol" :   "Te",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1396,7 +1396,7 @@
      {
           "element" :   {
                "symbol" :   "Th",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1413,7 +1413,7 @@
      {
           "element" :   {
                "symbol" :   "Ti",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1430,7 +1430,7 @@
      {
           "element" :   {
                "symbol" :   "Tl",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1447,7 +1447,7 @@
      {
           "element" :   {
                "symbol" :   "Tm",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1464,7 +1464,7 @@
      {
           "element" :   {
                "symbol" :   "U",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1481,7 +1481,7 @@
      {
           "element" :   {
                "symbol" :   "V",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1498,7 +1498,7 @@
      {
           "element" :   {
                "symbol" :   "Vol",
-               "class" :   5,
+               "class_" :   5,
                "isotope" :   0
           },
           "properties" :   {
@@ -1515,7 +1515,7 @@
      {
           "element" :   {
                "symbol" :   "W",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1532,7 +1532,7 @@
      {
           "element" :   {
                "symbol" :   "Xe",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1549,7 +1549,7 @@
      {
           "element" :   {
                "symbol" :   "Y",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1566,7 +1566,7 @@
      {
           "element" :   {
                "symbol" :   "Yb",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1583,7 +1583,7 @@
      {
           "element" :   {
                "symbol" :   "Zn",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1600,7 +1600,7 @@
      {
           "element" :   {
                "symbol" :   "Zr",
-               "class" :   0,
+               "class_" :   0,
                "isotope" :   0
           },
           "properties" :   {
@@ -1617,7 +1617,7 @@
      {
           "element" :   {
                "symbol" :   "Zz",
-               "class" :   4,
+               "class_" :   4,
                "isotope" :   0
           },
           "properties" :   {

@@ -28,7 +28,7 @@ public:
   /// Construct key from elements JSON document string
   ElementKey(const std::string& element)
   {
-      element_from_json_string(element);
+      fromElementNode(element);
   }
 
   /// Construct key from elements document fields values
@@ -59,12 +59,16 @@ public:
   /// ElementKey from element record
   void fromElementNode(const std::string& element);
 
+  void from_json_string(const std::string &json_string);
+  std::string to_json_string(bool dense = false) const;
+
   friend bool operator==(const ElementKey& lhs, const ElementKey& rhs);
   friend bool operator!=(const ElementKey& lhs, const ElementKey& rhs){return !operator==(lhs,rhs);}
   friend bool operator< (const ElementKey& lhs, const ElementKey& rhs);
   friend bool operator> (const ElementKey& lhs, const ElementKey& rhs){return  operator< (rhs,lhs);}
   friend bool operator<=(const ElementKey& lhs, const ElementKey& rhs){return !operator> (lhs,rhs);}
   friend bool operator>=(const ElementKey& lhs, const ElementKey& rhs){return !operator< (lhs,rhs);}
+
 
 protected:
   std::string symbol;
@@ -92,6 +96,10 @@ struct ElementValues
   int number = 0;     // "Index in Periodical (Mendeleev's) table"
   std::string name;
   // ...
+
+  void from_json_string(const std::string &json_string);
+  std::string to_json_string(bool dense = false) const;
+
 };
 
 ///     Loading from Database a map of element symbol,
@@ -103,11 +111,13 @@ struct FormulaValues
 {
     ElementKey key;
     int   valence;
-    double  stoichCoef;
+    double  stoich_coef;
 
     FormulaValues( const ElementKey& akey, double  astoichCoef, int  avalence ):
-      key(akey), valence(avalence), stoichCoef(astoichCoef)
-    { }
+      key(akey), valence(avalence), stoich_coef(astoichCoef)
+    {}
+
+    std::string to_json_string(bool dense = false) const;
 };
 
 /// Values calculated from formula
@@ -119,6 +129,9 @@ struct FormulaProperites
     double atomic_mass;
     double elemental_entropy;
     double atoms_formula_unit;
+
+    std::string to_json_string(bool dense = false) const;
+
 };
 
 /// Internal parsed data
@@ -150,11 +163,22 @@ public:
 
     //--- Selectors
 
+
+
     void setFormula( const std::string& aformula );
     const std::string& getFormula() const
     {
       return formula;
     }
+    std::vector<std::string> parsed_list(bool dense = false) const
+    {
+       std::vector<std::string> list;
+       for( const auto& token: datamap) {
+         list.push_back(token.to_json_string(dense));
+       }
+       return list;
+    }
+
 
     double calculateCharge();
     double charge() const
@@ -230,7 +254,7 @@ class ChemicalFormula
   }
 
   static void readDBElements(const std::string &json_array);
-  static std::string writeDBElements();
+  static std::string writeDBElements(bool dense = false);
 };
 
 }

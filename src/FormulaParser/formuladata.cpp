@@ -122,7 +122,7 @@ const std::map<std::string, int> map_elements_valences = {
 
 
 // Writes ElementKey data to json
-json element_key_to(const ElementKey& key)
+static json element_key_to(const ElementKey& key)
 {
     auto object = json::object();
     object["symbol"] = key.Symbol();
@@ -147,15 +147,14 @@ static ElementKey element_key_from(const json& key_object)
         isotope = key_object["isotope_mass"].get<int>();
     }
     if (key_object.contains("class_")) {
-        isotope = key_object["class_"].get<int>();
+        class_ = key_object["class_"].get<int>();
     }
-
     funErrorIf( symbol.empty(), "Undefined symbol.", "Element ", __LINE__, __FILE__ );
     return ElementKey{ symbol, class_, isotope };
 }
 
 // Writes ElementKey data to json
-json element_values_to(const ElementValues& values)
+static json element_values_to(const ElementValues& values)
 {
     auto object = json::object();
     object["recid"] = values.recid;
@@ -169,11 +168,9 @@ json element_values_to(const ElementValues& values)
     return object;
 }
 
-
 static ElementValues element_values_from(const json& val_object)
 {
     ElementValues data;
-
     if (val_object.contains("recid")) {
         data.recid = val_object["recid"].get<string>();
     }
@@ -200,6 +197,65 @@ static ElementValues element_values_from(const json& val_object)
     }
     return data;
 }
+
+// Writes FormulaValues data to json
+static json formula_key_to(const FormulaValues& key)
+{
+    auto object = json::object();
+    object["key"] = element_key_to(key.key);
+    object["valence"] =  key.valence;
+    object["stoich_coef"] = key.stoich_coef;
+    return object;
+}
+
+// Writes FormulaProperites data to json
+static json formula_properites_to(const FormulaProperites& data)
+{
+    auto object = json::object();
+    object["formula"] =  data.formula;
+    object["charge"] = data.charge;
+    object["atomic_mass"] =  data.atomic_mass;
+    object["elemental_entropy"] = data.elemental_entropy;
+    object["atoms_formula_unit"] =  data.atoms_formula_unit;
+    return object;
+}
+
+void ElementKey::from_json_string(const std::string &json_string)
+{
+    auto key_json = json::parse(json_string);
+    *this =element_key_from(key_json);
+}
+
+string ElementKey::to_json_string(bool dense) const
+{
+    auto el_key = element_key_to(*this);
+    return el_key.dump(dense?4:-1);
+}
+
+void ElementValues::from_json_string(const std::string &json_string)
+{
+    auto values_json = json::parse(json_string);
+    *this =element_values_from(values_json);
+}
+
+string ElementValues::to_json_string(bool dense) const
+{
+  auto el_values = element_values_to(*this);
+  return el_values.dump(dense?4:-1);
+}
+
+string FormulaValues::to_json_string(bool dense) const
+{
+    auto data = formula_key_to(*this);
+    return data.dump(dense?4:-1);
+}
+
+string FormulaProperites::to_json_string(bool dense) const
+{
+    auto data = formula_properites_to(*this);
+    return data.dump(dense?4:-1);
+}
+
 
 //-------------------------------------------------------------------------------
 
@@ -286,8 +342,9 @@ void ElementKey::fromElementNode( const std::string& element )
   if (j.contains("class_"))
     class_ = stoi(j["class_"].begin().key());
   else
-    class_ = 0;
+      class_ = 0;
 }
+
 
 bool operator<(const ElementKey &lhs, const ElementKey &rhs)
 {
@@ -367,7 +424,7 @@ double FormulaToken::calculateCharge()
     {
       if( itr->key.Class() !=  4 /*CHARGE*/ &&
           itr->valence != SHORT_EMPTY_ )
-         Zz += itr->stoichCoef * itr->valence;
+         Zz += itr->stoich_coef * itr->valence;
       itr++;
     }
     return Zz;
@@ -434,7 +491,7 @@ void FormulaToken::calcFormulaProperites( FormulaProperites& propert )
       if( itrdb ==  ChemicalFormula::getDBElements().end() )
           funError("Invalid symbol", itr->key.Symbol(), __LINE__, __FILE__);
 
-      Sc = itr->stoichCoef;
+      Sc = itr->stoich_coef;
       propert.atoms_formula_unit += Sc;
       propert.atomic_mass += Sc * itrdb->second.atomic_mass;
       propert.elemental_entropy += Sc * itrdb->second.entropy;
@@ -465,7 +522,7 @@ vector<double> FormulaToken::makeStoichiometryRowOld( const vector<ElementKey>& 
       {
           for(unsigned int ii=0; ii<datamap.size(); ii++ )
               if( elkey == datamap[ii].key )
-                 ai += datamap[ii].stoichCoef;
+                 ai += datamap[ii].stoich_coef;
       }
       rowA.push_back(ai);
       itel++;
@@ -484,7 +541,7 @@ void FormulaToken::exeptionCargeImbalance()
     {
         if( chargeKey == itr->key )
         {
-            double Zzval = itr->stoichCoef;
+            double Zzval = itr->stoich_coef;
 
             if( fabs( (aZ - Zzval) ) > 1e-6 )
             {
@@ -588,7 +645,7 @@ void ChemicalFormula::readDBElements(const std::string &json_array)
     }
 }
 
-std::string ChemicalFormula::writeDBElements()
+std::string ChemicalFormula::writeDBElements(bool dense)
 {
     auto elements_json = json::array();
     for( const auto& element: dbElements) {
@@ -597,8 +654,9 @@ std::string ChemicalFormula::writeDBElements()
         elem["properties"] = element_values_to(element.second);
         elements_json.push_back(elem);
     }
-    return elements_json.dump();
+    return elements_json.dump(dense?4:-1);
 }
+
 
 
 

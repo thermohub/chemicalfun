@@ -50,6 +50,7 @@ include($$CHEMICALFUN_DIR/chemicalfun.pri)
 
 HEADERS += \
         $$TESTS_DIR/tst_parser.h \
+        $$TESTS_DIR/tst_elements.h
 
 SOURCES += \
         $$TESTS_DIR/main.cpp
