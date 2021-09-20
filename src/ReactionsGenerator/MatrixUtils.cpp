@@ -1,4 +1,5 @@
 #include "ChemicalFun/ReactionsGenerator/MatrixUtils.h"
+#include "ChemicalFun/FormulaParser/ChemicalData.h"
 
 namespace ChemicalFun {
 
@@ -232,6 +233,22 @@ auto getStoichiometryMatrix( std::vector<std::vector<double>> vMatrix) -> Eigen:
     for (size_t i = 0; i < vMatrix.size(); i++)
         for (size_t j = 0; j < vMatrix[0].size(); j++)
             A(i,j) = vMatrix[i][j];
+    return A;
+}
+
+auto calcStoichiometryMatrix(const std::vector<std::string>& vFormulalist,
+                            const std::vector<ElementKey>& elemens_list) -> Eigen::MatrixXd
+{
+    MatrixXd A(vFormulalist.size(), elemens_list.size());
+    FormulaToken formula("");
+
+    for (size_t i = 0; i < vFormulalist.size(); i++) {
+        formula.setFormula(vFormulalist[i]);
+        auto row = formula.makeStoichiometryRow(elemens_list);
+        for (size_t j = 0; j < row.size(); j++) {
+            A(i,j) = row[j];
+        }
+    }
     return A;
 }
 

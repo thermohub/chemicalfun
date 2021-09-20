@@ -507,10 +507,10 @@ StoichiometryMatrixData DBElements::calcStoichiometryMatrix(const std::vector<st
 {
     StoichiometryMatrixData matrA;
     FormulaToken formula("");
-    std::vector<ElementKey> sysElemens = getElementsKeysList();
+    std::vector<ElementKey> allelemens = getElementsKeysList();
     for(const auto& aformula: formulalist) {
         formula.setFormula(aformula);
-        matrA.push_back(formula.makeStoichiometryRow( sysElemens ));
+        matrA.push_back(formula.makeStoichiometryRow(allelemens));
     }
     return matrA;
 }
