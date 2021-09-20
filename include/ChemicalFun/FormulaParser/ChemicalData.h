@@ -207,6 +207,9 @@ public:
     /// Download elements DB to JSON array format output string.
     std::string writeElements(bool dense = false);
 
+    void printCSV(std::ostream &stream);
+    void printThermo(std::ostream &stream, const std::vector<std::string> &formulalist);
+    void printStoichiometryMatrix(std::ostream &stream, const std::vector<std::string> &formulalist);
 protected:
     /// Loading from database elements
     ElementsData dbElements;

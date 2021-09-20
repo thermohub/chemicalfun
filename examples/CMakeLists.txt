@@ -4,7 +4,8 @@ include_directories(${CMAKE_SOURCE_DIR})
 
 set(Examples
         formula_parser_example
-        elements_example )
+        elements_example
+        dbelements_example )
 
 foreach (exampleName ${Examples})
     add_executable(${exampleName} ${exampleName}.cpp)

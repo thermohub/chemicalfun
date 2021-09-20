@@ -515,4 +515,45 @@ StoichiometryMatrixData DBElements::calcStoichiometryMatrix(const std::vector<st
     return matrA;
 }
 
+void DBElements::printStoichiometryMatrix(std::ostream& stream, const std::vector<std::string>& formulalist)
+{
+    StoichiometryMatrixData matrA = calcStoichiometryMatrix(formulalist);
+    stream << "formula,";
+    for(const auto& elname: getElementsKeysList()) {
+        stream << elname.Symbol() <<",";
+    }
+    stream << std::endl;
+    for(size_t jj=0; jj<matrA.size(); ++jj) {
+        stream << formulalist[jj] << "," ;
+        for(size_t ii=0; ii<matrA[jj].size(); ii++) {
+            stream << matrA[jj][ii] << ",";
+        }
+        stream << std::endl;
+    }
+}
+
+void DBElements::printThermo(std::ostream& stream, const std::vector<std::string>& formulalist)
+{
+    std::vector<FormulaProperites> thermo = calcThermo(formulalist);
+    stream << "formula,charge,atomic_mass,elemental_entropy,Nj\n";
+    for( const auto& row: thermo) {
+        stream << row.formula << ","<< row.charge << "," << row.atomic_mass << ",";
+        stream << row.elemental_entropy << ","<< row.atoms_formula_unit << std::endl;
+    }
+}
+
+void DBElements::printCSV(std::ostream& stream)
+{
+    stream << "symbol,class_,isotope,atomic_mass,";
+    stream << "entropy,heat_capacity,volume,valence,number" << std::endl;
+    for( const auto& eldata: dbElements ) {
+        stream << eldata.first.Symbol() << ","<< eldata.first.Class() << ",";
+        stream << eldata.first.Isotope() << ","<< eldata.second.atomic_mass << ",";
+        stream << eldata.second.entropy << ","<< eldata.second.heat_capacity << ",";
+        stream << eldata.second.volume << ","<< eldata.second.valence << ",";
+        stream << eldata.second.number;
+        stream << std::endl;
+    }
+}
+
 }

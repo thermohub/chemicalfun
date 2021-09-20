@@ -52,5 +52,6 @@ include($$CHEMICALFUN_DIR/chemicalfun.pri)
 
 SOURCES += \
 #      examples/elements_example.cpp \
-      examples/formula_parser_example.cpp
+      examples/dbelements_example.cpp \
+#      examples/formula_parser_example.cpp
 
