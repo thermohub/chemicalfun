@@ -277,14 +277,14 @@ TEST(FormulaParser, Isotope)
     auto ic_itr = icterms.begin();
     EXPECT_EQ(ic_itr->name(), "H");
     EXPECT_FALSE(ic_itr->no_isotope());
-    EXPECT_EQ(ic_itr->isotope(), "3");
+    EXPECT_EQ(ic_itr->str_isotope(), "3");
     EXPECT_TRUE(ic_itr->default_valence());
     EXPECT_EQ(ic_itr->stoich_coef(), 2);
     ic_itr++;
     EXPECT_EQ(ic_itr->name(), "O");
     EXPECT_FALSE(ic_itr->no_isotope());
     EXPECT_FALSE(ic_itr->is_charge());
-    EXPECT_EQ(ic_itr->isotope(), "18");
+    EXPECT_EQ(ic_itr->str_isotope(), "18");
     EXPECT_TRUE(ic_itr->default_valence());
     EXPECT_EQ(ic_itr->stoich_coef(), 1);
 }

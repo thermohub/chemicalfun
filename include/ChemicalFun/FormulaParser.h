@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FormulaParser/formuladata.h"
+#include "FormulaParser/ChemicalData.h"
 #include "FormulaParser/ChemicalFormulaParser.h"
 #include "FormulaParser/MoityParser.h"
 

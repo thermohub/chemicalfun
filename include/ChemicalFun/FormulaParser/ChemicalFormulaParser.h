@@ -25,7 +25,11 @@
 
 namespace ChemicalFun {
 
+const int ELEMENT_CLASS = 0;
+const int ISOTOPE_CLASS = 1;
+const int CHARGE_CLASS = 4;
 const std::string CHARGE_NAME = "Zz";
+bool is_undefined_valence(int valence);
 
 /// Description of parsed element
 class ElementsTerm final
@@ -45,7 +49,7 @@ public:
     const std::string& name() const {
         return  element_name;
     }
-    const std::string& isotope() const {
+    const std::string& str_isotope() const {
         return  element_isotope;
     }
     int valence() const {
@@ -58,6 +62,10 @@ public:
     bool no_isotope() const;
     bool default_valence() const;
     bool is_charge() const;
+
+    int class_() const;
+    int isotope() const;
+
     std::string to_string() const;
 
 protected:

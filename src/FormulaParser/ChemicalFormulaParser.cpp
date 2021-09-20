@@ -7,9 +7,14 @@ namespace ChemicalFun {
 
 static const int MAXICNAME = 10;
 static const char* NOISOTOPE_CLASS  ="n";
-static const char* CHARGE_CLASS   ="z";
+static const char* CHARGE_CLASS_S   ="z";
 static const short SHORT_EMPTY_  = -32768;
 static const char* CHARGE_TOK    ="+-@";
+
+bool is_undefined_valence(int valence)
+{
+    return valence == SHORT_EMPTY_;
+}
 
 bool ElementsTerm::default_valence() const
 {
@@ -18,14 +23,38 @@ bool ElementsTerm::default_valence() const
 
 bool ElementsTerm::is_charge() const
 {
-    return element_isotope == CHARGE_CLASS;
+    return element_isotope == CHARGE_CLASS_S;
 }
 
 bool ElementsTerm::no_isotope() const
 {
     return ( element_isotope == NOISOTOPE_CLASS ||
-             element_isotope == CHARGE_CLASS ||
+             element_isotope == CHARGE_CLASS_S ||
              element_isotope == "v" );
+}
+
+int ElementsTerm::class_() const
+{
+    int vclass_ = ELEMENT_CLASS;  // ElementClass::ELEMENT schema.enumdef->getId( "ELEMENT" );
+    if( is_charge() )
+        vclass_ = CHARGE_CLASS;  // ElementClass::CHARGE schema.enumdef->getId( "CHARGE" );
+//    else {
+//        int isotope = 0;
+//        if( !no_isotope() && is<int>( isotope, element_isotope) )
+//            vclass_ = ISOTOPE_CLASS; // ElementClass::ISOTOPE schema.enumdef->getId( "ISOTOPE" );
+//    }
+    return vclass_;
+}
+
+int ElementsTerm::isotope() const
+{
+    int visotope = 0;
+//    if( !no_isotope()  ) {
+//        if( !is<int>( visotope, element_isotope) ) {
+//            visotope = 0;
+//        }
+//    }
+    return  visotope;
 }
 
 std::string ElementsTerm::to_string() const
@@ -39,7 +68,7 @@ std::ostream &operator<<(std::ostream &os, const ElementsTerm &term_data)
 {
     os << term_data.name();
     if( !term_data.no_isotope() ) {
-        os << '/' << term_data.isotope() << '/';
+        os << '/' << term_data.str_isotope() << '/';
     }
     os << ":" << (  term_data.default_valence() ? "*" : std::to_string(term_data.valence()) )
        << ":" << std::setprecision(15) << term_data.stoich_coef();
@@ -172,7 +201,7 @@ void ChemicalFormulaParser::add_charge(std::list<ElementsTerm>& terms_list)
         break;
     default:            break;
     }
-    add_element( terms_list, ElementsTerm{CHARGE_NAME, CHARGE_CLASS, 1, aZ} );
+    add_element( terms_list, ElementsTerm{CHARGE_NAME, CHARGE_CLASS_S, 1, aZ} );
 }
 
 //get <fterm>  ::= <icterm> | <icterm><icterm>

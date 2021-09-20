@@ -16,7 +16,7 @@ static std::string read_ascii_file(const std::string& file_path)
     return buffer.str();
 }
 
-static void parse_formula(const std::string& formula)
+static void parse_formula(const std::string& formula, const ChemicalFun::DBElements& all_elements)
 {
     std::cout << "Tested: " << formula;
     ChemicalFun::FormulaToken token(formula);
@@ -25,21 +25,18 @@ static void parse_formula(const std::string& formula)
     for( const auto& term: token.parsed_list()) {
        std::cout << "\n   " << term;
     }
-    std::cout << "\nCarge1 " << token.charge();
-    token.calculateCharge();
-    std::cout << "\nCarge2 " << token.charge();
+    std::cout << "\nCarge " << token.charge();
 
-    ChemicalFun::FormulaProperites properties;
-    token.calcFormulaProperites(properties);
+    ChemicalFun::FormulaProperites properties = token.calculateProperites(all_elements);
     std::cout << "\nProperites\n" << properties.to_json_string(true);
 
-    auto st_row = token.makeStoichiometryRowOld(ChemicalFun::ChemicalFormula::elementsRow());
+    auto st_row = token.makeStoichiometryRow(all_elements.getElementsKeysList());
     std::cout << "\nStoichiometryRow:\n";
     for( const auto& term: st_row ) {
        std::cout << std::setprecision(15) <<  term << " ";
     }
 
-    std::cout << "\nTest elements\n" << token.testElements(formula);
+    std::cout << "\nTest elements\n" << token.testElements(formula, all_elements);
     std::cout << std::endl;
 }
 
@@ -52,12 +49,13 @@ int main(int argc, char* argv[])
     }
 
     try{
+        ChemicalFun::DBElements all_elements;
         auto json_string = read_ascii_file("elementsDB.json");
-        ChemicalFun::ChemicalFormula::readDBElements(json_string);
-        std::cout << ChemicalFun::ChemicalFormula::writeDBElements(true) <<  std::endl;
+        all_elements.readElements(json_string);
+        std::cout << all_elements.writeElements(true) <<  std::endl;
 
         if( !test_formula.empty() ) {
-            parse_formula(test_formula);
+            parse_formula(test_formula, all_elements);
         }
         return 0;
     }
