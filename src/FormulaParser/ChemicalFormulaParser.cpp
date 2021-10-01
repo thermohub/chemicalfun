@@ -201,7 +201,7 @@ void ChemicalFormulaParser::add_charge(std::list<ElementsTerm>& terms_list)
         break;
     default:            break;
     }
-    add_element( terms_list, ElementsTerm{CHARGE_NAME, CHARGE_CLASS_S, 1, aZ} );
+    add_element( terms_list, ElementsTerm{CHARGE_NAME, CHARGE_CLASS_S, 0, aZ} );
 }
 
 //get <fterm>  ::= <icterm> | <icterm><icterm>

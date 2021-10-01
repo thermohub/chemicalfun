@@ -301,7 +301,7 @@ TEST(ChemicalFormula, FormulaTokenAlOH)
     EXPECT_EQ(els_list[0], R"({"key":{"symbol":"Al"},"stoich_coef":1.0,"valence":3})");
     EXPECT_EQ(els_list[1], R"({"key":{"symbol":"H"},"stoich_coef":2.0,"valence":1})");
     EXPECT_EQ(els_list[2], R"({"key":{"symbol":"O"},"stoich_coef":2.0,"valence":-2})");
-    EXPECT_EQ(els_list[3], R"({"key":{"class_":4,"symbol":"Zz"},"stoich_coef":1.0,"valence":1})");
+    EXPECT_EQ(els_list[3], R"({"key":{"class_":4,"symbol":"Zz"},"stoich_coef":1.0,"valence":0})");
     EXPECT_EQ(token.charge(), 1);
 
     auto properties = token.calculateProperites(all_elements);
@@ -329,7 +329,7 @@ TEST(ChemicalFormula, FormulaTokenH)
     auto els_list = token.parsed_list();
     EXPECT_EQ(els_list.size(), 2);
     EXPECT_EQ(els_list[0], R"({"key":{"symbol":"H"},"stoich_coef":1.0,"valence":1})");
-    EXPECT_EQ(els_list[1], R"({"key":{"class_":4,"symbol":"Zz"},"stoich_coef":1.0,"valence":1})");
+    EXPECT_EQ(els_list[1], R"({"key":{"class_":4,"symbol":"Zz"},"stoich_coef":1.0,"valence":0})");
     EXPECT_EQ(token.charge(), 1);
 
     auto properties = token.calculateProperites(all_elements);
@@ -357,7 +357,7 @@ TEST(ChemicalFormula, FormulaTokenO2)
     auto els_list = token.parsed_list();
     EXPECT_EQ(els_list.size(), 2);
     EXPECT_EQ(els_list[0], R"({"key":{"symbol":"O"},"stoich_coef":2.0,"valence":0})");
-    EXPECT_EQ(els_list[1], R"({"key":{"class_":4,"symbol":"Zz"},"stoich_coef":0.0,"valence":1})");
+    EXPECT_EQ(els_list[1], R"({"key":{"class_":4,"symbol":"Zz"},"stoich_coef":0.0,"valence":0})");
     EXPECT_EQ(token.charge(), 0);
 
     auto properties = token.calculateProperites(all_elements);
@@ -406,7 +406,7 @@ TEST(ChemicalFormula, FormulaTokenHOO)
     EXPECT_EQ(els_list[0], R"({"key":{"symbol":"H"},"stoich_coef":1.0,"valence":1})");
     EXPECT_EQ(els_list[1], R"({"key":{"symbol":"O"},"stoich_coef":1.0,"valence":-2})");
     EXPECT_EQ(els_list[2], R"({"key":{"symbol":"O"},"stoich_coef":1.0,"valence":0})");
-    EXPECT_EQ(els_list[3], R"({"key":{"class_":4,"symbol":"Zz"},"stoich_coef":-1.0,"valence":1})");
+    EXPECT_EQ(els_list[3], R"({"key":{"class_":4,"symbol":"Zz"},"stoich_coef":-1.0,"valence":0})");
     EXPECT_EQ(token.charge(), -1);
 
     auto properties = token.calculateProperites(all_elements);
@@ -594,3 +594,96 @@ TEST(ChemicalFormula, FormulaTokenCargeImbalance)
     EXPECT_DOUBLE_EQ(token.charge(), -1);
     EXPECT_THROW(token.testCargeImbalance(), std::exception);
 }
+
+//-----------------------------------------------
+TEST(ChemicalFormula, FormulaTokenAlOH_WithValences)
+{
+    ChemicalFun::FormulaToken token("Al(OH)2+", true);
+    auto els_list = token.parsed_list();
+    EXPECT_EQ(els_list.size(), 4);
+    EXPECT_EQ(els_list[0], R"({"key":{"symbol":"Al"},"stoich_coef":1.0,"valence":3})");
+    EXPECT_EQ(els_list[1], R"({"key":{"symbol":"H"},"stoich_coef":2.0,"valence":1})");
+    EXPECT_EQ(els_list[2], R"({"key":{"symbol":"O"},"stoich_coef":2.0,"valence":-2})");
+    EXPECT_EQ(els_list[3], R"({"key":{"class_":4,"symbol":"Zz"},"stoich_coef":1.0,"valence":0})");
+    EXPECT_EQ(token.charge(), 1);
+
+    std::vector<ElementKey> all_elments(token.getElementsList().begin(), token.getElementsList().end());
+    auto st_row = token.makeStoichiometryRow(all_elments);
+    std::vector<double> row = { 1, 2, 2, 1 };
+    EXPECT_EQ(st_row, row);
+    EXPECT_EQ( to_string(all_elments), "Al;H;O;Zz;");
+}
+
+TEST(ChemicalFormula, FormulaTokenHOO_WithValences)
+{
+    ChemicalFun::FormulaToken token("HOO|0|-", true);
+    auto els_list = token.parsed_list();
+    EXPECT_EQ(els_list.size(), 4);
+    EXPECT_EQ(els_list[0], R"({"key":{"symbol":"H"},"stoich_coef":1.0,"valence":1})");
+    EXPECT_EQ(els_list[1], R"({"key":{"symbol":"O"},"stoich_coef":1.0,"valence":-2})");
+    EXPECT_EQ(els_list[2], "{\"key\":{\"symbol\":\"O(0)\"},\"stoich_coef\":1.0,\"valence\":0}");
+    EXPECT_EQ(els_list[3], R"({"key":{"class_":4,"symbol":"Zz"},"stoich_coef":-1.0,"valence":0})");
+    EXPECT_EQ(token.charge(), -1);
+
+    std::vector<ElementKey> all_elments(token.getElementsList().begin(), token.getElementsList().end());
+    auto st_row = token.makeStoichiometryRow(all_elments);
+    std::vector<double> row = { 1, 1, 1, -1 };
+    EXPECT_EQ(st_row, row);
+    EXPECT_EQ( to_string(all_elments), "H;O;O(0);Zz;");
+}
+
+TEST(ChemicalFormula, FormulaTokenNoFeSS_WithValences)
+{
+    ChemicalFun::FormulaToken token("FeS|0|S|-2|", true);
+    auto els_list = token.parsed_list();
+    EXPECT_EQ(els_list.size(), 3);
+    EXPECT_EQ(els_list[0], R"({"key":{"symbol":"Fe"},"stoich_coef":1.0,"valence":2})");
+    EXPECT_EQ(els_list[1], "{\"key\":{\"symbol\":\"S(-2)\"},\"stoich_coef\":1.0,\"valence\":-2}");
+    EXPECT_EQ(els_list[2], "{\"key\":{\"symbol\":\"S(0)\"},\"stoich_coef\":1.0,\"valence\":0}");
+    EXPECT_DOUBLE_EQ(token.charge(), 0);
+
+    std::vector<ElementKey> all_elments(token.getElementsList().begin(), token.getElementsList().end());
+    auto st_row = token.makeStoichiometryRow(all_elments);
+    std::vector<double> row = { 1, 1, 1 };
+    EXPECT_EQ(st_row, row);
+    EXPECT_EQ( to_string(all_elments), "Fe;S(-2);S(0);");
+}
+
+
+TEST(ChemicalFormula, StoichiometryMatrixValences)
+{
+    std::vector<std::string> formula_list{
+        "H2O",
+        "H2O@",
+        "H+",
+        "OH-",
+        "H|0|2",
+        "O|0|2",
+        "HOO|0|-",
+    };
+
+    std::vector<ElementKey> all_elments = generateElementsListValences(formula_list);
+    auto st_matr = generateStoichiometryMatrixValences(formula_list, all_elments);
+    EXPECT_EQ( to_string(all_elments), "H;O;Zz;");
+    StoichiometryMatrixData matrix1 = { { 2, 1, 0 },
+                                       { 2, 1, 0 },
+                                       { 1, 0, 1 },
+                                       { 1, 1, -1 },
+                                       { 2, 0, 0 },
+                                       { 0, 2, 0 },
+                                       { 1, 2, -1 } };
+    EXPECT_EQ(st_matr, matrix1);
+
+    all_elments = generateElementsListValences(formula_list, true);
+    st_matr = generateStoichiometryMatrixValences(formula_list, all_elments, true);
+    EXPECT_EQ( to_string(all_elments), "H;H(0);O;O(0);Zz;");
+    StoichiometryMatrixData matrix2 = { { 2, 0, 1, 0, 0 },
+                                        { 2, 0, 1, 0, 0 },
+                                        { 1, 0, 0, 0, 1 },
+                                        { 1, 0, 1, 0, -1 },
+                                        { 0, 2, 0, 0, 0 },
+                                        { 0, 0, 0, 2, 0 },
+                                        { 1, 0, 1, 1, -1 } };
+    EXPECT_EQ(st_matr, matrix2);
+}
+

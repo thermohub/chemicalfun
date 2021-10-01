@@ -20,7 +20,7 @@ TEST(FormulaParser, parser)
     ic_itr++;
     EXPECT_EQ(ic_itr->name(), CHARGE_NAME);
     EXPECT_TRUE(ic_itr->is_charge());
-    EXPECT_EQ(ic_itr->valence(),1);
+    EXPECT_EQ(ic_itr->valence(),0);
     EXPECT_EQ(ic_itr->stoich_coef(), 3);
 
     icterms = formparser.parse( "Al(OH)2+" );
@@ -43,7 +43,7 @@ TEST(FormulaParser, parser)
     ic_itr++;
     EXPECT_EQ(ic_itr->name(), CHARGE_NAME);
     EXPECT_TRUE(ic_itr->is_charge());
-    EXPECT_EQ(ic_itr->valence(),1);
+    EXPECT_EQ(ic_itr->valence(),0);
     EXPECT_EQ(ic_itr->stoich_coef(), 1);
 }
 
@@ -55,7 +55,7 @@ TEST(FormulaParser, ParserStrings)
     EXPECT_EQ(icterms.size(), 2);
     auto ic_itr = icterms.begin();
     EXPECT_EQ(ic_itr->to_string(), "Al:*:1");
-    EXPECT_EQ((++ic_itr)->to_string(), "Zz:1:3");
+    EXPECT_EQ((++ic_itr)->to_string(), "Zz:0:3");
 
     icterms = formparser.parse( "Al(OH)2+" );
     EXPECT_EQ(icterms.size(), 4);
@@ -63,7 +63,7 @@ TEST(FormulaParser, ParserStrings)
     EXPECT_EQ(ic_itr->to_string(), "Al:*:1");
     EXPECT_EQ((++ic_itr)->to_string(), "H:*:2");
     EXPECT_EQ((++ic_itr)->to_string(), "O:*:2");
-    EXPECT_EQ((++ic_itr)->to_string(), "Zz:1:1");
+    EXPECT_EQ((++ic_itr)->to_string(), "Zz:0:1");
 
     icterms = formparser.parse( "Al(OH)3@" );
     EXPECT_EQ(icterms.size(), 4);
@@ -71,7 +71,7 @@ TEST(FormulaParser, ParserStrings)
     EXPECT_EQ(ic_itr->to_string(), "Al:*:1");
     EXPECT_EQ((++ic_itr)->to_string(), "H:*:3");
     EXPECT_EQ((++ic_itr)->to_string(), "O:*:3");
-    EXPECT_EQ((++ic_itr)->to_string(), "Zz:1:0");
+    EXPECT_EQ((++ic_itr)->to_string(), "Zz:0:0");
 
     icterms = formparser.parse( "HSiO3-" );
     EXPECT_EQ(icterms.size(), 4);
@@ -79,7 +79,7 @@ TEST(FormulaParser, ParserStrings)
     EXPECT_EQ(ic_itr->to_string(), "H:*:1");
     EXPECT_EQ((++ic_itr)->to_string(), "O:*:3");
     EXPECT_EQ((++ic_itr)->to_string(), "Si:*:1");
-    EXPECT_EQ((++ic_itr)->to_string(), "Zz:1:-1");
+    EXPECT_EQ((++ic_itr)->to_string(), "Zz:0:-1");
 
     icterms = formparser.parse( "HCl|3|O2@" );
     EXPECT_EQ(icterms.size(), 4);
@@ -87,19 +87,19 @@ TEST(FormulaParser, ParserStrings)
     EXPECT_EQ(ic_itr->to_string(), "Cl:3:1");
     EXPECT_EQ((++ic_itr)->to_string(), "H:*:1");
     EXPECT_EQ((++ic_itr)->to_string(), "O:*:2");
-    EXPECT_EQ((++ic_itr)->to_string(), "Zz:1:0");
+    EXPECT_EQ((++ic_itr)->to_string(), "Zz:0:0");
 
     icterms = formparser.parse( "H+" );
     EXPECT_EQ(icterms.size(), 2);
     ic_itr = icterms.begin();
     EXPECT_EQ(ic_itr->to_string(), "H:*:1");
-    EXPECT_EQ((++ic_itr)->to_string(), "Zz:1:1");
+    EXPECT_EQ((++ic_itr)->to_string(), "Zz:0:1");
 
     icterms = formparser.parse( "O|0|2@" );
     EXPECT_EQ(icterms.size(), 2);
     ic_itr = icterms.begin();
     EXPECT_EQ(ic_itr->to_string(), "O:0:2");
-    EXPECT_EQ((++ic_itr)->to_string(), "Zz:1:0");
+    EXPECT_EQ((++ic_itr)->to_string(), "Zz:0:0");
 
     icterms = formparser.parse( "O|0|2" );
     EXPECT_EQ(icterms.size(), 1);
@@ -112,7 +112,7 @@ TEST(FormulaParser, ParserStrings)
     EXPECT_EQ(ic_itr->to_string(), "H:*:1");
     EXPECT_EQ((++ic_itr)->to_string(), "O:*:1");
     EXPECT_EQ((++ic_itr)->to_string(), "O:0:1");
-    EXPECT_EQ((++ic_itr)->to_string(), "Zz:1:-1");
+    EXPECT_EQ((++ic_itr)->to_string(), "Zz:0:-1");
 
     icterms = formparser.parse( "H2OO|0|@" );
     EXPECT_EQ(icterms.size(), 4);
@@ -120,7 +120,7 @@ TEST(FormulaParser, ParserStrings)
     EXPECT_EQ(ic_itr->to_string(), "H:*:2");
     EXPECT_EQ((++ic_itr)->to_string(), "O:*:1");
     EXPECT_EQ((++ic_itr)->to_string(), "O:0:1");
-    EXPECT_EQ((++ic_itr)->to_string(), "Zz:1:0");
+    EXPECT_EQ((++ic_itr)->to_string(), "Zz:0:0");
 
     icterms = formparser.parse( "NaAlSi3O8" );
     EXPECT_EQ(icterms.size(), 4);
@@ -367,7 +367,7 @@ TEST(FormulaParser, ParserBase)
     ic_itr++;
     EXPECT_EQ(ic_itr->name(), CHARGE_NAME);
     EXPECT_TRUE(ic_itr->is_charge());
-    EXPECT_EQ(ic_itr->valence(),1);
+    EXPECT_EQ(ic_itr->valence(),0);
     EXPECT_EQ(ic_itr->stoich_coef(), 1);
 
     icterms = formparser.parse( "(SiO 2)1(CaO) 0.833333 (H2O) 1.333333" );

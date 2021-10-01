@@ -112,6 +112,15 @@ static const std::map<std::string, int> map_elements_valences = {
     {"Zz",	0}
 };
 
+std::string to_string (const std::vector<ElementKey>& keys ) {
+   std::string str_keys;
+   for( const auto& key: keys ) {
+      str_keys += key.Symbol()+";";
+   }
+   return str_keys;
+}
+
+
 // Writes ElementKey data to json
 static json element_key_to(const ElementKey& key)
 {
@@ -294,14 +303,17 @@ bool operator==(const ElementKey &lhs, const ElementKey &rhs)
 void FormulaToken::unpack(std::list<ElementsTerm>& parsed_data)
 {
     for(auto& el_data: parsed_data) {
-        ElementKey key(el_data.name(), el_data.class_(), el_data.isotope());
-
+        auto element_symbol = el_data.name();
         if(el_data.default_valence()) {
-            auto itrdb = map_elements_valences.find(key.Symbol());
+            auto itrdb = map_elements_valences.find(element_symbol);
             if( itrdb !=  map_elements_valences.end() ) {
                 el_data.element_valence = itrdb->second;
             }
         }
+        else if(elements_keys_with_valences && element_symbol!=CHARGE_NAME ) {
+          element_symbol += "("+std::to_string(el_data.element_valence)+")";
+        }
+        ElementKey key(element_symbol, el_data.class_(), el_data.isotope());
         extracted_data.push_back( FormulaValues( key, el_data.stoich_coef(), el_data.valence() ));
         elements.insert(key);
         if (stoich_map.find(key) != stoich_map.end()) {
@@ -334,9 +346,10 @@ void FormulaToken::clear()
     aZ = 0.;
 }
 
-void FormulaToken::setFormula(const std::string& aformula)
+void FormulaToken::setFormula(const std::string& aformula, bool with_valences)
 {
     clear();
+    elements_keys_with_valences = with_valences;
     current_formula = aformula;
     current_formula.erase(std::remove(current_formula.begin(), current_formula.end(), '\"'), current_formula.end());
     ChemicalFormulaParser formparser;
@@ -554,6 +567,30 @@ void DBElements::printCSV(std::ostream& stream)
         stream << eldata.second.number;
         stream << std::endl;
     }
+}
+
+std::vector<ElementKey> generateElementsListValences(const std::vector<std::string> &formulalist, bool with_valences)
+{
+    FormulaToken formula("");
+    ElementsKeys all_elements_set;
+    for(const auto& aformula: formulalist) {
+        formula.setFormula(aformula, with_valences);
+        all_elements_set.insert(formula.getElementsList().begin(), formula.getElementsList().end());
+    }
+    return {all_elements_set.begin(), all_elements_set.end()};
+}
+
+StoichiometryMatrixData generateStoichiometryMatrixValences(const std::vector<std::string> &formulalist,
+                                                            std::vector<ElementKey> all_elements,
+                                                            bool with_valences)
+{
+    StoichiometryMatrixData matrA;
+    FormulaToken formula("");
+    for(const auto& aformula: formulalist) {
+        formula.setFormula(aformula, with_valences);
+        matrA.push_back(formula.makeStoichiometryRow(all_elements));
+    }
+    return matrA;
 }
 
 }

@@ -113,12 +113,12 @@ class FormulaToken final
 {
 public:
     /// Constructor
-    FormulaToken(const std::string& aformula): aZ(0) {
-        setFormula(aformula);
+    FormulaToken(const std::string& aformula, bool with_valences = false): aZ(0) {
+        setFormula(aformula, with_valences);
     }
 
     /// Disassemble the formula.
-    void setFormula(const std::string& aformula);
+    void setFormula(const std::string& aformula, bool with_valences = false);
     /// Disassembled formula.
     const std::string& formula() const  {
         return current_formula;
@@ -135,6 +135,9 @@ public:
     const ElementsKeys& getElementsList() const {
         return elements;
     }
+    /// Get a row of stoichiometry matrix from the unpacked formula,
+    /// all_elemens - list of all element keys.
+    StoichiometryRowData makeStoichiometryRow(const std::vector<ElementKey>& all_elemens);
 
     /// Generate a list of values parsed from the formula in JSON format strings.
     std::vector<std::string> parsed_list(bool dense = false) const;
@@ -152,11 +155,9 @@ public:
     /// for chemical formulae.
     FormulaProperites calculateProperites(const DBElements& dbelements);
 
-    /// Get a row of stoichiometry matrix from the unpacked formula,
-    /// all_elemens - list of all element keys.
-    StoichiometryRowData makeStoichiometryRow(const std::vector<ElementKey>& all_elemens);
-
 protected:
+    /// If we need a matrix with separate element valences
+    bool elements_keys_with_valences;
     /// Disassembled formula
     std::string current_formula;
     /// List of values calculated from the formula
@@ -210,6 +211,7 @@ public:
     void printCSV(std::ostream &stream);
     void printThermo(std::ostream &stream, const std::vector<std::string> &formulalist);
     void printStoichiometryMatrix(std::ostream &stream, const std::vector<std::string> &formulalist);
+
 protected:
     /// Loading from database elements
     ElementsData dbElements;
@@ -218,7 +220,15 @@ protected:
 
 };
 
+std::string to_string(const std::vector<ElementKey>& keys );
+/// Generate stoichiometry matrix from the formula list and elements list.
+StoichiometryMatrixData generateStoichiometryMatrixValences(const std::vector<std::string> &formulalist,
+                                                            std::vector<ElementKey> all_elements,
+                                                            bool with_valences = false);
 
+/// Generate elements used list
+std::vector<ElementKey> generateElementsListValences(const std::vector<std::string> &formulalist,
+                                                     bool with_valences = false);
 }
 
 
