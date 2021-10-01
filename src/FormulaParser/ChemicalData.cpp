@@ -310,7 +310,7 @@ void FormulaToken::unpack(std::list<ElementsTerm>& parsed_data)
                 el_data.element_valence = itrdb->second;
             }
         }
-        else if(elements_keys_with_valences && element_symbol!=CHARGE_NAME ) {
+        if(elements_keys_with_valences ) {
           element_symbol += "("+std::to_string(el_data.element_valence)+")";
         }
         ElementKey key(element_symbol, el_data.class_(), el_data.isotope());
@@ -466,6 +466,15 @@ void FormulaToken::testCargeImbalance()
 }
 
 //------------------------------------------
+
+int DBElements::defaultValence(const std::string& symbol)
+{
+    auto itv = map_elements_valences.find(symbol);
+    if (itv != map_elements_valences.end())
+        return itv->second;
+    else
+        return 0;
+}
 
 void DBElements::addElement(const ElementKey& elkey, const ElementValues& elvalue)
 {

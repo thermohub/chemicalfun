@@ -177,6 +177,11 @@ protected:
 class DBElements final
 {
 public:
+    static int defaultValence(const std::string& symbol);
+
+    /// List of elements collected from the list of formulas.
+    static ElementsKeys extractElements(const std::vector<std::string>& formulalist);
+
     /// Add new element to internal.
     void addElement(const ElementKey &elkey, const ElementValues &elvalue);
 
@@ -189,9 +194,6 @@ public:
     std::vector<ElementKey> getElementsKeysList() const {
         return std::vector<ElementKey>(dbElementsKeys.begin(), dbElementsKeys.end());
     }
-
-    /// List of elements collected from the list of formulas.
-    ElementsKeys extractElements(const std::vector<std::string>& formulalist);
 
     /// Calculate charge, molar mass, elemental entropy, atoms per formula.
     FormulaProperites calcThermo(const std::string aformula) const {
