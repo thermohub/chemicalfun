@@ -228,6 +228,13 @@ static json formula_properites_to(const FormulaProperites& data)
 
 void ElementKey::from_json_string(const std::string &json_string)
 {
+    if( json_string.empty() )
+    {
+      symbol = "";
+      class_ = 0;
+      isotope = 0;
+      return;
+    }
     auto key_json = json::parse(json_string);
     *this =element_key_from(key_json);
 }
