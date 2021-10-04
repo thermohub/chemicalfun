@@ -238,6 +238,17 @@ std::string ElementKey::to_json_string(bool dense) const
     return el_key.dump(dense?4:-1);
 }
 
+std::string ElementKey::to_string() const
+{
+  std::string str_key= symbol;
+  if( class_ != 0 )
+   str_key+= "|" + std::to_string(class_);
+  if( isotope != 0 )
+   str_key+= "|" + std::to_string(isotope);
+
+ return str_key;
+}
+
 void ElementValues::from_json_string(const std::string &json_string)
 {
     auto values_json = json::parse(json_string);

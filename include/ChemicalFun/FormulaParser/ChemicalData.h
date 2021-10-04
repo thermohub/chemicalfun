@@ -37,6 +37,7 @@ public:
 
     void from_json_string(const std::string &json_string);
     std::string to_json_string(bool dense = false) const;
+    std::string to_string() const;
 
     friend bool operator==(const ElementKey& lhs, const ElementKey& rhs);
     friend bool operator!=(const ElementKey& lhs, const ElementKey& rhs){return !operator==(lhs,rhs);}
