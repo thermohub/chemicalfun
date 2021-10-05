@@ -12,7 +12,12 @@ using namespace Eigen;
 
 using ChargeCoeffMap = std::map<int, double>;
 
-namespace ChemicalFun {
+namespace ChemicalFun
+{
+class ElementKey;
+}
+
+namespace ReactionsGenerator {
 
 /// Threshold viarable below which the matrix coefficients are considered 0
 static const double thresholdCoeffZero = 1e-05;
@@ -54,9 +59,8 @@ auto formatVectorCoeff(Eigen::VectorXd M) -> Eigen::VectorXd;
 
 auto getStoichiometryMatrix( std::vector<std::vector<double>> vMatrix) -> Eigen::MatrixXd;
 
-class ElementKey;
 auto calcStoichiometryMatrix(const std::vector<std::string>& vFormulalist,
-                            const std::vector<ElementKey>& elemens_list) -> Eigen::MatrixXd;
+                            const std::vector<ChemicalFun::ElementKey>& elemens_list) -> Eigen::MatrixXd;
 
 struct ReactionChargesMap
 {

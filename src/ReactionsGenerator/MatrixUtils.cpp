@@ -1,7 +1,7 @@
 #include "ChemicalFun/ReactionsGenerator/MatrixUtils.h"
 #include "ChemicalFun/FormulaParser/ChemicalData.h"
 
-namespace ChemicalFun {
+namespace ReactionsGenerator {
 
 // Return a vector of indices with values from 0 up to a given length.
 auto indices(Index length) -> Indices
@@ -237,10 +237,10 @@ auto getStoichiometryMatrix( std::vector<std::vector<double>> vMatrix) -> Eigen:
 }
 
 auto calcStoichiometryMatrix(const std::vector<std::string>& vFormulalist,
-                            const std::vector<ElementKey>& elemens_list) -> Eigen::MatrixXd
+                            const std::vector<ChemicalFun::ElementKey>& elemens_list) -> Eigen::MatrixXd
 {
     MatrixXd A(vFormulalist.size(), elemens_list.size());
-    FormulaToken formula("");
+    ChemicalFun::FormulaToken formula("");
 
     for (size_t i = 0; i < vFormulalist.size(); i++) {
         formula.setFormula(vFormulalist[i], true);

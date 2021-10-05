@@ -5,7 +5,7 @@
 #include "fstream"
 #include "iostream"
 
-namespace ChemicalFun {
+namespace ReactionsGenerator {
 
 struct DatabaseGenerator::Impl
 {
@@ -110,7 +110,7 @@ auto DatabaseGenerator::getCharge(std::string symbol) -> int
 
     if ( index < 0 )
     {
-        errorSubstanceNotFound(symbol, "Database::getCharge", __LINE__);
+        ChemicalFun::errorSubstanceNotFound(symbol, "Database::getCharge", __LINE__);
     }
 
     auto R = pimpl->formulaMatrix.rows();

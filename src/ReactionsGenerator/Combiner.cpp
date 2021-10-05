@@ -1,7 +1,7 @@
 #include "ChemicalFun/ReactionsGenerator/Combiner.h"
 #include "ChemicalFun/ReactionsGenerator/ReactionGen.h"
 
-namespace ChemicalFun {
+namespace ReactionsGenerator {
 
 struct Combiner::Impl
 {

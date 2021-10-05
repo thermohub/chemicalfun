@@ -3,7 +3,7 @@
 #include "RowReduceSmithMissen98.h"
 #include "CanonicalizerLeal16.h"
 
-namespace ChemicalFun {
+namespace ReactionsGenerator {
 
 struct Generator::Impl
 {

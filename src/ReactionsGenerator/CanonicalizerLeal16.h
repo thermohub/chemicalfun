@@ -3,7 +3,7 @@
 
 #include "ChemicalFun/ReactionsGenerator/MatrixUtils.h"
 
-namespace ChemicalFun {
+namespace ReactionsGenerator {
 
 /**
  * @brief leal16 Given a substances formula matrix M[rows-elements, cols-substances], computes

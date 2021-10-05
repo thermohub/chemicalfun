@@ -6,7 +6,7 @@
 
 #include "MatrixUtils.h"
 
-namespace ChemicalFun {
+namespace ReactionsGenerator {
 
 using IndexSubstancesMap    = std::map<Index, std::string>;
 using IndexElementsMap      = std::map<Index, std::string>;

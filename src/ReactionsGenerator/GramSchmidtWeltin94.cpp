@@ -1,7 +1,7 @@
 #include "ReactionsGenerator/GramSchmidtWeltin94.h"
 #include <iostream>
 
-namespace ChemicalFun {
+namespace ReactionsGenerator {
 
 /**
  * @brief gramSchmidt
