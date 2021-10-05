@@ -27,7 +27,7 @@ static void parse_formula(const std::string& formula, const ChemicalFun::DBEleme
     }
     std::cout << "\nCarge " << token.charge();
 
-    ChemicalFun::FormulaProperites properties = token.calculateProperites(all_elements);
+    ChemicalFun::FormulaProperites properties = token.calculateProperites(all_elements.getElements());
     std::cout << "\nProperites\n" << properties.to_json_string(true);
 
     auto st_row = token.makeStoichiometryRow(all_elements.getElementsKeysList());
@@ -36,7 +36,7 @@ static void parse_formula(const std::string& formula, const ChemicalFun::DBEleme
        std::cout << std::setprecision(15) <<  term << " ";
     }
 
-    std::cout << "\nTest elements\n" << token.testElements(formula, all_elements);
+    std::cout << "\nTest elements\n" << token.testElements(formula, all_elements.getElementsKeys());
     std::cout << std::endl;
 }
 

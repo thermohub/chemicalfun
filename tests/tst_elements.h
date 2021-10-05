@@ -304,7 +304,7 @@ TEST(ChemicalFormula, FormulaTokenAlOH)
     EXPECT_EQ(els_list[3], R"({"key":{"class_":4,"symbol":"Zz"},"stoich_coef":1.0,"valence":0})");
     EXPECT_EQ(token.charge(), 1);
 
-    auto properties = token.calculateProperites(all_elements);
+    auto properties = token.calculateProperites(all_elements.getElements());
     EXPECT_NEAR(properties.atomic_mass, 60.996240854263306, 1e-30);
     EXPECT_NEAR(properties.atoms_formula_unit, 6, 1e-30);
     EXPECT_NEAR(properties.charge, 1, 1e-30);
@@ -315,7 +315,7 @@ TEST(ChemicalFormula, FormulaTokenAlOH)
     std::vector<double> row = {1, 0, 0, 2, 0, 0, 0, 2, 0, 1};
     EXPECT_EQ(st_row, row);
 
-    EXPECT_TRUE(token.testElements("Al(OH)2+", all_elements).empty()) ;
+    EXPECT_TRUE(token.testElements("Al(OH)2+", all_elements.getElementsKeys()).empty()) ;
 }
 
 TEST(ChemicalFormula, FormulaTokenH)
@@ -332,7 +332,7 @@ TEST(ChemicalFormula, FormulaTokenH)
     EXPECT_EQ(els_list[1], R"({"key":{"class_":4,"symbol":"Zz"},"stoich_coef":1.0,"valence":0})");
     EXPECT_EQ(token.charge(), 1);
 
-    auto properties = token.calculateProperites(all_elements);
+    auto properties = token.calculateProperites(all_elements.getElements());
     EXPECT_NEAR(properties.atomic_mass, 1.0079499483108501, 1e-30);
     EXPECT_NEAR(properties.atoms_formula_unit, 2, 1e-30);
     EXPECT_NEAR(properties.charge, 1, 1e-30);
@@ -343,7 +343,7 @@ TEST(ChemicalFormula, FormulaTokenH)
     std::vector<double> row = { 0, 0, 0, 1, 0, 0, 0, 0, 0, 1 };
     EXPECT_EQ(st_row, row);
 
-    EXPECT_TRUE(token.testElements("H+", all_elements).empty()) ;
+    EXPECT_TRUE(token.testElements("H+", all_elements.getElementsKeys()).empty()) ;
 }
 
 TEST(ChemicalFormula, FormulaTokenO2)
@@ -360,7 +360,7 @@ TEST(ChemicalFormula, FormulaTokenO2)
     EXPECT_EQ(els_list[1], R"({"key":{"class_":4,"symbol":"Zz"},"stoich_coef":0.0,"valence":0})");
     EXPECT_EQ(token.charge(), 0);
 
-    auto properties = token.calculateProperites(all_elements);
+    auto properties = token.calculateProperites(all_elements.getElements());
     EXPECT_NEAR(properties.atomic_mass, 31.99880027771, 1e-30);
     EXPECT_NEAR(properties.atoms_formula_unit, 2, 1e-30);
     EXPECT_NEAR(properties.charge, 0, 1e-30);
@@ -371,7 +371,7 @@ TEST(ChemicalFormula, FormulaTokenO2)
     std::vector<double> row = { 0, 0, 0, 0, 0, 0, 0, 2, 0, 0 };
     EXPECT_EQ(st_row, row);
 
-    EXPECT_TRUE(token.testElements("O|0|2@", all_elements).empty()) ;
+    EXPECT_TRUE(token.testElements("O|0|2@", all_elements.getElementsKeys()).empty()) ;
 
     token.setFormula("O|0|2");
     els_list = token.parsed_list();
@@ -379,7 +379,7 @@ TEST(ChemicalFormula, FormulaTokenO2)
     EXPECT_EQ(els_list[0], R"({"key":{"symbol":"O"},"stoich_coef":2.0,"valence":0})");
     EXPECT_EQ(token.charge(), 0);
 
-    properties = token.calculateProperites(all_elements);
+    properties = token.calculateProperites(all_elements.getElements());
     EXPECT_NEAR(properties.atomic_mass, 31.99880027771, 1e-30);
     EXPECT_NEAR(properties.atoms_formula_unit, 2, 1e-30);
     EXPECT_NEAR(properties.charge, 0, 1e-30);
@@ -390,7 +390,7 @@ TEST(ChemicalFormula, FormulaTokenO2)
     row = { 0, 0, 0, 0, 0, 0, 0, 2, 0, 0 };
     EXPECT_EQ(st_row, row);
 
-    EXPECT_TRUE(token.testElements("O|0|2", all_elements).empty()) ;
+    EXPECT_TRUE(token.testElements("O|0|2", all_elements.getElementsKeys()).empty()) ;
 }
 
 TEST(ChemicalFormula, FormulaTokenHOO)
@@ -409,7 +409,7 @@ TEST(ChemicalFormula, FormulaTokenHOO)
     EXPECT_EQ(els_list[3], R"({"key":{"class_":4,"symbol":"Zz"},"stoich_coef":-1.0,"valence":0})");
     EXPECT_EQ(token.charge(), -1);
 
-    auto properties = token.calculateProperites(all_elements);
+    auto properties = token.calculateProperites(all_elements.getElements());
     EXPECT_NEAR(properties.atomic_mass, 33.00675022602085, 1e-30);
     EXPECT_NEAR(properties.atoms_formula_unit, 2, 1e-30);
     EXPECT_NEAR(properties.charge, -1, 1e-30);
@@ -420,7 +420,7 @@ TEST(ChemicalFormula, FormulaTokenHOO)
     std::vector<double> row = { 0, 0, 0, 1, 0, 0, 0, 2, 0, -1 };
     EXPECT_EQ(st_row, row);
 
-    EXPECT_TRUE(token.testElements("HOO|0|-", all_elements).empty()) ;
+    EXPECT_TRUE(token.testElements("HOO|0|-", all_elements.getElementsKeys()).empty()) ;
 }
 
 TEST(ChemicalFormula, FormulaTokenNumber)
@@ -439,7 +439,7 @@ TEST(ChemicalFormula, FormulaTokenNumber)
     EXPECT_EQ(els_list[3], R"({"key":{"symbol":"Si"},"stoich_coef":1.0,"valence":4})");
     EXPECT_DOUBLE_EQ(token.charge(), 0);
 
-    EXPECT_THROW(token.calculateProperites(all_elements), std::exception);
+    EXPECT_THROW(token.calculateProperites(all_elements.getElements()), std::exception);
 
     auto st_row = token.makeStoichiometryRow(all_elements.getElementsKeysList());
     std::vector<double> row = { 0, 0, 0, 2.666666, 0, 0, 0, 4.166666, 1, 0 };
@@ -448,7 +448,7 @@ TEST(ChemicalFormula, FormulaTokenNumber)
         EXPECT_DOUBLE_EQ(st_row[i], row[i]);
     }
 
-    EXPECT_EQ(token.testElements("(SiO2)1(CaO)0.833333(H2O)1.333333", all_elements), "Ca;");
+    EXPECT_EQ(token.testElements("(SiO2)1(CaO)0.833333(H2O)1.333333", all_elements.getElementsKeys()), "Ca;");
 }
 
 TEST(ChemicalFormula, FormulaTokenComplex)
@@ -471,7 +471,7 @@ TEST(ChemicalFormula, FormulaTokenComplex)
     EXPECT_EQ(els_list[7], R"({"key":{"symbol":"Si"},"stoich_coef":10.473,"valence":4})");
     EXPECT_NEAR(token.charge(), -7.105427357601002e-15, 1e-30);
 
-    auto properties = token.calculateProperites(all_elements);
+    auto properties = token.calculateProperites(all_elements.getElements());
     EXPECT_NEAR(properties.atomic_mass, 1211.5590944863566, 1e-30);
     EXPECT_NEAR(properties.atoms_formula_unit, 91.843, 1e-30);
     EXPECT_NEAR(properties.charge, -7.105427357601002e-15, 1e-30);
@@ -485,7 +485,7 @@ TEST(ChemicalFormula, FormulaTokenComplex)
         EXPECT_DOUBLE_EQ(st_row[i], row[i]);
     }
 
-    EXPECT_TRUE(token.testElements("NaSi10.473Al4.132Mg.737Fe|3|.237Fe|2|.211O44.316H30.737", all_elements).empty()) ;
+    EXPECT_TRUE(token.testElements("NaSi10.473Al4.132Mg.737Fe|3|.237Fe|2|.211O44.316H30.737", all_elements.getElementsKeys()).empty()) ;
 }
 
 TEST(ChemicalFormula, FormulaTokenIsotope)
@@ -502,7 +502,7 @@ TEST(ChemicalFormula, FormulaTokenIsotope)
     EXPECT_EQ(els_list[1], R"({"key":{"symbol":"O"},"stoich_coef":1.0,"valence":-2})");
     EXPECT_EQ(token.charge(), 0);
 
-    auto properties = token.calculateProperites(all_elements);
+    auto properties = token.calculateProperites(all_elements.getElements());
     EXPECT_NEAR(properties.atomic_mass, 18.0153000354767, 1e-30);
     EXPECT_NEAR(properties.atoms_formula_unit, 3, 1e-30);
     EXPECT_NEAR(properties.charge, 0, 1e-30);
@@ -513,7 +513,7 @@ TEST(ChemicalFormula, FormulaTokenIsotope)
     std::vector<double> row = { 0, 0, 0, 2, 0, 0, 0, 1, 0, 0 };
     EXPECT_EQ(st_row, row);
 
-    EXPECT_TRUE(token.testElements("/3/H2/18/O", all_elements).empty()) ;
+    EXPECT_TRUE(token.testElements("/3/H2/18/O", all_elements.getElementsKeys()).empty()) ;
 }
 
 TEST(ChemicalFormula, FormulaTokenNoMnS)
@@ -530,13 +530,13 @@ TEST(ChemicalFormula, FormulaTokenNoMnS)
     EXPECT_EQ(els_list[1], R"({"key":{"symbol":"S"},"stoich_coef":1.0,"valence":-2})");
     EXPECT_DOUBLE_EQ(token.charge(), 0);
 
-    EXPECT_THROW(token.calculateProperites(all_elements), std::exception);
+    EXPECT_THROW(token.calculateProperites(all_elements.getElements()), std::exception);
 
     auto st_row = token.makeStoichiometryRow(all_elements.getElementsKeysList());
     std::vector<double> row = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     ASSERT_EQ(st_row, row);
 
-    EXPECT_EQ(token.testElements("MnS|-2|", all_elements), "Mn;S;");
+    EXPECT_EQ(token.testElements("MnS|-2|", all_elements.getElementsKeys()), "Mn;S;");
 }
 
 TEST(ChemicalFormula, FormulaTokenNoFeSS)
@@ -554,13 +554,13 @@ TEST(ChemicalFormula, FormulaTokenNoFeSS)
     EXPECT_EQ(els_list[2], R"({"key":{"symbol":"S"},"stoich_coef":1.0,"valence":0})");
     EXPECT_DOUBLE_EQ(token.charge(), 0);
 
-    EXPECT_THROW(token.calculateProperites(all_elements), std::exception);
+    EXPECT_THROW(token.calculateProperites(all_elements.getElements()), std::exception);
 
     auto st_row = token.makeStoichiometryRow(all_elements.getElementsKeysList());
     std::vector<double> row = { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 };
     ASSERT_EQ(st_row, row);
 
-    EXPECT_EQ(token.testElements("FeS|0|S|-2|", all_elements), "S;S;");
+    EXPECT_EQ(token.testElements("FeS|0|S|-2|", all_elements.getElementsKeys()), "S;S;");
 }
 
 TEST(ChemicalFormula, FormulaTokenCargeImbalance)

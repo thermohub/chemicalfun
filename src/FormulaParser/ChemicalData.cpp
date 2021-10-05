@@ -384,15 +384,15 @@ std::vector<std::string> FormulaToken::parsed_list(bool dense) const {
     return list;
 }
 
-bool FormulaToken::checkElements(const std::string& aformula, const DBElements& dbelements)
+bool FormulaToken::checkElements(const std::string& aformula, const ElementsKeys& dbelementkeys)
 {
-    std::string notPresent = testElements(aformula, dbelements);
+    std::string notPresent = testElements(aformula, dbelementkeys);
     return notPresent.empty();
 }
 
-void FormulaToken::checkElements(const std::string& document, const std::string& aformula, const DBElements& dbelements)
+void FormulaToken::checkElements(const std::string& document, const std::string& aformula, const ElementsKeys& dbelementkeys)
 {
-    std::string notPresent = testElements(aformula, dbelements);
+    std::string notPresent = testElements(aformula, dbelementkeys);
     if(!notPresent.empty()) {
         std::string msg = "Invalid Elements: ";
         msg += notPresent;
@@ -402,20 +402,19 @@ void FormulaToken::checkElements(const std::string& document, const std::string&
     }
 }
 
-std::string FormulaToken::testElements(const std::string& aformula, const DBElements& dbelements)
+std::string FormulaToken::testElements(const std::string& aformula, const ElementsKeys& dbelementkeys)
 {
     std::string notPresent = "";
-    auto elementset = dbelements.getElementsKeys();
     setFormula(aformula);
     for(const auto& token: extracted_data) {
-        if( elementset.find(token.key) == elementset.end() ) {
+        if( dbelementkeys.find(token.key) == dbelementkeys.end() ) {
             notPresent += token.key.Symbol() + ";";
         }
     }
     return notPresent;
 }
 
-FormulaProperites FormulaToken::calculateProperites(const DBElements& dbelements)
+FormulaProperites FormulaToken::calculateProperites(const ElementsData& dbelements)
 {
     FormulaProperites propert;
     double Sc;
@@ -425,8 +424,8 @@ FormulaProperites FormulaToken::calculateProperites(const DBElements& dbelements
     propert.elemental_entropy = propert.atoms_formula_unit = 0.0;
 
     for(const auto& token: extracted_data) {
-        auto itrdb = dbelements.getElements().find(token.key);
-        if(itrdb ==  dbelements.getElements().end()) {
+        auto itrdb = dbelements.find(token.key);
+        if(itrdb ==  dbelements.end()) {
             funError("Invalid symbol", token.key.Symbol(), __LINE__, __FILE__);
         }
         Sc = token.stoich_coef;

@@ -148,17 +148,17 @@ public:
     std::vector<std::string> parsed_list(bool dense = false) const;
 
     /// Return true if all elements from formula present into system.
-    bool checkElements(const std::string& aformula, const DBElements& dbelements);
+    bool checkElements(const std::string& aformula, const ElementsKeys& dbelementkeys);
     /// Throw exeption if in formula have element not present into system.
-    void checkElements(const std::string& document, const std::string& aformula, const DBElements& dbelements);
+    void checkElements(const std::string& document, const std::string& aformula, const ElementsKeys& dbelementkeys);
     /// Build list of elements not present into system.
-    std::string testElements(const std::string& aformula, const DBElements& dbelements);
+    std::string testElements(const std::string& aformula, const ElementsKeys& dbelementkeys);
     /// Throw exeption if charge imbalance.
     void testCargeImbalance();
 
     /// Calculate charge, molar mass, elemental entropy, atoms per formula unit
     /// for chemical formulae.
-    FormulaProperites calculateProperites(const DBElements& dbelements);
+    FormulaProperites calculateProperites(const ElementsData& dbelements);
 
 protected:
     /// If we need a matrix with separate element valences
@@ -202,7 +202,7 @@ public:
 
     /// Calculate charge, molar mass, elemental entropy, atoms per formula.
     FormulaProperites calcThermo(const std::string aformula) const {
-        return FormulaToken(aformula).calculateProperites(*this);
+        return FormulaToken(aformula).calculateProperites(this->dbElements);
     }
     /// Calculate charge, molar mass, elemental entropy, atoms per formula list.
     std::vector<FormulaProperites> calcThermo(const std::vector<std::string>& formulalist);
