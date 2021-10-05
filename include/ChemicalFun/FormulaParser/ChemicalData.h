@@ -16,6 +16,10 @@ class ElementsTerm;
 class ElementKey final
 {
 public:
+    /// Default Constructor
+    ElementKey():
+        symbol(""), class_(0), isotope(0)
+    {}
     /// Constructor
     ElementKey(const std::string& asymbol, int aclass, int aisotope=0):
         symbol(asymbol), class_(aclass), isotope(aisotope)
