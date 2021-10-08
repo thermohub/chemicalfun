@@ -118,7 +118,7 @@ class FormulaToken final
 {
 public:
     /// Constructor
-    FormulaToken(const std::string& aformula, bool with_valences = false): aZ(0) {
+    FormulaToken(const std::string& aformula, bool with_valences = false) {
         setFormula(aformula, with_valences);
     }
 
@@ -129,8 +129,9 @@ public:
         return current_formula;
     }
     /// Calculated charge in Mol.
-    double charge() const  {
-        return aZ;
+    /// If undefined valence throw exception.
+    double charge(const ElementsData& dbelements = {}) const  {
+        return calculate_charge(dbelements);
     }
     /// Get stoichiometric coefficients for elements in the formula.
     const std::map<ElementKey, double>& getStoichCoefficients() const {
@@ -154,7 +155,7 @@ public:
     /// Build list of elements not present into system.
     std::string testElements(const std::string& aformula, const ElementsKeys& dbelementkeys);
     /// Throw exeption if charge imbalance.
-    void testCargeImbalance();
+    void testCargeImbalance(const ElementsData& dbelements = {});
 
     /// Calculate charge, molar mass, elemental entropy, atoms per formula unit
     /// for chemical formulae.
@@ -171,12 +172,10 @@ protected:
     std::map<ElementKey, double>  stoich_map;
     /// Set of elements into the formula
     ElementsKeys  elements;
-    /// Calculated charge in Mol
-    double aZ;
 
     void clear();
     void unpack(std::list<ElementsTerm>& parsed_data);
-    double calculate_charge();
+    double calculate_charge(const ElementsData& dbelements) const;
 };
 
 class DBElements final

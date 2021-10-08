@@ -297,13 +297,11 @@ bool operator<(const ElementKey &lhs, const ElementKey &rhs)
         return true;
     }
     if(lhs.symbol == rhs.symbol) {
-        if(lhs.class_ < rhs.class_) {
-            return true;
+        if( lhs.class_ == 0 || rhs.class_ == 0 || lhs.class_ == rhs.class_) {
+            return (lhs.isotope < rhs.isotope);
         }
         else {
-            if(lhs.class_ == rhs.class_) {
-                return (lhs.isotope < rhs.isotope);
-            }
+            return( lhs.class_ < rhs.class_);
         }
     }
     return false;
@@ -312,7 +310,7 @@ bool operator<(const ElementKey &lhs, const ElementKey &rhs)
 bool operator==(const ElementKey &lhs, const ElementKey &rhs)
 {
     return (lhs.symbol == rhs.symbol) &&
-            (lhs.class_ == rhs.class_) &&
+            (lhs.class_ == rhs.class_ || lhs.class_ == 0 || rhs.class_ == 0) &&
             (lhs.isotope == rhs.isotope);
 }
 
@@ -343,13 +341,22 @@ void FormulaToken::unpack(std::list<ElementsTerm>& parsed_data)
     }
 }
 
-double FormulaToken::calculate_charge()
+double FormulaToken::calculate_charge(const ElementsData& dbelements) const
 {
     double Zz=0.0;
     for(const auto& token: extracted_data) {
-        if(token.key.Class()!=CHARGE_CLASS
-                && !is_undefined_valence(token.valence)) {
-            Zz += token.stoich_coef * token.valence;
+        auto valence = token.valence;
+        if(is_undefined_valence(valence))  {
+            auto elm_inf = dbelements.find(token.key);
+            if( elm_inf != dbelements.end()) {
+                valence =  elm_inf->second.valence;
+            }
+            else {
+                funError("Charge for undefined valense", token.key.to_string(), __LINE__, __FILE__);
+            }
+        }
+        if(token.key.Class()!=CHARGE_CLASS) {
+            Zz += token.stoich_coef * valence;
         }
     }
     return Zz;
@@ -361,7 +368,6 @@ void FormulaToken::clear()
     extracted_data.clear();
     elements.clear();
     stoich_map.clear();
-    aZ = 0.;
 }
 
 void FormulaToken::setFormula(const std::string& aformula, bool with_valences)
@@ -373,7 +379,6 @@ void FormulaToken::setFormula(const std::string& aformula, bool with_valences)
     ChemicalFormulaParser formparser;
     auto icterms = formparser.parse(current_formula);
     unpack(icterms);
-    aZ = calculate_charge();
 }
 
 std::vector<std::string> FormulaToken::parsed_list(bool dense) const {
@@ -463,11 +468,13 @@ StoichiometryRowData FormulaToken::makeStoichiometryRow(const std::vector<Elemen
     return rowA;
 }
 
-void FormulaToken::testCargeImbalance()
+void FormulaToken::testCargeImbalance(const ElementsData& dbelements)
 {
     ElementKey chargeKey(CHARGE_NAME,CHARGE_CLASS,0);
     if(elements.find(chargeKey) == elements.end())
         return;
+
+    auto aZ = charge(dbelements);
 
     auto itZz = std::find_if(extracted_data.rbegin(), extracted_data.rend(),
                              [=](const FormulaValues& token) { return token.key == chargeKey; });
