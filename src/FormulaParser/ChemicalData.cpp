@@ -143,7 +143,7 @@ static ElementKey element_key_from(const json& key_object)
     if (key_object.contains("symbol")) {
         symbol = key_object["symbol"].get<std::string>();
     }
-    if (key_object.contains("isotope_mass")) {
+    if (key_object.contains("isotope_mass") && key_object["isotope_mass"].is_number()) {
         isotope = key_object["isotope_mass"].get<int>();
     }
     if (key_object.contains("class_")) {

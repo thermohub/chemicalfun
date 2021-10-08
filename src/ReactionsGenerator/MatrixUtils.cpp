@@ -237,13 +237,14 @@ auto getStoichiometryMatrix( std::vector<std::vector<double>> vMatrix) -> Eigen:
 }
 
 auto calcStoichiometryMatrix(const std::vector<std::string>& vFormulalist,
-                            const std::vector<ChemicalFun::ElementKey>& elemens_list) -> Eigen::MatrixXd
+                             const std::vector<ChemicalFun::ElementKey>& elemens_list,
+                             bool with_valences ) -> Eigen::MatrixXd
 {
     MatrixXd A(vFormulalist.size(), elemens_list.size());
     ChemicalFun::FormulaToken formula("");
 
     for (size_t i = 0; i < vFormulalist.size(); i++) {
-        formula.setFormula(vFormulalist[i], true);
+        formula.setFormula(vFormulalist[i], with_valences);
         auto row = formula.makeStoichiometryRow(elemens_list);
         for (size_t j = 0; j < row.size(); j++) {
             A(i,j) = row[j];
