@@ -59,9 +59,7 @@ auto formatVectorCoeff(Eigen::VectorXd M) -> Eigen::VectorXd;
 
 auto getStoichiometryMatrix( std::vector<std::vector<double>> vMatrix) -> Eigen::MatrixXd;
 
-auto calcStoichiometryMatrix(const std::vector<std::string>& vFormulalist,
-                            const std::vector<ChemicalFun::ElementKey>& elemens_list,
-                            bool with_valences = true ) -> Eigen::MatrixXd;
+auto calcStoichiometryMatrix(const std::vector<std::string>& vFormulalist, bool with_valences = true ) -> Eigen::MatrixXd;
 
 struct ReactionChargesMap
 {

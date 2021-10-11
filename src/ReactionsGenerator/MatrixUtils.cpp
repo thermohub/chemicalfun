@@ -237,9 +237,9 @@ auto getStoichiometryMatrix( std::vector<std::vector<double>> vMatrix) -> Eigen:
 }
 
 auto calcStoichiometryMatrix(const std::vector<std::string>& vFormulalist,
-                             const std::vector<ChemicalFun::ElementKey>& elemens_list,
                              bool with_valences ) -> Eigen::MatrixXd
 {
+    auto elemens_list = ChemicalFun::generateElementsListValences(vFormulalist, with_valences);
     MatrixXd A(vFormulalist.size(), elemens_list.size());
     ChemicalFun::FormulaToken formula("");
 
