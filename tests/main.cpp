@@ -3,6 +3,7 @@
 
 #include "tst_parser.h"
 #include "tst_elements.h"
+#include "tst_generator.h"
 
 int main(int argc, char *argv[])
 {

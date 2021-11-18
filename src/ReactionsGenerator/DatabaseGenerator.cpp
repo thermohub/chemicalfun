@@ -42,11 +42,11 @@ DatabaseGenerator::DatabaseGenerator()
 
 DatabaseGenerator::DatabaseGenerator(std::vector<std::vector<double>> A)
 : pimpl(new Impl(A))
-{this->eraseZeroRowsFormulaMatrix(); std::cout << pimpl->formulaMatrix << std::endl;/*compute(A);*/}
+{this->eraseZeroRowsFormulaMatrix(); /*std::cout << pimpl->formulaMatrix << std::endl;*compute(A);*/}
 
 DatabaseGenerator::DatabaseGenerator(MatrixXd A, std::vector<std::string> substancesList)
 : pimpl(new Impl(A, substancesList))
-{this->eraseZeroRowsFormulaMatrix(); std::cout << pimpl->formulaMatrix << std::endl;/*compute(A);*/}
+{this->eraseZeroRowsFormulaMatrix(); /*std::cout << pimpl->formulaMatrix << std::endl;*compute(A);*/}
 
 DatabaseGenerator::DatabaseGenerator(const DatabaseGenerator& other)
 : pimpl(new Impl(*other.pimpl))
