@@ -3,6 +3,7 @@
 #include <sstream>
 #include <gtest/gtest.h>
 #include "ChemicalFun/ReactionsGenerator.h"
+#include "ChemicalFun/ReactionsGenerator/ReactionGen.h"
 #include "ChemicalFun/FormulaParser.h"
 
 using namespace testing;
@@ -131,7 +132,18 @@ TEST(ReactionsGenerator, GeneratorF_GramSchmidtWe94 )
     generator.compute(reactionsDB.formulaMatrix());
 
     auto reactions   = generator.reactionMatrix();
-    //EXPECT_EQ(reactions, A_false);
+    EXPECT_EQ(AtoString(reactions),"  0.631625          0          0          0          0          0          0\n"
+                                   " -0.527739   0.623023          0          0          0          0          0\n"
+                                   "-0.0249326 -0.0211194   0.512554          0          0          0          0\n"
+                                   " 0.0249326  0.0211194  -0.512554          0          0          0          0\n"
+                                   " -0.311657  -0.263993   0.066136   0.647576          0          0          0\n"
+                                   " 0.0997303  0.0844777  -0.099204  -0.199254   0.808608          0          0\n"
+                                   " 0.0997303  0.0844777  -0.099204  -0.199254  -0.428086   0.685994          0\n"
+                                   "  0.112197  0.0950374   0.132272  -0.249068  -0.380521  -0.685994          0\n"
+                                   " 0.0249326  0.0211194   0.462952 -0.0996271  0.0951303   0.171499   0.707107\n"
+                                   " 0.0249326  0.0211194   0.462952 -0.0996271  0.0951303   0.171499  -0.707107\n"
+                                   "  0.423854    0.35903   0.066136   0.647576          0          0          0\n"
+                                   " -0.103886  -0.623023          0          0          0          0          0");
 
     auto iSubstances = generator.isubstances();
     EXPECT_EQ(iSubstances, Indices({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }));
@@ -150,7 +162,18 @@ TEST(ReactionsGenerator, GeneratorT_GramSchmidtWe94 )
     generator.compute(reactionsDB.formulaMatrix());
 
     auto reactions   = generator.reactionMatrix();
-    //EXPECT_EQ(reactions, A_false);
+    EXPECT_EQ(AtoString(reactions),"  0.617213          0          0          0          0\n"
+                                   " -0.540062   0.612372          0          0          0\n"
+                                   "         0          0          0          0          0\n"
+                                   "         0          0          0          0          0\n"
+                                   " -0.231455  -0.204124    0.57735          0          0\n"
+                                   "         0          0          0   0.707107          0\n"
+                                   "         0          0          0  -0.707107          0\n"
+                                   "  0.231455   0.204124   -0.57735          0          0\n"
+                                   "         0          0          0          0   0.707107\n"
+                                   "         0          0          0          0  -0.707107\n"
+                                   "   0.46291   0.408248    0.57735          0          0\n"
+                                   "-0.0771517  -0.612372          0          0          0");
 
     auto iSubstances = generator.isubstances();
     EXPECT_EQ(iSubstances, Indices({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }));
@@ -169,7 +192,18 @@ TEST(ReactionsGenerator, GeneratorF_RowReduceSmMi98 )
     generator.compute(reactionsDB.formulaMatrix());
 
     auto reactions   = generator.reactionMatrix();
-    //EXPECT_EQ(reactions, A_false);
+    EXPECT_EQ(AtoString(reactions),"   -1    -1    -1     0     0    -1    -1\n"
+                                   "    1     1     1     0     0     1     2\n"
+                                   " 0.25  0.25     0  -0.5  -0.5     0     0\n"
+                                   "-0.25 -0.25     0   0.5   0.5     0     0\n"
+                                   "    1     1     1     0     0     0     0\n"
+                                   "   -1     0     0     0     0     0     0\n"
+                                   "    0    -1     0     0     0     0     0\n"
+                                   "    0     0    -1     0     0     0     0\n"
+                                   "    0     0     0    -1     0     0     0\n"
+                                   "    0     0     0     0    -1     0     0\n"
+                                   "    0     0     0     0     0    -1     0\n"
+                                   "    0     0     0     0     0     0    -1");
 
     auto iSubstances = generator.isubstances();
     EXPECT_EQ(iSubstances, Indices({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }));
@@ -187,7 +221,18 @@ TEST(ReactionsGenerator, GeneratorT_RowReduceSmMi98 )
     generator.compute(reactionsDB.formulaMatrix());
 
     auto reactions   = generator.reactionMatrix();
-    //EXPECT_EQ(reactions, A_false);
+    EXPECT_EQ(AtoString(reactions),"-1  0  0 -1 -1\n"
+                                   " 1  0  0  1  2\n"
+                                   " 0  0  0  0  0\n"
+                                   " 0  0  0  0  0\n"
+                                   " 1  0  0  0  0\n"
+                                   " 0  1  0  0  0\n"
+                                   " 0  0  1  0  0\n"
+                                   "-1  0  0  0  0\n"
+                                   " 0 -1  0  0  0\n"
+                                   " 0  0 -1  0  0\n"
+                                   " 0  0  0 -1  0\n"
+                                   " 0  0  0  0 -1");
 
     auto iSubstances = generator.isubstances();
     EXPECT_EQ(iSubstances, Indices({ 0, 1, 2, 3, 4, 5, 9, 7, 6, 8, 10, 11 }));
@@ -205,7 +250,18 @@ TEST(ReactionsGenerator, GeneratorF_CanonicalLe16 )
     generator.compute(reactionsDB.formulaMatrix());
 
     auto reactions   = generator.reactionMatrix();
-    //EXPECT_EQ(reactions, A_false);
+    EXPECT_EQ(AtoString(reactions),"    0     0  0.25   0.5   0.5     0  0.25\n"
+                                   "  0.5     0     0     0     0  -0.5   0.5\n"
+                                   "    0     1     1     0     0     0     1\n"
+                                   "    0     0 -0.25  -0.5  -0.5     0 -0.25\n"
+                                   "  0.5     0     0     0     0   0.5  -0.5\n"
+                                   "   -1     0     0     0     0     0     0\n"
+                                   "    0    -1     0     0     0     0     0\n"
+                                   "    0     0    -1     0     0     0     0\n"
+                                   "    0     0     0    -1     0     0     0\n"
+                                   "    0     0     0     0    -1     0     0\n"
+                                   "    0     0     0     0     0    -1     0\n"
+                                   "    0     0     0     0     0     0    -1");
 
     auto iSubstances = generator.isubstances();
     EXPECT_EQ(iSubstances, Indices({ 3, 0, 5, 2, 11, 1, 6, 7, 8, 9, 10, 4 }));
@@ -223,7 +279,18 @@ TEST(ReactionsGenerator, GeneratorT_CanonicalLe16 )
     generator.compute(reactionsDB.formulaMatrix());
 
     auto reactions   = generator.reactionMatrix();
-    //EXPECT_EQ(reactions, A_false);
+    EXPECT_EQ(AtoString(reactions),"   0    0    0    0    0\n"
+                                   " 0.5  0.5    0 -0.5    0\n"
+                                   "   0    0    0    0    1\n"
+                                   "   0    1    0    0    0\n"
+                                   "   0    0    1    0    0\n"
+                                   "   0    0    0    0    0\n"
+                                   " 0.5 -0.5    0  0.5    0\n"
+                                   "  -1    0    0    0    0\n"
+                                   "   0   -1    0    0    0\n"
+                                   "   0    0   -1    0    0\n"
+                                   "   0    0    0   -1    0\n"
+                                   "   0    0    0    0   -1");
 
     auto iSubstances = generator.isubstances();
     EXPECT_EQ(iSubstances, Indices({ 3, 0, 5, 7, 8, 2, 11, 1, 4, 9, 10, 6 }));
@@ -231,4 +298,50 @@ TEST(ReactionsGenerator, GeneratorT_CanonicalLe16 )
     EXPECT_EQ(iMaster, Indices({ 3, 0, 5, 7, 8, 2, 11 }));
     auto iNonMaster     = generator.inonmaster();
     EXPECT_EQ(iNonMaster, Indices({ 1, 4, 9, 10, 6 }));
+}
+
+
+TEST(ReactionsGenerator, ReactionsF_RowReduceSmMi98 )
+{
+    ReactionsGenerator::DatabaseGenerator reactionsDB(A_false, symbols);
+    ReactionsGenerator::Generator generator;
+    generator.setMethod(RowReduceSmMi98);
+    generator.compute(reactionsDB.formulaMatrix());
+
+    auto reactions   = generator.reactionMatrix();
+    EXPECT_EQ(AtoString(reactions),"   -1    -1    -1     0     0    -1    -1\n"
+                                   "    1     1     1     0     0     1     2\n"
+                                   " 0.25  0.25     0  -0.5  -0.5     0     0\n"
+                                   "-0.25 -0.25     0   0.5   0.5     0     0\n"
+                                   "    1     1     1     0     0     0     0\n"
+                                   "   -1     0     0     0     0     0     0\n"
+                                   "    0    -1     0     0     0     0     0\n"
+                                   "    0     0    -1     0     0     0     0\n"
+                                   "    0     0     0    -1     0     0     0\n"
+                                   "    0     0     0     0    -1     0     0\n"
+                                   "    0     0     0     0     0    -1     0\n"
+                                   "    0     0     0     0     0     0    -1");
+
+    auto iSubstances = generator.isubstances();
+    EXPECT_EQ(iSubstances, Indices({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }));
+    auto iMaster     = generator.imaster();
+    EXPECT_EQ(iMaster, Indices({ 0, 1, 2, 3, 4 }));
+    auto iNonMaster     = generator.inonmaster();
+    EXPECT_EQ(iNonMaster, Indices({ 5, 6, 7, 8, 9, 10, 11 }));
+
+    std::vector<bool> isoc = reactionsDB.checkReacMatrixISOC(reactions, iSubstances);
+    EXPECT_EQ(isoc, std::vector<bool>({ false, false, false, true, true, false, false }));
+    std::vector<bool> isoe;
+
+    std::vector<ReactionsGenerator::Reaction> vReac;
+    for (int i = 0; i < reactions.cols(); i++)
+    {
+        VectorXd v(reactions.rows());
+        v << reactions.col(i);
+        vReac.push_back(ReactionsGenerator::Reaction (v, iSubstances, &reactionsDB, ""));
+        isoc[i] = vReac[i].isIsocoulombic();
+        isoe.push_back(vReac[i].isIsoelectric());
+    }
+    EXPECT_EQ(isoc, std::vector<bool>({ false, false, false, true, true, false, false }));
+    EXPECT_EQ(isoe, std::vector<bool>({ true, true, true, true, true, false, true }));
 }
