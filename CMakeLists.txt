@@ -19,7 +19,7 @@ if(CHEMICALFUN_BUILD_ALL MATCHES ON)
     set(CHEMICALFUN_BUILD_STATIC_LIBS          ON)
     set(CHEMICALFUN_BUILD_TESTS                ON)
     set(CHEMICALFUN_BUILD_EXAMPLES             ON)
-#    set(CHEMICALFUN_BUILD_PYTHON               ON)
+    set(CHEMICALFUN_BUILD_PYTHON               ON)
 endif()
 
 if (CHEMICALFUN_WASM MATCHES ON)
@@ -35,12 +35,11 @@ else()
     include(CondaAware)
     option(CHEMICALFUN_BUILD_SHARED_LIBS "Build shared libraries." ON)
     option(CHEMICALFUN_BUILD_STATIC_LIBS "Build static libraries." ON)
-    option(CHEMICALFUN_BUILD_EXAMPLES "Build examples." ON)
-    option(CHEMICALFUN_BUILD_TESTS "Build tests." ON)
-    #option(CHEMICALFUN_BUILD_PYTHON "Build the python wrappers and python package." ON)
+    option(CHEMICALFUN_BUILD_EXAMPLES "Build examples." OFF)
+    option(CHEMICALFUN_BUILD_TESTS "Build tests." OFF)
+    option(CHEMICALFUN_BUILD_PYTHON "Build the python wrappers and python package." ON)
     # Define if shared library should be build instead of static.
     option(BUILD_SHARED_LIBS "Build shared libraries." ON)
-
     # Set libraries to be compiled with position independent code mode (i.e., fPIC option in GNU compilers)
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
@@ -55,7 +54,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # Set the C++ standard
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Set the list of compiler flags for MSVC compiler
@@ -68,6 +67,27 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
         /D_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING
         /DNOMINMAX
     )
+endif()
+
+# Find Eigen library and include its directory
+#find_package(Eigen3 3.3.7 REQUIRED)
+#message(STATUS "Found Eigen3 v${Eigen3_VERSION}: ${Eigen3_INCLUDE_DIRS}")
+
+# Find the Python interpreter
+if(CHEMICALFUN_BUILD_PYTHON)
+    if(NOT PYBIND11_PYTHON_VERSION)
+        set(PYBIND11_PYTHON_VERSION 2.7)
+    endif()
+
+    #find_package(pybind11 2.0.0 REQUIRED)
+    find_package(pybind11 2.2.0 REQUIRED)
+    message(STATUS "Found pybind11 v${pybind11_VERSION}: ${pybind11_INCLUDE_DIRS}")
+
+    if(NOT pybind11_FOUND)
+        set(XGEMS_BUILD_PYTHON OFF)
+        message(WARNING "pybind11 has not been found. "
+            "Cannot build python bindings for XGEMS.")
+    endif()
 endif()
 
 # Set the thermofun source directory path
