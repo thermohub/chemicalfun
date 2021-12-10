@@ -18,13 +18,43 @@
 from chemicalfun import *
 #from numpy import *
 
-engine = ElementKey("Al", 1, 1)
 
-T = engine.Symbol()
-P = engine.Class()
-b = engine.Isotope()
+#ElementKey
+element = ElementKey("Al", 1)
 
-#engine.equilibrate(T, P, b)
+s = element.Symbol()
+c = element.Class()
+ist = element.Isotope()
+str = element.to_json_string()
+element.from_json_string('{"symbol" :"Zz","class_":4}')
 
-#print engine
-print(engine)
+print(s,c, ist)
+print(str)
+print(element)
+
+#ElementValues
+el_val = ElementValues()
+
+print(el_val)
+el_val.from_json_string("""{
+"recid" :   "",
+"atomic_mass" :   26.9815406799316,
+"entropy" :   28.2999992370605,
+"heat_capacity" :   24.2000007629395,
+"volume" :   9.99300003051758,
+"valence" :   3,
+"number" :   13,
+"name" :   "Al"
+}""")
+print(el_val.heat_capacity)
+print(el_val)
+
+#FormulaValues
+form_values = FormulaValues(element, 1,2)
+
+print(form_values.valence, form_values.key )
+print(form_values)
+
+#FormulaProperites
+form_prop = FormulaProperites()
+print(form_prop)
