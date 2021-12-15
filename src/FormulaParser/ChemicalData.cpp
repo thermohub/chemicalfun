@@ -112,14 +112,13 @@ static const std::map<std::string, int> map_elements_valences = {
     {"Zz",	0}
 };
 
-std::string to_string (const std::vector<ElementKey>& keys ) {
+std::string to_string(const std::vector<ElementKey>& keys ) {
    std::string str_keys;
    for( const auto& key: keys ) {
       str_keys += key.Symbol()+";";
    }
    return str_keys;
 }
-
 
 // Writes ElementKey data to json
 static json element_key_to(const ElementKey& key)
@@ -517,7 +516,7 @@ void DBElements::readElements(const std::string &json_array)
     }
 }
 
-std::string DBElements::writeElements(bool dense)
+std::string DBElements::writeElements(bool dense) const
 {
     auto elements_json = json::array();
     for( const auto& element: dbElements) {

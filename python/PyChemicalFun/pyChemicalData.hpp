@@ -16,6 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+#include "ChemicalFun/FormulaParser/ChemicalData.h"
+using namespace ChemicalFun;
 // pybind11 includes
 #include <pybind11/pybind11.h>
 #include <pybind11/eigen.h>
@@ -23,12 +25,10 @@
 namespace py = pybind11;
 using namespace pybind11::literals;
 
-#include "ChemicalFun/FormulaParser/ChemicalData.h"
-using namespace ChemicalFun;
 
 void exportChemicalData(py::module& m)
 {
-    py::class_<ElementKey>(m, "ElementKey")
+    py::class_<ElementKey>(m, "ElementKey", py::is_final())
             .def(py::init<>())
             .def(py::init<std::string, int, int>(), "asymbol"_a, "aclass"_a, "aisotope"_a=0 )
             .def(py::init<std::string>())
@@ -39,7 +39,6 @@ void exportChemicalData(py::module& m)
             .def("to_json_string", &ElementKey::to_json_string, py::arg("dense")  = false )
             .def("__repr__", [](const ElementKey& self) { std::stringstream ss; ss << self.to_string(); return ss.str(); })
             ;
-
 
     py::class_<ElementValues>(m, "ElementValues")
             .def(py::init<>())
@@ -61,7 +60,7 @@ void exportChemicalData(py::module& m)
             .def_readonly("key", &FormulaValues::key)
             .def_readonly("valence", &FormulaValues::valence)
             .def_readonly("stoich_coef", &FormulaValues::stoich_coef)
-            .def("to_json_string", &FormulaValues::to_json_string, py::arg("dense")  = false )
+            .def("to_json_string", &FormulaValues::to_json_string, py::arg("dense")  = false)
             .def("__repr__", [](const FormulaValues& self) { std::stringstream ss; ss << self.to_json_string(); return ss.str(); })
             ;
 
@@ -76,5 +75,46 @@ void exportChemicalData(py::module& m)
             .def("__repr__", [](const FormulaProperites& self) { std::stringstream ss; ss << self.to_json_string(); return ss.str(); })
             ;
 
+    py::class_<FormulaToken>(m, "FormulaToken", py::is_final())
+            .def(py::init<const std::string&, bool>(), py::arg("aformula"), py::arg("with_valences")  = false)
+            .def("setFormula", &FormulaToken::setFormula, py::arg("aformula"), py::arg("with_valences")  = false)
+            .def("formula", &FormulaToken::formula)
+            .def("elementsList", &FormulaToken::getElementsList)
+            .def("parsed_list", &FormulaToken::parsed_list, py::arg("dense")  = false)
+            .def("charge", &FormulaToken::charge, py::arg("dbelements")  = ElementsData({}))
+            .def("stoichCoefficients", &FormulaToken::getStoichCoefficients)
+            .def("testCargeImbalance", &FormulaToken::testCargeImbalance)
+            .def("calcProperites", &FormulaToken::calculateProperites)
+            .def("stoichiometryRow", &FormulaToken::makeStoichiometryRow)
+            .def("testElements", &FormulaToken::testElements)
+            .def("checkElements", py::overload_cast<const std::string&, const ElementsKeys&>(&FormulaToken::checkElements))
+            //.def("checkElements", py::overload_cast<const std::string&, const std::string&, const ElementsKeys&>(&FormulaToken::checkElements))
+            .def("__repr__", [](const FormulaToken& self) { std::stringstream ss; ss << self.parsed_list().size(); return ss.str(); })
+            ;
 
+    py::class_<DBElements>(m, "DBElements", py::is_final())
+            .def(py::init<>())
+            .def_static("defaultValence", &DBElements::defaultValence)
+            .def_static("extractElements", &DBElements::extractElements)
+            .def("addElement", &DBElements::addElement)
+            .def("getElements", &DBElements::getElements)
+            .def("getElementsKeys", &DBElements::getElementsKeys)
+            .def("getElementsKeysList", &DBElements::getElementsKeysList)
+            .def("calcThermo",[](const DBElements& self, const std::string& data) { return self.calcThermo(data); })
+            .def("calcThermo", py::overload_cast<const std::vector<std::string>&>(&DBElements::calcThermo))
+            .def("stoichiometryMatrix", &DBElements::calcStoichiometryMatrix)
+            .def("readElements", &DBElements::readElements)
+            .def("writeElements", &DBElements::writeElements, py::arg("dense")  = false)
+            .def("getCSV",[]( DBElements& self) { std::stringstream ss; self.printCSV(ss); return ss.str(); })
+            .def("getThermo",[]( DBElements& self, const std::vector<std::string> &formulalist)
+    { std::stringstream ss; self.printThermo(ss, formulalist); return ss.str(); })
+            .def("getStoichiometryMatrix",[]( DBElements& self, const std::vector<std::string> &formulalist)
+    { std::stringstream ss; self.printStoichiometryMatrix(ss, formulalist); return ss.str(); })
+            .def("__repr__", []( const DBElements& self) { std::stringstream ss; ss << self.writeElements(); return ss.str(); })
+            ;
+
+    m.def("generateStoichiometryMatrixValences", &generateStoichiometryMatrixValences,
+          py::arg("formulalist") , py::arg("all_elements"), py::arg("with_valences")=false);
+    m.def("generateElementsListValences", &generateElementsListValences,
+          py::arg("formulalist"), py::arg("with_valences")=false);
 }

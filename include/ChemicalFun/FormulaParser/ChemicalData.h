@@ -212,7 +212,7 @@ public:
     /// Restore elements DB from JSON array format output string.
     void readElements(const std::string &json_array);
     /// Download elements DB to JSON array format output string.
-    std::string writeElements(bool dense = false);
+    std::string writeElements(bool dense = false) const;
 
     void printCSV(std::ostream &stream);
     void printThermo(std::ostream &stream, const std::vector<std::string> &formulalist);
@@ -227,6 +227,7 @@ protected:
 };
 
 std::string to_string(const std::vector<ElementKey>& keys );
+
 /// Generate stoichiometry matrix from the formula list and elements list.
 StoichiometryMatrixData generateStoichiometryMatrixValences(const std::vector<std::string> &formulalist,
                                                             std::vector<ElementKey> all_elements,
