@@ -82,7 +82,6 @@ public:
 
 //    auto reduceFormulaMatrix () -> void;
 
-
 private:
 
     /// Cleans the formula matrix of element rows not present in the work subsystem

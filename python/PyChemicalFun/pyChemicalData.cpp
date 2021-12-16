@@ -17,8 +17,10 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "pyChemicalData.hpp"
+#include "pyReactionsGenerator.hpp"
 
 PYBIND11_MODULE(PyChemicalFun, m)
 {
     exportChemicalData(m);
+    exportReactionsGenerator(m);
 }

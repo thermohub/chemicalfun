@@ -75,9 +75,9 @@ endif()
 
 # Find the Python interpreter
 if(CHEMICALFUN_BUILD_PYTHON)
-    if(NOT PYBIND11_PYTHON_VERSION)
-        set(PYBIND11_PYTHON_VERSION 2.7)
-    endif()
+    #if(NOT PYBIND11_PYTHON_VERSION)
+    #    set(PYBIND11_PYTHON_VERSION 2.7)
+    #endif()
 
     #find_package(pybind11 2.0.0 REQUIRED)
     find_package(pybind11 2.2.0 REQUIRED)

@@ -44,12 +44,22 @@ public:
 
     auto updateChPattern( )-> void;
 
-    auto operator*( double aa ) -> Reaction;
-
-    auto operator+( Reaction b) -> Reaction;
+    Reaction& operator+=(const Reaction& rhs);
+    friend Reaction operator+(Reaction lhs, const Reaction& rhs)
+    {
+        lhs += rhs;
+        return lhs;
+    }
+    Reaction& operator*=(double aa );
+    friend Reaction operator*(Reaction lhs, double aa )
+    {
+        lhs *= aa;
+        return lhs;
+    }
+    //const Reaction operator*( double aa ) const;
+    //const Reaction operator+(const Reaction &rhs) const;
 
     bool operator==( const Reaction &b ) const;
-
 
 private:
     struct Impl;

@@ -69,19 +69,36 @@ auto Reaction::chargePattern () -> ChargeCoeffMap
     return pimpl->chPattern;
 }
 
-auto Reaction::operator*(double aa) -> Reaction
+
+Reaction &Reaction::operator+=(const Reaction &rhs)
 {
-    this->setCoefficients((this->coefficients()*aa));
+    this->setCoefficients((this->coefficients()+rhs.coefficients()));
     this->updateChPattern();
     return *this;
 }
 
-auto Reaction::operator+( Reaction b) -> Reaction
+Reaction &Reaction::operator*=(double aa)
 {
-    this->setCoefficients((this->coefficients()+b.coefficients()));
-    this->updateChPattern();
-    return *this;
+   this->setCoefficients((this->coefficients()*aa));
+   this->updateChPattern();
+   return *this;
 }
+
+//auto Reaction::operator*(double aa) -> Reaction
+//{
+//    this->setCoefficients((this->coefficients()*aa));
+//    this->updateChPattern();
+//    return *this;
+//}
+
+
+//auto Reaction::operator+(const Reaction &rhs) -> Reaction
+//{
+//    this->setCoefficients((this->coefficients()+rhs.coefficients()));
+//    this->updateChPattern();
+//    return *this;
+//}
+
 
 bool Reaction::operator==( const Reaction &b) const
 {
@@ -124,6 +141,8 @@ auto Reaction::updateChPattern( )-> void
         }
     pimpl->chPattern = chPattern;
 }
+
+
 
 auto Reaction::isIsocoulombic( ) -> bool
 {
