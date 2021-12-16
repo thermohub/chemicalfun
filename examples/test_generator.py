@@ -20,92 +20,77 @@ from chemicalfun import *
 from numpy import *
 
 
-dbElements_str = """[
-     {
-          "element" :   {
-               "symbol" :   "Cl",
-               "class_" :   0,
-               "isotope" :   0
-          },
-          "properties" :   {
-               "recid" :   "",
-               "atomic_mass" :   35.4529991149902,
-               "entropy" :   111.540496826172,
-               "heat_capacity" :   16.9745006561279,
-               "volume" :   12395,
-               "valence" :   -1,
-               "number" :   17,
-               "name" :   "Cl"
-          }
-     },
-     {
-          "element" :   {
-               "symbol" :   "H",
-               "class_" :   0,
-               "isotope" :   0
-          },
-          "properties" :   {
-               "recid" :   "",
-               "atomic_mass" :   1.00794994831085,
-               "entropy" :   65.3399963378906,
-               "heat_capacity" :   14.4090003967285,
-               "volume" :   12395,
-               "valence" :   1,
-               "number" :   1,
-               "name" :   "H"
-          }
-     },
-     {
-          "element" :   {
-               "symbol" :   "O",
-               "class_" :   0,
-               "isotope" :   0
-          },
-          "properties" :   {
-               "recid" :   "",
-               "atomic_mass" :   15.999400138855,
-               "entropy" :   102.569000244141,
-               "heat_capacity" :   14.66100025177,
-               "volume" :   12395,
-               "valence" :   -2,
-               "number" :   8,
-               "name" :   "O"
-          }
-     },
-     {
-          "element" :   {
-               "symbol" :   "Zz",
-               "class_" :   4,
-               "isotope" :   0
-          },
-          "properties" :   {
-               "recid" :   "",
-               "atomic_mass" :   0,
-               "entropy" :   -65.3399963378906,
-               "heat_capacity" :   -14.4180002212524,
-               "volume" :   0,
-               "valence" :   0,
-               "number" :   0,
-               "name" :   "Zz"
-          }
-    }
-]"""
+symbols = [ "Ca+2", "CaOH+", "Cl-", "ClO4-", "H+", "H2", "H2@", "H2O@", "O2", "O2@", "OH-", "Portlandite" ]
 
-formula_list = [
-    "H2O",
-    "H2O@",
-    "H+",
-    "OH-",
-    "H|0|2",
-    "O|0|2",
-    "HOO|0|-",
-]
+formulas = [ "Ca+2", "Ca(OH)+", "Cl-", "Cl|7|O4-", "H+", "H|0|2", "H|0|2@", "H2O@", "O|0|2", "O|0|2@", "OH-", "Ca(OH)2" ]
 
-#DBElements
+print( generateElementsListValences(formulas, False) )
+A_False = calcStoichiometryMatrix(formulas, False).transpose()
+print( A_False )
 
-all_elements = DBElements()
-all_elements.readElements(dbElements_str);
+print( generateElementsListValences(formulas, True) )
+A_True = calcStoichiometryMatrix(formulas, True).transpose()
+print( A_True )
 
-print("DBElements:", all_elements.getElementsKeys())
+# DatabaseGenerator
+print("DatabaseGenerator")
 
-st_matrix =  calcStoichiometryMatrix(formula_list, True)
+reactionsDB = DatabaseGenerator(A_True, symbols)
+reactionsDB2 = reactionsDB
+reactionsDB3 = DatabaseGenerator(reactionsDB)
+
+print(reactionsDB.formulaMatrix())
+print(reactionsDB.sizeSubstancesMap())
+
+print(reactionsDB.getCharge("Ca+2"))
+print(reactionsDB.getCharge("ClO4-"))
+print(reactionsDB.getCharge("H2O@"))
+print(reactionsDB.getCharge(11))
+
+#GeneratorT_CanonicalLe16
+print("Generator")
+
+generator= Generator()
+generator.setMethod(CanonicalLe16)
+generator.compute(reactionsDB.formulaMatrix())
+generator2 =  Generator(generator)
+
+reactions   = generator.reactionMatrix()
+print("Reactions matrix")
+print(reactions)
+print("isubstances")
+print(generator.isubstances())
+print("imaster")
+print(generator.imaster())
+print("inonmaster")
+print(generator.inonmaster())
+
+#Reaction
+print("Reaction")
+iSubstances = generator.isubstances()
+
+reac_1 = Reaction(reactions[:,1], iSubstances, reactionsDB, "")
+print( reac_1.isIsocoulombic())
+print( reac_1.isIsoelectric())
+print( reac_1.chargePattern())
+print( reac_1.coefficients())
+
+reac_n = Reaction(reactions[:,3], iSubstances, reactionsDB, "")
+print( reac_n.isIsocoulombic())
+print( reac_n.isIsoelectric())
+print( reac_n.chargePattern())
+print( reac_n.coefficients())
+
+reac_s = reac_n + reac_1
+print( reac_s.isIsocoulombic())
+print( reac_s.isIsoelectric())
+print( reac_s.chargePattern())
+print( reac_s.coefficients())
+
+reac_d = reac_1 * 2.5
+print( reac_d.isIsocoulombic())
+print( reac_d.isIsoelectric())
+print( reac_d.chargePattern())
+print( reac_d.coefficients())
+
+
