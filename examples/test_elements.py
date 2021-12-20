@@ -1,4 +1,4 @@
-# ChemicalFun is a C++ and Python library for of C++ and Python API
+# ChemicalFun is a C++ and Python library 
 # for Chemical Formula Parser and Reactions Generator.
 #
 # Copyright (C) 2021 G.D.Miron, D.Kulik, S.Dmytriieva
@@ -198,17 +198,17 @@ all_elements = DBElements()
 all_elements.readElements(dbElements_str);
 
 print("DBElements")
-print(all_elements.getElementsKeys())
+print(all_elements.elementsKeys())
 print("")
-print(all_elements.getElementsKeysList())
+print(all_elements.elementsKeysList())
 print("")
-print(all_elements.getElements())
+print(all_elements.elements())
 print("")
 print(all_elements.writeElements())
 print("")
-print(all_elements.getCSV())
+print(all_elements.CSV())
 print("")
-print(all_elements.calcThermo("Al(OH)2+"))
+print(all_elements.formulasProperties("Al(OH)2+"))
 
 formula_list = [
     "H2O",
@@ -221,21 +221,21 @@ formula_list = [
 ]
 
 print("")
-print(all_elements.calcThermo(formula_list))
+print(all_elements.formulasProperties(formula_list))
 print("")
 print(all_elements.stoichiometryMatrix(formula_list))
 print("")
-print(all_elements.getCSV())
+print(all_elements.CSV())
 print("")
-print(all_elements.getThermo(formula_list))
+print(all_elements.formulasPropertiesCSV(formula_list))
 print("")
-print(all_elements.getStoichiometryMatrix(formula_list))
+print(all_elements.stoichiometryMatrixCSV(formula_list))
 
 # functions
 
-test_elments = generateElementsListValences(formula_list);
+test_elments = formulasElementsWithValence(formula_list);
 print(test_elments)
-print(generateStoichiometryMatrixValences(formula_list, test_elments))
+print(forumlasStoichiometryMatrixWithValence(formula_list, test_elments))
 
 # addElement
 
@@ -253,7 +253,7 @@ el_val.from_json_string("""{
 }""")
 all_elements.addElement(el_key, el_val)
 print("")
-print(all_elements.getElementsKeys())
+print(all_elements.elementsKeys())
 
 #FormulaToken
 print("")
@@ -265,11 +265,11 @@ print(form_tok.formula())
 print(form_tok.stoichCoefficients())
 print(form_tok.elementsList())
 print(form_tok.charge())
-#form_tok.testCargeImbalance(all_elements.getElements())  exception
-print(form_tok.stoichiometryRow(all_elements.getElementsKeysList()))
-print(form_tok.calcProperites(all_elements.getElements()))
-print(form_tok.testElements("Am|3|(Oxa)3-3", all_elements.getElementsKeys()))
-print(form_tok.checkElements("Am|3|(Oxa)3-3", all_elements.getElementsKeys()))
+#form_tok.testChargeImbalance(all_elements.elements())  exception
+print(form_tok.stoichiometryRow(all_elements.elementsKeysList()))
+print(form_tok.calcProperties(all_elements.elements()))
+print(form_tok.testElements("Am|3|(Oxa)3-3", all_elements.elementsKeys()))
+print(form_tok.checkElements("Am|3|(Oxa)3-3", all_elements.elementsKeys()))
 
 el_lst = form_tok.parsed_list()
 print(el_lst)
@@ -316,8 +316,8 @@ form_values = FormulaValues(element, 1,2)
 print(form_values.valence, form_values.key )
 print(form_values)
 
-#FormulaProperites
-print("FormulaProperites")
+#FormulaProperties
+print("FormulaProperties")
 #print("")
-form_prop = FormulaProperites()
+form_prop = FormulaProperties()
 #print(form_prop)

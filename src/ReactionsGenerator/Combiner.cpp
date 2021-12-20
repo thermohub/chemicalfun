@@ -17,7 +17,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "ChemicalFun/ReactionsGenerator/Combiner.h"
-#include "ChemicalFun/ReactionsGenerator/ReactionGenerator.h"
+#include "ChemicalFun/ReactionsGenerator/Reaction.h"
 
 namespace ReactionsGenerator {
 

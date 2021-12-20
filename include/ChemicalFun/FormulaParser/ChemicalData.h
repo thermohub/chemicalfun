@@ -1,4 +1,4 @@
-﻿// ChemicalFun is a C++ and Python library for of C++ and Python API
+﻿// ChemicalFun is a C++ and Python library 
 // for Chemical Formula Parser and Reactions Generator.
 //
 // Copyright (C) 2018-2022 G.D.Miron, D.Kulik, S.Dmytriieva
@@ -113,7 +113,7 @@ struct FormulaValues
 };
 
 /// Values calculated from the formula of substances.
-struct FormulaProperites
+struct FormulaProperties
 {
     std::string formula;
     double charge;
@@ -173,11 +173,11 @@ public:
     /// Build list of elements not present into system.
     std::string testElements(const std::string& aformula, const ElementsKeys& dbelementkeys);
     /// Throw exeption if charge imbalance.
-    void testCargeImbalance(const ElementsData& dbelements = {});
+    void testChargeImbalance(const ElementsData& dbelements = {});
 
     /// Calculate charge, molar mass, elemental entropy, atoms per formula unit
     /// for chemical formulae.
-    FormulaProperites calculateProperites(const ElementsData& dbelements);
+    FormulaProperties properties(const ElementsData& dbelements);
 
 protected:
     /// If we need a matrix with separate element valences
@@ -202,30 +202,30 @@ public:
     static int defaultValence(const std::string& symbol);
 
     /// List of elements collected from the list of formulas.
-    static ElementsKeys extractElements(const std::vector<std::string>& formulalist);
+    static ElementsKeys formulasElements(const std::vector<std::string>& formulalist);
 
     /// Add new element to internal.
     void addElement(const ElementKey &elkey, const ElementValues &elvalue);
 
-    const ElementsData& getElements() const {
-        return dbElements;
+    const ElementsData& elements() const {
+        return dbElements_;
     }
-    const ElementsKeys& getElementsKeys() const {
-        return dbElementsKeys;
+    const ElementsKeys& elementsKeys() const {
+        return dbElementsKeys_;
     }
-    std::vector<ElementKey> getElementsKeysList() const {
-        return std::vector<ElementKey>(dbElementsKeys.begin(), dbElementsKeys.end());
+    std::vector<ElementKey> elementsKeysList() const {
+        return std::vector<ElementKey>(dbElementsKeys_.begin(), dbElementsKeys_.end());
     }
 
     /// Calculate charge, molar mass, elemental entropy, atoms per formula.
-    FormulaProperites calcThermo(const std::string aformula) const {
-        return FormulaToken(aformula).calculateProperites(this->dbElements);
+    FormulaProperties formulasProperties(const std::string aformula) const {
+        return FormulaToken(aformula).properties(this->dbElements_);
     }
     /// Calculate charge, molar mass, elemental entropy, atoms per formula list.
-    std::vector<FormulaProperites> calcThermo(const std::vector<std::string>& formulalist);
+    std::vector<FormulaProperties> formulasProperties(const std::vector<std::string>& formulalist);
 
     /// Generate stoichiometry matrix from the formula list.
-    StoichiometryMatrixData calcStoichiometryMatrix(const std::vector<std::string>& formulalist);
+    StoichiometryMatrixData stoichiometryMatrix(const std::vector<std::string>& formulalist);
 
     /// Restore elements DB from JSON array format output string.
     void readElements(const std::string &json_array);
@@ -233,26 +233,26 @@ public:
     std::string writeElements(bool dense = false) const;
 
     void printCSV(std::ostream &stream);
-    void printThermo(std::ostream &stream, const std::vector<std::string> &formulalist);
+    void formulasPropertiesCSV(std::ostream &stream, const std::vector<std::string> &formulalist);
     void printStoichiometryMatrix(std::ostream &stream, const std::vector<std::string> &formulalist);
 
 protected:
     /// Loading from database elements
-    ElementsData dbElements;
+    ElementsData dbElements_;
     /// Set of keys of elements downloaded from the database
-    ElementsKeys dbElementsKeys;
+    ElementsKeys dbElementsKeys_;
 
 };
 
 std::string to_string(const std::vector<ElementKey>& keys );
 
 /// Generate stoichiometry matrix from the formula list and elements list.
-StoichiometryMatrixData generateStoichiometryMatrixValences(const std::vector<std::string> &formulalist,
+StoichiometryMatrixData forumlasStoichiometryMatrixWithValence(const std::vector<std::string> &formulalist,
                                                             std::vector<ElementKey> all_elements,
                                                             bool with_valences = false);
 
 /// Generate elements used list
-std::vector<ElementKey> generateElementsListValences(const std::vector<std::string> &formulalist,
+std::vector<ElementKey> formulasElementsWithValence(const std::vector<std::string> &formulalist,
                                                      bool with_valences = false);
 }
 

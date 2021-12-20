@@ -46,15 +46,15 @@ std::string AtoString( const Eigen::MatrixXd& A)
 
 TEST(ReactionsGenerator, StoichiometryMatrix)
 {
-    auto elemens_list = ChemicalFun::generateElementsListValences(formulas, true);
+    auto elemens_list = ChemicalFun::formulasElementsWithValence(formulas, true);
     EXPECT_EQ(to_string(elemens_list), elements_true);
-    Eigen::MatrixXd A1 =  calcStoichiometryMatrix(formulas, true).transpose();
+    Eigen::MatrixXd A1 =  stoichiometryMatrix(formulas, true).transpose();
     EXPECT_EQ(A1, A_true);
     EXPECT_EQ(AtoString(A1),AtoString(A_true));
 
-    elemens_list = ChemicalFun::generateElementsListValences(formulas, false);
+    elemens_list = ChemicalFun::formulasElementsWithValence(formulas, false);
     EXPECT_EQ(to_string(elemens_list), elements_false);
-    Eigen::MatrixXd A2 =  calcStoichiometryMatrix(formulas, false).transpose();
+    Eigen::MatrixXd A2 =  stoichiometryMatrix(formulas, false).transpose();
     EXPECT_EQ(A2, A_false);
     EXPECT_EQ(AtoString(A2),AtoString(A_false));
 }

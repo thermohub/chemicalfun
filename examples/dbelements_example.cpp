@@ -231,7 +231,7 @@ int main(int argc, char* argv[])
            std::cout << aformula <<  std::endl;
         }
 
-        auto used_elements = all_elements.extractElements(formulalist);
+        auto used_elements = all_elements.formulasElements(formulalist);
         std::cout << "---------\n\nAll elements from list" <<  std::endl;
         for(const auto& elm: used_elements) {
            std::cout << elm.Symbol() <<  ", ";
@@ -241,7 +241,7 @@ int main(int argc, char* argv[])
         all_elements.printStoichiometryMatrix(std::cout, formulalist);
 
         std::cout << "---------\n\nProperties to csv" <<  std::endl;
-        all_elements.printThermo(std::cout, formulalist);
+        all_elements.formulasPropertiesCSV(std::cout, formulalist);
 
         return 0;
     }

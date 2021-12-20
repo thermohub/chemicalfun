@@ -35,7 +35,7 @@ public:
     /// Construct a default Reaction instance.
     Reaction();
 
-    /// Construct a Reaction instance with given reaction coefficients, indices of substances in the vecotr of coeff,
+    /// Construct a Reaction instance with given reaction coefficients, indices of substances in the vector of coeff,
     /// and vector of charges for substances.
     Reaction(VectorXd coefficients, Indices iSubstances, DatabaseGenerator *DatabaseGenerator, std::string idReac_ );
 

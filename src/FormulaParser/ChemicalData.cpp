@@ -1,4 +1,4 @@
-// ChemicalFun is a C++ and Python library for of C++ and Python API
+// ChemicalFun is a C++ and Python library 
 // for Chemical Formula Parser and Reactions Generator.
 //
 // Copyright (C) 2018-2022 G.D.Miron, D.Kulik, S.Dmytriieva
@@ -230,8 +230,8 @@ static json formula_key_to(const FormulaValues& key)
     return object;
 }
 
-// Writes FormulaProperites data to json
-static json formula_properites_to(const FormulaProperites& data)
+// Writes FormulaProperties data to json
+static json formula_properties_to(const FormulaProperties& data)
 {
     auto object = json::object();
     object["formula"] =  data.formula;
@@ -290,9 +290,9 @@ std::string FormulaValues::to_json_string(bool dense) const
     return data.dump(dense?4:-1);
 }
 
-std::string FormulaProperites::to_json_string(bool dense) const
+std::string FormulaProperties::to_json_string(bool dense) const
 {
-    auto data = formula_properites_to(*this);
+    auto data = formula_properties_to(*this);
     return data.dump(dense?4:-1);
 }
 
@@ -435,9 +435,9 @@ std::string FormulaToken::testElements(const std::string& aformula, const Elemen
     return notPresent;
 }
 
-FormulaProperites FormulaToken::calculateProperites(const ElementsData& dbelements)
+FormulaProperties FormulaToken::properties(const ElementsData& dbelements)
 {
-    FormulaProperites propert;
+    FormulaProperties propert;
     double Sc;
     int valence;
     propert.formula = current_formula;
@@ -484,7 +484,7 @@ StoichiometryRowData FormulaToken::makeStoichiometryRow(const std::vector<Elemen
     return rowA;
 }
 
-void FormulaToken::testCargeImbalance(const ElementsData& dbelements)
+void FormulaToken::testChargeImbalance(const ElementsData& dbelements)
 {
     ElementKey chargeKey(CHARGE_NAME,CHARGE_CLASS,0);
     if(elements.find(chargeKey) == elements.end())
@@ -518,14 +518,14 @@ int DBElements::defaultValence(const std::string& symbol)
 
 void DBElements::addElement(const ElementKey& elkey, const ElementValues& elvalue)
 {
-    dbElements[elkey] = elvalue;
-    dbElementsKeys.insert(elkey);
+    dbElements_[elkey] = elvalue;
+    dbElementsKeys_.insert(elkey);
 }
 
 void DBElements::readElements(const std::string &json_array)
 {
-    dbElements.clear();
-    dbElementsKeys.clear();
+    dbElements_.clear();
+    dbElementsKeys_.clear();
     auto elements_json = json::parse(json_array);
     for( const auto& el_json: elements_json) {
         addElement(element_key_from(el_json["element"]),
@@ -536,7 +536,7 @@ void DBElements::readElements(const std::string &json_array)
 std::string DBElements::writeElements(bool dense) const
 {
     auto elements_json = json::array();
-    for( const auto& element: dbElements) {
+    for( const auto& element: dbElements_) {
         auto elem = json::object();
         elem["element"] = element_key_to(element.first);
         elem["properties"] = element_values_to(element.second);
@@ -545,7 +545,7 @@ std::string DBElements::writeElements(bool dense) const
     return elements_json.dump(dense?4:-1);
 }
 
-ElementsKeys DBElements::extractElements(const std::vector<std::string>& formulalist)
+ElementsKeys DBElements::formulasElements(const std::vector<std::string>& formulalist)
 {
     ElementsKeys elements;
     FormulaToken formula("");
@@ -556,20 +556,20 @@ ElementsKeys DBElements::extractElements(const std::vector<std::string>& formula
     return elements;
 }
 
-std::vector<FormulaProperites> DBElements::calcThermo(const std::vector<std::string>& formulalist)
+std::vector<FormulaProperties> DBElements::formulasProperties(const std::vector<std::string>& formulalist)
 {
-    std::vector<FormulaProperites> thermo;
+    std::vector<FormulaProperties> thermo;
     for(const auto& aformula: formulalist) {
-        thermo.push_back(calcThermo(aformula));
+        thermo.push_back(formulasProperties(aformula));
     }
     return thermo;
 }
 
-StoichiometryMatrixData DBElements::calcStoichiometryMatrix(const std::vector<std::string>& formulalist)
+StoichiometryMatrixData DBElements::stoichiometryMatrix(const std::vector<std::string>& formulalist)
 {
     StoichiometryMatrixData matrA;
     FormulaToken formula("");
-    std::vector<ElementKey> allelemens = getElementsKeysList();
+    std::vector<ElementKey> allelemens = elementsKeysList();
     for(const auto& aformula: formulalist) {
         formula.setFormula(aformula);
         matrA.push_back(formula.makeStoichiometryRow(allelemens));
@@ -579,9 +579,9 @@ StoichiometryMatrixData DBElements::calcStoichiometryMatrix(const std::vector<st
 
 void DBElements::printStoichiometryMatrix(std::ostream& stream, const std::vector<std::string>& formulalist)
 {
-    StoichiometryMatrixData matrA = calcStoichiometryMatrix(formulalist);
+    StoichiometryMatrixData matrA = stoichiometryMatrix(formulalist);
     stream << "formula,";
-    for(const auto& elname: getElementsKeysList()) {
+    for(const auto& elname: elementsKeysList()) {
         stream << elname.Symbol() <<",";
     }
     stream << std::endl;
@@ -594,10 +594,10 @@ void DBElements::printStoichiometryMatrix(std::ostream& stream, const std::vecto
     }
 }
 
-void DBElements::printThermo(std::ostream& stream, const std::vector<std::string>& formulalist)
+void DBElements::formulasPropertiesCSV(std::ostream& stream, const std::vector<std::string>& formulalist)
 {
-    std::vector<FormulaProperites> thermo = calcThermo(formulalist);
-    stream << "formula,charge,atomic_mass,elemental_entropy,Nj\n";
+    std::vector<FormulaProperties> thermo = formulasProperties(formulalist);
+    stream << "formula,charge,atomic_mass,elemental_entropy,atoms_formula\n";
     for( const auto& row: thermo) {
         stream << row.formula << ","<< row.charge << "," << row.atomic_mass << ",";
         stream << row.elemental_entropy << ","<< row.atoms_formula_unit << std::endl;
@@ -608,7 +608,7 @@ void DBElements::printCSV(std::ostream& stream)
 {
     stream << "symbol,class_,isotope,atomic_mass,";
     stream << "entropy,heat_capacity,volume,valence,number" << std::endl;
-    for( const auto& eldata: dbElements ) {
+    for( const auto& eldata: dbElements_ ) {
         stream << eldata.first.Symbol() << ","<< eldata.first.Class() << ",";
         stream << eldata.first.Isotope() << ","<< eldata.second.atomic_mass << ",";
         stream << eldata.second.entropy << ","<< eldata.second.heat_capacity << ",";
@@ -618,7 +618,7 @@ void DBElements::printCSV(std::ostream& stream)
     }
 }
 
-std::vector<ElementKey> generateElementsListValences(const std::vector<std::string> &formulalist, bool with_valences)
+std::vector<ElementKey> formulasElementsWithValence(const std::vector<std::string> &formulalist, bool with_valences)
 {
     FormulaToken formula("");
     ElementsKeys all_elements_set;
@@ -629,7 +629,7 @@ std::vector<ElementKey> generateElementsListValences(const std::vector<std::stri
     return {all_elements_set.begin(), all_elements_set.end()};
 }
 
-StoichiometryMatrixData generateStoichiometryMatrixValences(const std::vector<std::string> &formulalist,
+StoichiometryMatrixData forumlasStoichiometryMatrixWithValence(const std::vector<std::string> &formulalist,
                                                             std::vector<ElementKey> all_elements,
                                                             bool with_valences)
 {
