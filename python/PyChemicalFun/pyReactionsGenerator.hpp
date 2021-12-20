@@ -18,7 +18,7 @@
 
 #include "ChemicalFun/FormulaParser/ChemicalData.h"
 #include "ChemicalFun/ReactionsGenerator/DatabaseGenerator.h"
-#include "ChemicalFun/ReactionsGenerator/ReactionGen.h"
+#include "ChemicalFun/ReactionsGenerator/ReactionGenerator.h"
 #include "ChemicalFun/ReactionsGenerator/Generator.h"
 #include "ChemicalFun/ReactionsGenerator/Combiner.h"
 using namespace ReactionsGenerator;

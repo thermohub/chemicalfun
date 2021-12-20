@@ -9,7 +9,7 @@ HEADERS += \
     $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/ReactionsGenerator/DatabaseGenerator.h \
     $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/ReactionsGenerator/Generator.h \
     $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/ReactionsGenerator/MatrixUtils.h \
-    $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/ReactionsGenerator/ReactionGen.h \
+    $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/ReactionsGenerator/ReactionGenerator.h \
     $$CHEMICALFUN_DIR/Common/Exception.h \
     $$CHEMICALFUN_DIR/ReactionsGenerator/CanonicalizerLeal16.h \
     $$CHEMICALFUN_DIR/ReactionsGenerator/GramSchmidtWeltin94.h \
@@ -26,7 +26,7 @@ SOURCES += \
     $$CHEMICALFUN_DIR/ReactionsGenerator/Generator.cpp \
     $$CHEMICALFUN_DIR/ReactionsGenerator/GramSchmidtWeltin94.cpp \
     $$CHEMICALFUN_DIR/ReactionsGenerator/MatrixUtils.cpp \
-    $$CHEMICALFUN_DIR/ReactionsGenerator/ReactionGen.cpp \
+    $$CHEMICALFUN_DIR/ReactionsGenerator/ReactionGenerator.cpp \
     $$CHEMICALFUN_DIR/ReactionsGenerator/RowReduceSmithMissen98.cpp
 
 

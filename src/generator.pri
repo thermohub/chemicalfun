@@ -8,7 +8,7 @@ HEADERS += \
     $$PWD/Exception.h \
     $$PWD/Combiner.h \
     $$PWD/DatabaseGenerator.h \
-    $$PWD/ReactionGen.h
+    $$PWD/ReactionGenerator.h
 
 SOURCES += \
     $$PWD/Generator.cpp \
@@ -19,6 +19,6 @@ SOURCES += \
     $$PWD/Exception.cpp \
     $$PWD/Combiner.cpp \
     $$PWD/DatabaseGenerator.cpp \
-    $$PWD/ReactionGen.cpp
+    $$PWD/ReactionGenerator.cpp
 
 # INCLUDEPATH  += $$PWD/Eigen3/

@@ -1,3 +1,21 @@
+# ChemicalFun
+
+ChemicalFun is a C++ library (Python and C++ API) for generating balanced chemical reactions and for parsing and calculating properties of chemical formulas.
+
+### Compiling the C++ library
+
+In the terminal ```~/chemicalfun$```, execute the following commands:
+
+```
+mkdir build && \
+cd build && \
+cmake .. && \
+make
+``` 
+
+For 
+
+
 # README #
 
 This README would normally document whatever steps are necessary to get your application up and running.

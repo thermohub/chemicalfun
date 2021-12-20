@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.9)
 
 # Set the name of the project
-project(ChemicalFun VERSION 0.1.1 LANGUAGES CXX)
+project(ChemicalFun VERSION 0.2.0 LANGUAGES CXX)
 
 # Set the cmake module path of the project
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
@@ -25,7 +25,7 @@ endif()
 if (CHEMICALFUN_WASM MATCHES ON)
     # Define which types of libraries to build
     option(CHEMICALFUN_BUILD_STATIC_LIBS "Build static libraries." ON)
-    set(CHEMICALFUN_BUILD_PYTHON               OFF)
+    set(CHEMICALFUN_BUILD_PYTHON               ON)
     # Set the list of compiler flags for Clang compiler
     if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
     add_compile_options(-std=c++11 -Wall -Wno-ignored-attributes -Wno-pedantic -Wno-variadic-macros -Wno-deprecated -fcxx-exceptions -frtti)
