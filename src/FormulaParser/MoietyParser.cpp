@@ -1,6 +1,6 @@
 #include <sstream>
 #include <iomanip>
-#include "ChemicalFun/FormulaParser/MoityParser.h"
+#include "ChemicalFun/FormulaParser/MoietyParser.h"
 #include "Common/Exception.h"
 
 namespace ChemicalFun {
@@ -18,13 +18,13 @@ std::ostream &operator<<(std::ostream &os, const MoietyTerm& moi_data)
     return os;
 }
 
-MoityParser::~MoityParser()
+MoietyParser::~MoietyParser()
 {}
 
 // <fterm>  ::= <site_term> : | <fterm> <site_term>:
 // <site_term> ::= <moiety>   | <moiety><moiety>
 // <moiety>    ::= {<elem>}   | {<elem>} <elem_st_coef> | Va
-std::vector<MoietyTerm> MoityParser::parse(const std::string& aformula, int&  nsites)
+std::vector<MoietyTerm> MoietyParser::parse(const std::string& aformula, int&  nsites)
 {
     formula = aformula;
     std::string parsed_string = formula;

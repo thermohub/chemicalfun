@@ -51,7 +51,7 @@ void test_parse( const std::string& chemical_formula ) {
 
 void test_parse_moieties( const std::string& chemical_formula ) {
 
-    ChemicalFun::MoityParser moiparser;
+    ChemicalFun::MoietyParser moiparser;
     int nsites = 0;
     auto moieties = moiparser.parse( chemical_formula, nsites );
     std::cout << "\nTested: " << chemical_formula << " " << nsites;

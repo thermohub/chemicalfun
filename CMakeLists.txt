@@ -84,7 +84,7 @@ if(CHEMICALFUN_BUILD_PYTHON)
     message(STATUS "Found pybind11 v${pybind11_VERSION}: ${pybind11_INCLUDE_DIRS}")
 
     if(NOT pybind11_FOUND)
-        set(XGEMS_BUILD_PYTHON OFF)
+        set(CHEMICALFUN_BUILD_PYTHON OFF)
         message(WARNING "pybind11 has not been found. "
             "Cannot build python bindings for XGEMS.")
     endif()

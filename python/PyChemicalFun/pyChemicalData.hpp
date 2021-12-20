@@ -1,7 +1,7 @@
 // ChemicalFun is a C++ and Python library for of C++ and Python API
 // for Chemical Formula Parser and Reactions Generator.
 //
-// Copyright (C) 2021 G.D.Miron, D.Kulik, S.Dmytriieva
+// Copyright (C) 2018-2022 G.D.Miron, D.Kulik, S.Dmytriieva
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by

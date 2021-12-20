@@ -56,12 +56,12 @@ private:
 std::ostream &operator<<(std::ostream& os, const MoietyTerm& dt);
 
 
-/// Parser for Moity
-class MoityParser : public BaseParser
+/// Parser for Moiety
+class MoietyParser : public BaseParser
 {
 public:
-    MoityParser(){}
-    ~MoityParser();
+    MoietyParser(){}
+    ~MoietyParser();
 
     /// Parse the Moiety terms
     std::vector<MoietyTerm> parse(const std::string& aformula, int& nsites);
