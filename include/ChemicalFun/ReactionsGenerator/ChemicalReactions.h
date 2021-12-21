@@ -31,26 +31,26 @@ using IndexElementsMap      = std::map<Index, std::string>;
 
 class Generator;
 
-class DatabaseGenerator
+class ChemicalReactions
 {
 public:
     /// Construct a default Database instance.
-    DatabaseGenerator();
+    ChemicalReactions();
 
     /// Construct a Database instance with given formula matrix.
-    DatabaseGenerator(std::vector<std::vector<double>> A);
+    ChemicalReactions(std::vector<std::vector<double>> A);
 
     /// Construct a Database instance with given formula matrix and substances (columns) list.
-    DatabaseGenerator(MatrixXd A, std::vector<std::string> substancesList);
+    ChemicalReactions(MatrixXd A, std::vector<std::string> substancesList);
 
     /// Construct a copy of a Database instance.
-    DatabaseGenerator(const DatabaseGenerator &other);
+    ChemicalReactions(const ChemicalReactions &other);
 
     /// Destroy this Database instance.
-    virtual ~DatabaseGenerator();
+    virtual ~ChemicalReactions();
 
     /// Assign a Database instance to this.
-    auto operator=(DatabaseGenerator other) -> DatabaseGenerator&;
+    auto operator=(ChemicalReactions other) -> ChemicalReactions&;
 
     /// Returns the substances formula matrix
     auto formulaMatrix () -> MatrixXd;

@@ -27,7 +27,7 @@
 
 namespace ReactionsGenerator {
 
-class DatabaseGenerator;
+class ChemicalReactions;
 
 class Reaction
 {
@@ -37,7 +37,7 @@ public:
 
     /// Construct a Reaction instance with given reaction coefficients, indices of substances in the vector of coeff,
     /// and vector of charges for substances.
-    Reaction(VectorXd coefficients, Indices iSubstances, DatabaseGenerator *DatabaseGenerator, std::string idReac_ );
+    Reaction(VectorXd coefficients, Indices iSubstances, ChemicalReactions *ChemicalReactions, std::string idReac_ );
 
     /// Construct a copy of a Reaction instance.
     Reaction(const Reaction& other);

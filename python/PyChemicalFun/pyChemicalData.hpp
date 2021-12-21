@@ -76,8 +76,8 @@ void exportChemicalData(py::module& m)
             ;
 
     py::class_<FormulaToken>(m, "FormulaToken", py::is_final())
-            .def(py::init<const std::string&, bool>(), py::arg("aformula"), py::arg("with_valences")  = false)
-            .def("setFormula", &FormulaToken::setFormula, py::arg("aformula"), py::arg("with_valences")  = false)
+            .def(py::init<const std::string&, bool>(), py::arg("aformula"), py::arg("valence")  = false)
+            .def("setFormula", &FormulaToken::setFormula, py::arg("aformula"), py::arg("valence")  = false)
             .def("formula", &FormulaToken::formula)
             .def("elementsList", &FormulaToken::getElementsList)
             .def("parsed_list", &FormulaToken::parsed_list, py::arg("dense")  = false)
@@ -102,20 +102,21 @@ void exportChemicalData(py::module& m)
             .def("elementsKeysList", &DBElements::elementsKeysList)
             .def("readElements", &DBElements::readElements)
             .def("writeElements", &DBElements::writeElements, py::arg("dense")  = false)
-            .def("CSV",[]( DBElements& self) { std::stringstream ss; self.printCSV(ss); return ss.str(); });
+            .def("CSV",[]( DBElements& self) { std::stringstream ss; self.printCSV(ss); return ss.str(); })
 
-    m.def("formulasPropertiesCSV",[]( DBElements& self, const std::vector<std::string> &formulalist)
-    { std::stringstream ss; self.formulasPropertiesCSV(ss, formulalist); return ss.str(); });
-    m.def("stoichiometryMatrixCSV",[]( DBElements& self, const std::vector<std::string> &formulalist)
-    { std::stringstream ss; self.printStoichiometryMatrix(ss, formulalist); return ss.str(); });
-    m.def("__repr__", []( const DBElements& self) { std::stringstream ss; ss << self.writeElements(); return ss.str(); });
-    m.def("formulasProperties",[](const DBElements& self, const std::string& data) { return self.formulasProperties(data); });
-    m.def("formulasProperties", py::overload_cast<const std::vector<std::string>&>(&DBElements::formulasProperties));
-    m.def("stoichiometryMatrix", &DBElements::stoichiometryMatrix);
+            .def("formulasPropertiesCSV",[]( DBElements& self, const std::vector<std::string> &formulalist)
+    { std::stringstream ss; self.formulasPropertiesCSV(ss, formulalist); return ss.str(); })
+            .def("stoichiometryMatrixCSV",[]( DBElements& self, const std::vector<std::string> &formulalist)
+    { std::stringstream ss; self.printStoichiometryMatrix(ss, formulalist); return ss.str(); })
+            .def("__repr__", []( const DBElements& self) { std::stringstream ss; ss << self.writeElements(); return ss.str(); })
+            .def("formulasProperties",[](const DBElements& self, const std::string& data) { return self.formulasProperties(data); })
+            .def("formulasProperties", py::overload_cast<const std::vector<std::string>&>(&DBElements::formulasProperties))
+            .def("stoichiometryMatrix", &DBElements::stoichiometryMatrix)
+            ;
 
 
-    m.def("forumlasStoichiometryMatrixWithValence", &forumlasStoichiometryMatrixWithValence,
-          py::arg("formulalist") , py::arg("elements"), py::arg("with_valence")=true);
-    m.def("formulasElementsWithValence", &formulasElementsWithValence,
-          py::arg("formulalist"), py::arg("with_valence")=true);
+    m.def("substancesStoichiometryMatrix", &substancesStoichiometryMatrix,
+          py::arg("formulalist"), py::arg("valence")=false);
+    m.def("elementsInFormulas", &elementsInFormulas,
+          py::arg("formulalist"), py::arg("valence")=false);
 }

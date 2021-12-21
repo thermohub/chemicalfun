@@ -725,8 +725,8 @@ TEST(ChemicalFormula, StoichiometryMatrixValences)
         "HOO|0|-",
     };
 
-    std::vector<ElementKey> all_elments = formulasElementsWithValence(formula_list);
-    auto st_matr = forumlasStoichiometryMatrixWithValence(formula_list, all_elments);
+    std::vector<ElementKey> all_elments = elementsInFormulas(formula_list);
+    auto st_matr = substancesStoichiometryMatrix(formula_list, all_elments);
     EXPECT_EQ( to_string(all_elments), "H;O;Zz;");
     StoichiometryMatrixData matrix1 = { { 2, 1, 0 },
                                        { 2, 1, 0 },
@@ -737,8 +737,8 @@ TEST(ChemicalFormula, StoichiometryMatrixValences)
                                        { 1, 2, -1 } };
     EXPECT_EQ(st_matr, matrix1);
 
-    all_elments = formulasElementsWithValence(formula_list, true);
-    st_matr = forumlasStoichiometryMatrixWithValence(formula_list, all_elments, true);
+    all_elments = elementsInFormulas(formula_list, true);
+    st_matr = substancesStoichiometryMatrix(formula_list, all_elments, true);
     EXPECT_EQ( to_string(all_elments), "H(0);H(1);O(-2);O(0);Zz(0);");
     StoichiometryMatrixData matrix2 = { { 0, 2, 1, 0, 0 },
                                         { 0, 2, 1, 0, 0 },

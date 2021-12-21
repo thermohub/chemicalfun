@@ -244,7 +244,7 @@ auto removeMasterColls(MatrixXd &M, unsigned i) -> void
     }
 }
 
-auto getStoichiometryMatrix( std::vector<std::vector<double>> vMatrix) -> Eigen::MatrixXd
+auto stoichiometryMatrix( std::vector<std::vector<double>> vMatrix) -> Eigen::MatrixXd
 {
     MatrixXd A(vMatrix.size(), vMatrix[0].size());
 
@@ -254,15 +254,15 @@ auto getStoichiometryMatrix( std::vector<std::vector<double>> vMatrix) -> Eigen:
     return A;
 }
 
-auto calcStoichiometryMatrix(const std::vector<std::string>& vFormulalist,
-                             bool with_valences ) -> Eigen::MatrixXd
+auto stoichiometryMatrix(const std::vector<std::string>& vFormulalist,
+                             bool valence ) -> Eigen::MatrixXd
 {
-    auto elemens_list = ChemicalFun::formulasElementsWithValence(vFormulalist, with_valences);
+    auto elemens_list = ChemicalFun::elementsInFormulas(vFormulalist, valence);
     MatrixXd A(vFormulalist.size(), elemens_list.size());
     ChemicalFun::FormulaToken formula("");
 
     for (size_t i = 0; i < vFormulalist.size(); i++) {
-        formula.setFormula(vFormulalist[i], with_valences);
+        formula.setFormula(vFormulalist[i], valence);
         auto row = formula.makeStoichiometryRow(elemens_list);
         for (size_t j = 0; j < row.size(); j++) {
             A(i,j) = row[j];

@@ -6,7 +6,7 @@ HEADERS += \
     $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/FormulaParser/ChemicalFormulaParser.h \
     $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/FormulaParser/MoietyParser.h \
     $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/ReactionsGenerator/Combiner.h \
-    $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/ReactionsGenerator/DatabaseGenerator.h \
+    $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/ReactionsGenerator/ChemicalReactions.h \
     $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/ReactionsGenerator/Generator.h \
     $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/ReactionsGenerator/MatrixUtils.h \
     $$CHEMICALFUN_HEADERS_DIR/ChemicalFun/ReactionsGenerator/ReactionGenerator.h \
@@ -22,7 +22,7 @@ SOURCES += \
     $$CHEMICALFUN_DIR/FormulaParser/MoietyParser.cpp \
     $$CHEMICALFUN_DIR/ReactionsGenerator/CanonicalizerLeal16.cpp \
     $$CHEMICALFUN_DIR/ReactionsGenerator/Combiner.cpp \
-    $$CHEMICALFUN_DIR/ReactionsGenerator/DatabaseGenerator.cpp \
+    $$CHEMICALFUN_DIR/ReactionsGenerator/ChemicalReactions.cpp \
     $$CHEMICALFUN_DIR/ReactionsGenerator/Generator.cpp \
     $$CHEMICALFUN_DIR/ReactionsGenerator/GramSchmidtWeltin94.cpp \
     $$CHEMICALFUN_DIR/ReactionsGenerator/MatrixUtils.cpp \

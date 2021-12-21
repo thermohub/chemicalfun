@@ -386,10 +386,10 @@ void FormulaToken::clear()
     stoich_map.clear();
 }
 
-void FormulaToken::setFormula(const std::string& aformula, bool with_valences)
+void FormulaToken::setFormula(const std::string& aformula, bool valence)
 {
     clear();
-    elements_keys_with_valences = with_valences;
+    elements_keys_with_valences = valence;
     current_formula = aformula;
     current_formula.erase(std::remove(current_formula.begin(), current_formula.end(), '\"'), current_formula.end());
     ChemicalFormulaParser formparser;
@@ -618,25 +618,24 @@ void DBElements::printCSV(std::ostream& stream)
     }
 }
 
-std::vector<ElementKey> formulasElementsWithValence(const std::vector<std::string> &formulalist, bool with_valences)
+std::vector<ElementKey> elementsInFormulas(const std::vector<std::string> &formulalist, bool valence)
 {
     FormulaToken formula("");
     ElementsKeys all_elements_set;
     for(const auto& aformula: formulalist) {
-        formula.setFormula(aformula, with_valences);
+        formula.setFormula(aformula, valence);
         all_elements_set.insert(formula.getElementsList().begin(), formula.getElementsList().end());
     }
     return {all_elements_set.begin(), all_elements_set.end()};
 }
 
-StoichiometryMatrixData forumlasStoichiometryMatrixWithValence(const std::vector<std::string> &formulalist,
-                                                            std::vector<ElementKey> all_elements,
-                                                            bool with_valences)
+StoichiometryMatrixData substancesStoichiometryMatrix(const std::vector<std::string> &formulalist, bool valence)
 {
     StoichiometryMatrixData matrA;
+    auto all_elements = elementsInFormulas(formulalist, valence);
     FormulaToken formula("");
     for(const auto& aformula: formulalist) {
-        formula.setFormula(aformula, with_valences);
+        formula.setFormula(aformula, valence);
         matrA.push_back(formula.makeStoichiometryRow(all_elements));
     }
     return matrA;

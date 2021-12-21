@@ -17,13 +17,13 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "ChemicalFun/ReactionsGenerator/Reaction.h"
-#include "ChemicalFun/ReactionsGenerator/DatabaseGenerator.h"
+#include "ChemicalFun/ReactionsGenerator/ChemicalReactions.h"
 
 namespace ReactionsGenerator {
 
 struct Reaction::Impl
 {
-    DatabaseGenerator *db;
+    ChemicalReactions *db;
 
     VectorXd reacCoeff;
 
@@ -36,7 +36,7 @@ struct Reaction::Impl
     Impl()
     {}
 
-    Impl(VectorXd coefficients, Indices iSubstances, DatabaseGenerator* databaseGenerator, std::string idReac_)
+    Impl(VectorXd coefficients, Indices iSubstances, ChemicalReactions* databaseGenerator, std::string idReac_)
     {
         reacCoeff = coefficients;
         iSubst    = iSubstances;
@@ -50,7 +50,7 @@ Reaction::Reaction()
 : pimpl(new Impl())
 {}
 
-Reaction::Reaction(VectorXd coefficients, Indices iSubstances, DatabaseGenerator *databaseGenerator, std::string idReac_)
+Reaction::Reaction(VectorXd coefficients, Indices iSubstances, ChemicalReactions *databaseGenerator, std::string idReac_)
 : pimpl(new Impl(coefficients, iSubstances, databaseGenerator, idReac_))
 {this->updateChPattern();}
 

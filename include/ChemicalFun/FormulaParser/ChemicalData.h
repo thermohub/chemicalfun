@@ -136,12 +136,12 @@ class FormulaToken final
 {
 public:
     /// Constructor
-    FormulaToken(const std::string& aformula, bool with_valences = false) {
-        setFormula(aformula, with_valences);
+    FormulaToken(const std::string& aformula, bool valence = false) {
+        setFormula(aformula, valence);
     }
 
     /// Disassemble the formula.
-    void setFormula(const std::string& aformula, bool with_valences = false);
+    void setFormula(const std::string& aformula, bool valence = false);
     /// Disassembled formula.
     const std::string& formula() const  {
         return current_formula;
@@ -247,13 +247,12 @@ protected:
 std::string to_string(const std::vector<ElementKey>& keys );
 
 /// Generate stoichiometry matrix from the formula list and elements list.
-StoichiometryMatrixData forumlasStoichiometryMatrixWithValence(const std::vector<std::string> &formulalist,
-                                                            std::vector<ElementKey> all_elements,
-                                                            bool with_valences = false);
+StoichiometryMatrixData substancesStoichiometryMatrix(const std::vector<std::string> &formulalist,
+                                                            bool valence = false);
 
 /// Generate elements used list
-std::vector<ElementKey> formulasElementsWithValence(const std::vector<std::string> &formulalist,
-                                                     bool with_valences = false);
+std::vector<ElementKey> elementsInFormulas(const std::vector<std::string> &formulalist,
+                                                     bool valence = false);
 }
 
 

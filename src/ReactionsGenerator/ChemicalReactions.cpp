@@ -16,7 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "ChemicalFun/ReactionsGenerator/DatabaseGenerator.h"
+#include "ChemicalFun/ReactionsGenerator/ChemicalReactions.h"
 #include "ChemicalFun/ReactionsGenerator/Generator.h"
 #include "Common/Exception.h"
 
@@ -25,7 +25,7 @@
 
 namespace ReactionsGenerator {
 
-struct DatabaseGenerator::Impl
+struct ChemicalReactions::Impl
 {
     MatrixXd formulaMatrix;
 
@@ -54,42 +54,42 @@ struct DatabaseGenerator::Impl
 
 };
 
-DatabaseGenerator::DatabaseGenerator()
+ChemicalReactions::ChemicalReactions()
 : pimpl(new Impl())
 {}
 
-DatabaseGenerator::DatabaseGenerator(std::vector<std::vector<double>> A)
+ChemicalReactions::ChemicalReactions(std::vector<std::vector<double>> A)
 : pimpl(new Impl(A))
 {this->eraseZeroRowsFormulaMatrix(); /*std::cout << pimpl->formulaMatrix << std::endl;*compute(A);*/}
 
-DatabaseGenerator::DatabaseGenerator(MatrixXd A, std::vector<std::string> substancesList)
+ChemicalReactions::ChemicalReactions(MatrixXd A, std::vector<std::string> substancesList)
 : pimpl(new Impl(A, substancesList))
 {this->eraseZeroRowsFormulaMatrix(); /*std::cout << pimpl->formulaMatrix << std::endl;*compute(A);*/}
 
-DatabaseGenerator::DatabaseGenerator(const DatabaseGenerator& other)
+ChemicalReactions::ChemicalReactions(const ChemicalReactions& other)
 : pimpl(new Impl(*other.pimpl))
 {}
 
-DatabaseGenerator::~DatabaseGenerator()
+ChemicalReactions::~ChemicalReactions()
 {}
 
-auto DatabaseGenerator::operator=(DatabaseGenerator other) -> DatabaseGenerator&
+auto ChemicalReactions::operator=(ChemicalReactions other) -> ChemicalReactions&
 {
     pimpl = std::move(other.pimpl);
     return *this;
 }
 
-auto DatabaseGenerator::formulaMatrix () -> MatrixXd
+auto ChemicalReactions::formulaMatrix () -> MatrixXd
 {
     return pimpl->formulaMatrix;
 }
 
-auto DatabaseGenerator::sizeSubstancesMap() -> size_t
+auto ChemicalReactions::sizeSubstancesMap() -> size_t
 {
     return pimpl->iColSubstancesMap.size();
 }
 
-auto DatabaseGenerator::eraseZeroRowsFormulaMatrix ( ) -> void
+auto ChemicalReactions::eraseZeroRowsFormulaMatrix ( ) -> void
 {
     MatrixXd M = pimpl->formulaMatrix;
     VectorXd V(M.cols());
@@ -111,7 +111,7 @@ auto DatabaseGenerator::eraseZeroRowsFormulaMatrix ( ) -> void
     pimpl->formulaMatrix = M;
 }
 
-auto DatabaseGenerator::mapIndex(std::string symbol) -> int
+auto ChemicalReactions::mapIndex(std::string symbol) -> int
 {
     IndexSubstancesMap::iterator it_;
     IndexSubstancesMap map = pimpl->iColSubstancesMap;
@@ -122,7 +122,7 @@ auto DatabaseGenerator::mapIndex(std::string symbol) -> int
     return -1;
 }
 
-auto DatabaseGenerator::getCharge(std::string symbol) -> int
+auto ChemicalReactions::getCharge(std::string symbol) -> int
 {
     auto index = mapIndex(symbol);
 
@@ -136,7 +136,7 @@ auto DatabaseGenerator::getCharge(std::string symbol) -> int
     return charge;
 }
 
-auto DatabaseGenerator::getCharge(Index index) -> int
+auto ChemicalReactions::getCharge(Index index) -> int
 {
 //    if ( index < 0 )
 //    {
@@ -148,7 +148,7 @@ auto DatabaseGenerator::getCharge(Index index) -> int
     return charge;
 }
 
-auto DatabaseGenerator::reactionsChargesMap(MatrixXd reactionM, Indices iSubstances) -> std::vector<ReactionChargesMap>
+auto ChemicalReactions::reactionsChargesMap(MatrixXd reactionM, Indices iSubstances) -> std::vector<ReactionChargesMap>
 {
     ChargeCoeffMap reactantsChargeMap;
     ChargeCoeffMap productsChargeMap;
@@ -197,7 +197,7 @@ auto DatabaseGenerator::reactionsChargesMap(MatrixXd reactionM, Indices iSubstan
     return reactionsChargesMaps;
 }
 
-auto DatabaseGenerator::checkReacMatrixISOC(MatrixXd reactionM, Indices iSubstances) -> std::vector<bool>
+auto ChemicalReactions::checkReacMatrixISOC(MatrixXd reactionM, Indices iSubstances) -> std::vector<bool>
 {
     std::vector<bool> isoc;
     ChargeCoeffMap::iterator it;
@@ -223,7 +223,7 @@ auto DatabaseGenerator::checkReacMatrixISOC(MatrixXd reactionM, Indices iSubstan
     return isoc;
 }
 
-auto DatabaseGenerator::checkReacMatrixISOE(MatrixXd reactionM, Indices iSubstances) -> std::vector<bool>
+auto ChemicalReactions::checkReacMatrixISOE(MatrixXd reactionM, Indices iSubstances) -> std::vector<bool>
 {
     std::vector<bool> isoe;
     ChargeCoeffMap::iterator it;

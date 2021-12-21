@@ -233,9 +233,9 @@ print(all_elements.stoichiometryMatrixCSV(formula_list))
 
 # functions
 
-test_elments = formulasElementsWithValence(formula_list);
+test_elments = elementsInFormulas(formula_list);
 print(test_elments)
-print(forumlasStoichiometryMatrixWithValence(formula_list, test_elments))
+print(substancesStoichiometryMatrix(formula_list, test_elments))
 
 # addElement
 

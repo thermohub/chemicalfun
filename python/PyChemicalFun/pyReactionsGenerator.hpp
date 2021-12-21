@@ -17,7 +17,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "ChemicalFun/FormulaParser/ChemicalData.h"
-#include "ChemicalFun/ReactionsGenerator/DatabaseGenerator.h"
+#include "ChemicalFun/ReactionsGenerator/ChemicalReactions.h"
 #include "ChemicalFun/ReactionsGenerator/Reaction.h"
 #include "ChemicalFun/ReactionsGenerator/Generator.h"
 #include "ChemicalFun/ReactionsGenerator/Combiner.h"
@@ -34,25 +34,25 @@ using namespace pybind11::literals;
 
 void exportReactionsGenerator(py::module& m)
 {
-    m.def("calcStoichiometryMatrix", &calcStoichiometryMatrix);
+//    m.def("stoichiometryMatrix", &stoichiometryMatrix);
 
-    py::class_<DatabaseGenerator>(m, "DatabaseGenerator")
+    py::class_<ChemicalReactions>(m, "ChemicalReactions")
             .def(py::init<>())
             .def(py::init<std::vector<std::vector<double>>>() )
             .def(py::init<MatrixXd, std::vector<std::string>>() )
-            .def(py::init<const class DatabaseGenerator &>())
-            .def("assign", &DatabaseGenerator::operator=)
-            .def("formulaMatrix", &DatabaseGenerator::formulaMatrix)
-            .def("sizeSubstancesMap", &DatabaseGenerator::sizeSubstancesMap)
-            .def("getCharge", py::overload_cast<std::string>(&DatabaseGenerator::getCharge))
-            .def("getCharge", py::overload_cast<std::size_t>(&DatabaseGenerator::getCharge))
-            .def("checkReacMatrixISOC", &DatabaseGenerator::checkReacMatrixISOC )
-            .def("checkReacMatrixISOE", &DatabaseGenerator::checkReacMatrixISOE )
+            .def(py::init<const class ChemicalReactions &>())
+            .def("assign", &ChemicalReactions::operator=)
+            .def("formulaMatrix", &ChemicalReactions::formulaMatrix)
+            .def("sizeSubstancesMap", &ChemicalReactions::sizeSubstancesMap)
+            .def("getCharge", py::overload_cast<std::string>(&ChemicalReactions::getCharge))
+            .def("getCharge", py::overload_cast<std::size_t>(&ChemicalReactions::getCharge))
+            .def("checkReacMatrixISOC", &ChemicalReactions::checkReacMatrixISOC )
+            .def("checkReacMatrixISOE", &ChemicalReactions::checkReacMatrixISOE )
             ;
 
     py::class_<Reaction>(m, "Reaction")
             .def(py::init<>())
-            .def(py::init<VectorXd, Indices, DatabaseGenerator*, std::string>() )
+            .def(py::init<VectorXd, Indices, ChemicalReactions*, std::string>() )
             .def(py::init<const class Reaction &>())
             .def("assign", &Reaction::operator=)
             .def("chargePattern", &Reaction::chargePattern)

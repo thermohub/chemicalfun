@@ -25,19 +25,19 @@ symbols = [ "Ca+2", "CaOH+", "Cl-", "ClO4-", "H+", "H2", "H2@", "H2O@", "O2", "O
 formulas = [ "Ca+2", "Ca(OH)+", "Cl-", "Cl|7|O4-", "H+", "H|0|2", "H|0|2@", "H2O@", "O|0|2", "O|0|2@", "OH-", "Ca(OH)2" ]
 
 print( generateElementsListValences(formulas, False) )
-A_False = calcStoichiometryMatrix(formulas, False).transpose()
+A_False = stoichiometryMatrix(formulas, False).transpose()
 print( A_False )
 
 print( generateElementsListValences(formulas, True) )
-A_True = calcStoichiometryMatrix(formulas, True).transpose()
+A_True = stoichiometryMatrix(formulas, True).transpose()
 print( A_True )
 
-# DatabaseGenerator
-print("DatabaseGenerator")
+# ChemicalReactions
+print("ChemicalReactions")
 
-reactionsDB = DatabaseGenerator(A_True, symbols)
+reactionsDB = ChemicalReactions(A_True, symbols)
 reactionsDB2 = reactionsDB
-reactionsDB3 = DatabaseGenerator(reactionsDB)
+reactionsDB3 = ChemicalReactions(reactionsDB)
 
 print(reactionsDB.formulaMatrix())
 print(reactionsDB.sizeSubstancesMap())
