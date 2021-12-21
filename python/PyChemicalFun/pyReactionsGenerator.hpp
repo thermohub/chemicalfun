@@ -34,15 +34,20 @@ using namespace pybind11::literals;
 
 void exportReactionsGenerator(py::module& m)
 {
-//    m.def("stoichiometryMatrix", &stoichiometryMatrix);
+ //   m.def("stoichiometryMatrix", py::overload_cast<Eigen::MatrixXd&>(&stoichiometryMatrix));
+ //   m.def("stoichiometryMatrix", py::overload_cast<Eigen::MatrixXd&(std::vector<std::string>&, bool)>(&stoichiometryMatrix);
+ // m.def("stoichiometryMatrix", py::overload_cast<std::vector<std::string>&, py::arg("valence")=false>(&stoichiometryMatrix));
 
     py::class_<ChemicalReactions>(m, "ChemicalReactions")
             .def(py::init<>())
+            .def(py::init<std::vector<std::string>>() )
             .def(py::init<std::vector<std::vector<double>>>() )
             .def(py::init<MatrixXd, std::vector<std::string>>() )
             .def(py::init<const class ChemicalReactions &>())
             .def("assign", &ChemicalReactions::operator=)
             .def("formulaMatrix", &ChemicalReactions::formulaMatrix)
+            .def("reactionsMatrix", &ChemicalReactions::reactionsMatrix)
+            .def("generateReactions", &ChemicalReactions::generateReactions)
             .def("sizeSubstancesMap", &ChemicalReactions::sizeSubstancesMap)
             .def("getCharge", py::overload_cast<std::string>(&ChemicalReactions::getCharge))
             .def("getCharge", py::overload_cast<std::size_t>(&ChemicalReactions::getCharge))

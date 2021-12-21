@@ -88,7 +88,7 @@ void exportChemicalData(py::module& m)
             .def("stoichiometryRow", &FormulaToken::makeStoichiometryRow)
             .def("testElements", &FormulaToken::testElements)
             .def("checkElements", py::overload_cast<const std::string&, const ElementsKeys&>(&FormulaToken::checkElements))
-            //.def("checkElements", py::overload_cast<const std::string&, const std::string&, const ElementsKeys&>(&FormulaToken::checkElements))
+            .def("checkElements", py::overload_cast<const std::string&, const std::string&, const ElementsKeys&>(&FormulaToken::checkElements))
             .def("__repr__", [](const FormulaToken& self) { std::stringstream ss; ss << self.parsed_list().size(); return ss.str(); })
             ;
 

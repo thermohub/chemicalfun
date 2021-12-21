@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef DATABASEGEN_H
-#define DATABASEGEN_H
+#ifndef ChemicalReactionsGEN_H
+#define ChemicalReactionsGEN_H
 
 // C++ includes
 #include <memory>
@@ -34,28 +34,37 @@ class Generator;
 class ChemicalReactions
 {
 public:
-    /// Construct a default Database instance.
+    /// Construct a default ChemicalReactions instance.
     ChemicalReactions();
 
-    /// Construct a Database instance with given formula matrix.
+    /// Construct a ChemicalReactions instance with given formula list.
+    ChemicalReactions(std::vector<std::string> substances, bool valence=false);
+
+    /// Construct a ChemicalReactions instance with given formula matrix (elements X substances).
     ChemicalReactions(std::vector<std::vector<double>> A);
 
-    /// Construct a Database instance with given formula matrix and substances (columns) list.
+    /// Construct a ChemicalReactions instance with given formula matrix and substances (columns) list.
     ChemicalReactions(MatrixXd A, std::vector<std::string> substancesList);
 
-    /// Construct a copy of a Database instance.
+    /// Construct a copy of a ChemicalReactions instance.
     ChemicalReactions(const ChemicalReactions &other);
 
-    /// Destroy this Database instance.
+    /// Destroy this ChemicalReactions instance.
     virtual ~ChemicalReactions();
 
-    /// Assign a Database instance to this.
+    /// Assign a ChemicalReactions instance to this.
     auto operator=(ChemicalReactions other) -> ChemicalReactions&;
 
     /// Returns the substances formula matrix
     auto formulaMatrix () -> MatrixXd;
 
+    /// Returns the reactions formula matrix
+    auto reactionsMatrix () -> MatrixXd;
+
     auto sizeSubstancesMap() -> size_t;
+
+    // gnerates all independet reactions based on the given substances list
+    auto generateReactions() -> void;
 
     /// Generates reactions
 //    auto generateReactions(MatrixXd &Reactions, Indices &iSubstances, Indices &iMaster) -> void;
@@ -118,4 +127,4 @@ private:
 
 }
 
-#endif // DATABASEGEN_H
+#endif // ChemicalReactionsGEN_H

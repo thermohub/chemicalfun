@@ -20,6 +20,8 @@
 #include "ChemicalFun/ReactionsGenerator/Generator.h"
 #include "Common/Exception.h"
 
+#include "ChemicalFun/FormulaParser/ChemicalData.h"
+
 #include "fstream"
 #include "iostream"
 
@@ -29,7 +31,15 @@ struct ChemicalReactions::Impl
 {
     MatrixXd formulaMatrix;
 
+    MatrixXd reactionsMatrix;
+
+    MatrixXd substancesStoichMatrix;
+
     IndexSubstancesMap iColSubstancesMap;
+
+    std::vector<std::string> substancesFormulas;
+
+    std::vector<std::string> substancesSymbols;
 
     Impl()
     {}
@@ -41,6 +51,18 @@ struct ChemicalReactions::Impl
             for (unsigned c = 0; c<A[r].size(); c++)
                 temp(r,c) = A[r][c];
         formulaMatrix = temp;
+    }
+
+    Impl(std::vector<std::string> substancesList, bool valence)
+    {
+        //Impl(ChemicalFun::substancesStoichiometryMatrix(substancesList));
+
+        formulaMatrix = stoichiometryMatrix(ChemicalFun::substancesStoichiometryMatrix(substancesList, valence)).transpose();
+
+        for (unsigned i = 0; i<substancesList.size(); i++)
+        {
+            iColSubstancesMap.insert( std::pair<Index,std::string>(i,substancesList[i]) );
+        }
     }
 
     Impl(MatrixXd A, std::vector<std::string> substancesList)
@@ -57,6 +79,10 @@ struct ChemicalReactions::Impl
 ChemicalReactions::ChemicalReactions()
 : pimpl(new Impl())
 {}
+
+ChemicalReactions::ChemicalReactions(std::vector<std::string> substancesList, bool valence)
+: pimpl(new Impl(substancesList, valence))
+{this->eraseZeroRowsFormulaMatrix(); /*std::cout << pimpl->formulaMatrix << std::endl;*compute(A);*/}
 
 ChemicalReactions::ChemicalReactions(std::vector<std::vector<double>> A)
 : pimpl(new Impl(A))
@@ -84,9 +110,23 @@ auto ChemicalReactions::formulaMatrix () -> MatrixXd
     return pimpl->formulaMatrix;
 }
 
+auto ChemicalReactions::reactionsMatrix () -> MatrixXd
+{
+    return pimpl->reactionsMatrix;
+}
+
 auto ChemicalReactions::sizeSubstancesMap() -> size_t
 {
     return pimpl->iColSubstancesMap.size();
+}
+
+auto ChemicalReactions::generateReactions() -> void
+{
+    /// need to add try chatch and chekc if formula matrix is empty
+    auto generator = Generator();
+    generator.compute(pimpl->formulaMatrix);
+    pimpl->reactionsMatrix   = generator.reactionMatrix();
+    //return pimpl->iColSubstancesMap.size();
 }
 
 auto ChemicalReactions::eraseZeroRowsFormulaMatrix ( ) -> void

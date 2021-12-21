@@ -69,6 +69,10 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     )
 endif()
 
+if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
+add_compile_options(-std=gnu++1z -mmacosx-version-min=10.15)
+endif()
+
 # Find Eigen library and include its directory
 #find_package(Eigen3 3.3.7 REQUIRED)
 #message(STATUS "Found Eigen3 v${Eigen3_VERSION}: ${Eigen3_INCLUDE_DIRS}")
