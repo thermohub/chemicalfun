@@ -11,9 +11,8 @@ dependencies:
   - pybind11
   - eigen
   - nlohmann_json
-  - pip:
-    - python={{ python_version }}
-    - pytest
+  - python={{ python_version }}
+  - pytest
 
 environment:
 
