@@ -2,10 +2,10 @@ from distutils.core import setup
 
 setup(name='chemicalfun',
       version='${PROJECT_VERSION}',
-      description='The next-generation of C++ and Python API for Chemical Formula Parser and Reactions Generator.',
+      description='C++ and Python API for Chemical Formula Parser and Reactions Generator.',
       author='G.D. Miron',
       author_email='dan.miron@psi.ch',
-      url='www.thermomod.org',
+      url='www.themorhub.org',
       license='GPLv3',
       package_dir={'chemicalfun': ''},
       packages=['chemicalfun'],
