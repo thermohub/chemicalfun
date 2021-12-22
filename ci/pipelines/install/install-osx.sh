@@ -17,12 +17,12 @@ conda update -q conda
 conda info -a
 conda devenv
 source activate chemicalfun
+echo $CONDA_PREFIX
 mkdir build
 cd build
 # Configure step
 cmake \
-    -DPYTHON_EXECUTABLE:FILEPATH="$PYTHON" \
-    -DCMAKE_INSTALL_PREFIX="$PREFIX" \
+    -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_LIBDIR=lib \
     ..
