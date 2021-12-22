@@ -69,7 +69,7 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     )
 endif()
 
-add_compile_options(-std=c++1z)
+add_compile_options(-std=c++17)
 
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
 add_compile_options(-std=gnu++1z -mmacosx-version-min=10.15)
