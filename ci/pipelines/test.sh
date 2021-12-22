@@ -1,2 +1,2 @@
 # ./build/test/tests
-pytest -ra -vv --color=yes .
+#pytest -ra -vv --color=yes .
