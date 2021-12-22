@@ -726,7 +726,7 @@ TEST(ChemicalFormula, StoichiometryMatrixValences)
     };
 
     std::vector<ElementKey> all_elments = elementsInFormulas(formula_list);
-    auto st_matr = substancesStoichiometryMatrix(formula_list, all_elments);
+    auto st_matr = substancesStoichiometryMatrix(formula_list/*, all_elments*/);
     EXPECT_EQ( to_string(all_elments), "H;O;Zz;");
     StoichiometryMatrixData matrix1 = { { 2, 1, 0 },
                                        { 2, 1, 0 },
@@ -738,7 +738,7 @@ TEST(ChemicalFormula, StoichiometryMatrixValences)
     EXPECT_EQ(st_matr, matrix1);
 
     all_elments = elementsInFormulas(formula_list, true);
-    st_matr = substancesStoichiometryMatrix(formula_list, all_elments, true);
+    st_matr = substancesStoichiometryMatrix(formula_list/*, all_elments*/, true);
     EXPECT_EQ( to_string(all_elments), "H(0);H(1);O(-2);O(0);Zz(0);");
     StoichiometryMatrixData matrix2 = { { 0, 2, 1, 0, 0 },
                                         { 0, 2, 1, 0, 0 },

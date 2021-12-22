@@ -3,7 +3,7 @@
 #include <sstream>
 #include <gtest/gtest.h>
 #include "ChemicalFun/ReactionsGenerator.h"
-#include "ChemicalFun/ReactionsGenerator/ReactionGenerator.h"
+#include "ChemicalFun/ReactionsGenerator/Reaction.h"
 #include "ChemicalFun/FormulaParser.h"
 
 using namespace testing;
