@@ -3,7 +3,7 @@ name: chemicalfun
 {% set python_version = os.environ.get("PY_VER", "3.7") %}
 
 dependencies:
-  - gxx_linux-64=7.3.0  # [linux]
+  - gxx_linux-64=9.4.0  # [linux]
   - cmake>=3.13
   - ninja
   - ccache  # [unix]
