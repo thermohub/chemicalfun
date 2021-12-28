@@ -20,15 +20,13 @@ source activate chemicalfun
 mkdir build
 cd build
 python_path=$(which python)
-echo $CONDA_PREFIX
 # Configure step
 cmake -GNinja \
     -DPYTHON_EXECUTABLE:FILEPATH=$python_path \
-    -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_LIBDIR=lib \
     ..
 ninja install
 conda list
 cd ..
-# pytest -ra -vv --color=yes .
+#pytest -ra -vv --color=yes .
