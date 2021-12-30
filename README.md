@@ -28,9 +28,11 @@ chemicalReactions = cf.ChemicalReactions(formulas)
 
 reactions = chemicalReactions.generateReactions() # returns the reactions list as a list of tuples ('substance', coefficient)
 
-reactions_dic = [{el[0]: el[1] for el in r} for r in reactions] # can be transformed to a list of dictionaries, with reaction substances as keys and the reaction coefficients as values
+# can be transformed to a list of dictionaries, with reaction substances as keys and the reaction coefficients as values
+reactions_dic = [{el[0]: el[1] for el in r} for r in reactions] 
 
 print(chemicalReactions.printReactions())
+print(reactions_dic)
 ```
 
 Output
@@ -38,12 +40,16 @@ Output
 HCO3- = H+ + CO3-2
 CaCO3 = CO3-2 + Ca+2
 H2O = H+ + OH-
+
+[{'H2O': 1.0, 'OH-': -1.0, 'H+': -1.0},
+ {'CO3-2': 1.0, 'H2O': 1.0, 'OH-': -1.0, 'HCO3-': -1.0},
+ {'Ca+2': 1.0, 'CO3-2': 1.0, 'CaCO3': -1.0}]
 ```
 
 The master substances in the reactions are decided based on the order in the given list, with master substances being the first. The number of master substances is decided based on the given substance list and thier elemental composition. To swap the master substances exchange the position in the list. 
 
 ```python
-formulas = ['Ca+2', 'CO3-2', 'H2O', 'OH-', 'H+', 'HCO3-', 'CaCO3' ] # 'H2O' and 'OH-' are in front of 'H+' and will be set as masater 
+formulas = ['Ca+2', 'CO3-2', 'H2O', 'OH-', 'H+', 'HCO3-', 'CaCO3' ] # 'H2O' and 'OH-' are in front of 'H+' and will be set as master 
 
 chemicalReactions = cf.ChemicalReactions(formulas)
 
@@ -65,10 +71,6 @@ master: ['Ca+2', 'CO3-2', 'H2O', 'OH-']
 By default the algorithm produces dissociation reactions (dissociation of dependent substances). To generate formation reactions, where the dependent substances are on the product side of the reaction: 
 
 ```python
-formulas = ['Ca+2', 'CO3-2', 'H2O', 'OH-', 'H+', 'HCO3-', 'CaCO3' ] # 'H2O' and 'OH-' are in front of 'H+' and will be set as master 
-
-chemicalReactions = cf.ChemicalReactions(formulas)
-
 reactions = chemicalReactions.generateReactions(formation=True) # formation=True to generate formation reactions
 
 print(chemicalReactions.printReactions())
@@ -132,7 +134,7 @@ master: ['OH-', 'H+', 'Fe+2', 'Fe+3']
 dependent: ['FeO@', 'FeFe|3|2O4', 'O2', 'H2O']
 ```
 
-To get the reactions using the substance symbols, provide the symbols list in addition to their formulas when creating a ChemicalReactions object. 
+To have reactions using substance symbols, provide the symbols list in addition to their formulas when creating a ChemicalReactions object. Pay attention to the order in the two lists and that each formula has a corresponding symbol. 
 
 ```python
 formulas = ["Ca+2", "Fe+2", "Fe|3|+3", "H+", "OH-", "SO4-2", "CaSO4@", "CaOH+", "FeO@", "HFe|3|O2@", "FeOH+", "Fe|3|OH+2", "H2O@",  "FeS|-2|", "FeS|0|S|-2|", "S|4|O2"]

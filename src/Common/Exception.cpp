@@ -31,7 +31,7 @@ namespace internal {
 /// @param line The line number
 std::string location(const std::string& file, int line)
 {
-    std::string str = "ThermoFun/";
+    std::string str = "ChemicalFun/";
     auto pos = std::find_end(file.begin(), file.end(), str.begin(), str.end()) - file.begin();
     std::stringstream ss;
     ss << file.substr(pos, file.size() - pos) << ":" << line;
@@ -51,7 +51,7 @@ std::string message(const Exception& exception, const std::string& file, int /*l
     message << bar << std::endl;
     message << "*** Error: " << error << std::endl;
     message << "*** Reason: " << reason << std::endl;
-    message << "*** Location: This error was encountered in " << loc << "." << std::endl;
+    //message << "*** Location: This error was encountered in " << loc << "." << std::endl;
     message << bar << std::endl;
     message << std::endl;
     return message.str();

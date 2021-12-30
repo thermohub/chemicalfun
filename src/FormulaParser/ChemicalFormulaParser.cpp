@@ -361,14 +361,14 @@ void ChemicalFormulaParser::scan_symbol(std::string& icname, std::string& parsed
         return;
     }
     if( !is_capital(parsed_string[0]) ) {
-        funError("Fromula Parser"," A symbol of element expected here!", __LINE__, __FILE__ );
+        funError("Fromula Parser", parsed_string+ " a symbol of element expected here!", __LINE__, __FILE__ );
     }
     for( i=1; i<=MAXICNAME+2; i++ ) {
         if( !is_lowercase(parsed_string[i]) ) {
             break;
         }
     }
-    funErrorIf(i>=MAXICNAME, "Fromula Parser","IC Symbol scan error", __LINE__, __FILE__ );
+    funErrorIf(i>=MAXICNAME, "Fromula Parser",parsed_string+ " element symbol scan error", __LINE__, __FILE__ );
     icname = std::string( parsed_string, 0, i ); //  strncpy( ic, aFa.cur, len );
     parsed_string = parsed_string.substr(i);
 }

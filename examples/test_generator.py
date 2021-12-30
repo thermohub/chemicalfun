@@ -24,18 +24,18 @@ symbols = [ "Ca+2", "CaOH+", "Cl-", "ClO4-", "H+", "H2", "H2@", "H2O@", "O2", "O
 
 formulas = [ "Ca+2", "Ca(OH)+", "Cl-", "Cl|7|O4-", "H+", "H|0|2", "H|0|2@", "H2O@", "O|0|2", "O|0|2@", "OH-", "Ca(OH)2" ]
 
-print( generateElementsListValences(formulas, False) )
-A_False = stoichiometryMatrix(formulas, False).transpose()
+print( elementsInFormulas(formulas, False) )
+A_False = substancesStoichiometryMatrix(formulas, False)
 print( A_False )
 
-print( generateElementsListValences(formulas, True) )
-A_True = stoichiometryMatrix(formulas, True).transpose()
+print( elementsInFormulas(formulas, True) )
+A_True = substancesStoichiometryMatrix(formulas, True)
 print( A_True )
 
 # ChemicalReactions
 print("ChemicalReactions")
 
-reactionsDB = ChemicalReactions(A_True, symbols)
+reactionsDB = ChemicalReactions(formulas, symbols)
 reactionsDB2 = reactionsDB
 reactionsDB3 = ChemicalReactions(reactionsDB)
 
@@ -51,7 +51,7 @@ print(reactionsDB.getCharge(11))
 print("Generator")
 
 generator= Generator()
-generator.setMethod(CanonicalLe16)
+generator.setMethod(RowReduceSmMi98)
 generator.compute(reactionsDB.formulaMatrix())
 generator2 =  Generator(generator)
 
@@ -70,6 +70,7 @@ print("Reaction")
 iSubstances = generator.isubstances()
 
 reac_1 = Reaction(reactions[:,1], iSubstances, reactionsDB, "")
+reac_1.updateChPattern()
 print( reac_1.isIsocoulombic())
 print( reac_1.isIsoelectric())
 print( reac_1.chargePattern())

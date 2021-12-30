@@ -235,7 +235,7 @@ print(all_elements.stoichiometryMatrixCSV(formula_list))
 
 test_elments = elementsInFormulas(formula_list);
 print(test_elments)
-print(substancesStoichiometryMatrix(formula_list, test_elments))
+print(substancesStoichiometryMatrix(formula_list))
 
 # addElement
 
@@ -267,7 +267,7 @@ print(form_tok.elementsList())
 print(form_tok.charge())
 #form_tok.testChargeImbalance(all_elements.elements())  exception
 print(form_tok.stoichiometryRow(all_elements.elementsKeysList()))
-print(form_tok.calcProperties(all_elements.elements()))
+print(form_tok.properties(all_elements.elements()))
 print(form_tok.testElements("Am|3|(Oxa)3-3", all_elements.elementsKeys()))
 print(form_tok.checkElements("Am|3|(Oxa)3-3", all_elements.elementsKeys()))
 
@@ -320,4 +320,4 @@ print(form_values)
 print("FormulaProperties")
 #print("")
 form_prop = FormulaProperties()
-#print(form_prop)
+print(form_prop)

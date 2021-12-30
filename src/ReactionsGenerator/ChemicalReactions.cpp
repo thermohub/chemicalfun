@@ -35,11 +35,27 @@ struct ChemicalReactions::Impl
 
     MatrixXd substancesStoichMatrix;
 
-    IndexSubstancesMap iColSubstancesMap;
+    IndexSubstancesMap iColFormulasMap;
+    
+    IndexSubstancesMap iColSymbolsMap;
 
-    std::vector<std::string> substancesFormulas;
+    Indices iSubstances;
 
-    std::vector<std::string> substancesSymbols;
+    std::vector<std::string> substanceFormulas;
+
+    std::vector<std::string> substanceSymbols;
+
+    std::vector<Reactants> reactions;
+
+    //std::map<Reactants> mapReactions;
+
+    std::vector<std::string> strReactions;
+
+    Generator generator;
+
+    std::vector<std::string> masterSubstances;
+
+    std::vector<std::string> dependentSubstances;
 
     Impl()
     {}
@@ -53,25 +69,144 @@ struct ChemicalReactions::Impl
         formulaMatrix = temp;
     }
 
-    Impl(std::vector<std::string> substancesList, bool valence)
+    Impl(std::vector<std::string> substanceFormulasList, bool valence)
     {
-        //Impl(ChemicalFun::substancesStoichiometryMatrix(substancesList));
+        //Impl(ChemicalFun::substancesStoichiometryMatrix(substanceFormulasList));
 
-        formulaMatrix = stoichiometryMatrix(ChemicalFun::substancesStoichiometryMatrix(substancesList, valence)).transpose();
+        formulaMatrix = stoichiometryMatrix(ChemicalFun::substancesStoichiometryMatrix(substanceFormulasList, valence)).transpose();
 
-        for (unsigned i = 0; i<substancesList.size(); i++)
+        for (unsigned i = 0; i<substanceFormulasList.size(); i++)
         {
-            iColSubstancesMap.insert( std::pair<Index,std::string>(i,substancesList[i]) );
+            iColFormulasMap.insert( std::pair<Index,std::string>(i,substanceFormulasList[i]) );
+            iColSymbolsMap.insert( std::pair<Index,std::string>(i,substanceFormulasList[i]) );
         }
     }
 
-    Impl(MatrixXd A, std::vector<std::string> substancesList)
+    Impl(std::vector<std::string> substanceFormulasList, std::vector<std::string> substanceSymbolsList, bool valence)
+    {
+        //Impl(ChemicalFun::substancesStoichiometryMatrix(substanceFormulasList));
+
+        ChemicalFun::funErrorIf(substanceFormulasList.size() != substanceSymbolsList.size(), "Chemical Reactions", 
+        "Different number of formulas "+ std::to_string(substanceFormulasList.size()) +" and symbols " + std::to_string(substanceSymbolsList.size()) , __LINE__, __FILE__ );
+
+        formulaMatrix = stoichiometryMatrix(ChemicalFun::substancesStoichiometryMatrix(substanceFormulasList, valence)).transpose();
+
+        for (unsigned i = 0; i<substanceFormulasList.size(); i++)
+        {
+            iColFormulasMap.insert( std::pair<Index,std::string>(i,substanceFormulasList[i]) );
+            iColSymbolsMap.insert( std::pair<Index,std::string>(i,substanceSymbolsList[i]) );
+        }
+    }
+
+    Impl(MatrixXd A, std::vector<std::string> substanceFormulasList)
     {
         formulaMatrix = A;
-        for (unsigned i = 0; i<substancesList.size(); i++)
+        for (unsigned i = 0; i<substanceFormulasList.size(); i++)
         {
-            iColSubstancesMap.insert( std::pair<Index,std::string>(i,substancesList[i]) );
+            iColFormulasMap.insert( std::pair<Index,std::string>(i,substanceFormulasList[i]) );
         }
+    }
+
+    auto makeReactions() -> void
+    {
+        ChemicalFun::funErrorIf(reactionsMatrix.size() == 0, "Chemical Reactions", 
+        "Reactions matrix is empty. Call generateReactions() first.", __LINE__, __FILE__ );
+
+        reactions.clear();
+        strReactions.clear();
+
+        for(size_t c = 0; c<reactionsMatrix.cols(); c++)
+        {
+            Reactants reaction;
+            for ( size_t r = 0; r<reactionsMatrix.rows(); r++)
+            {
+                std::string symbol = iColSymbolsMap[iSubstances[r]];
+                if (reactionsMatrix(r,c) != 0.0)
+                    reaction.push_back( std::pair<std::string, double>(symbol,reactionsMatrix(r,c)) );
+            }
+            reactions.push_back(reaction);
+        }
+
+        auto imaster = generator.imaster();
+        auto inonmaster = generator.inonmaster();
+
+        masterSubstances.clear();
+        dependentSubstances.clear();
+
+        for (const auto& i : imaster )
+            masterSubstances.push_back(iColSymbolsMap[i]);
+
+        for (const auto& i : inonmaster )
+            dependentSubstances.push_back(iColSymbolsMap[i]);
+    }
+
+    auto halfReaction(std::string& reactR, const std::vector<std::string>& reacts, const std::vector<double>& coeffs, bool reactantsOrder) -> void
+    {
+        if (reactantsOrder)
+            for( std::size_t jj = 0; jj <reacts.size(); jj++)
+            {
+                if( jj > 0 )
+                    reactR += " + ";
+                
+                coefficient(reactR, coeffs[jj]);
+                reactR += reacts[jj];
+            }
+        else
+            for(size_t jj = reacts.size(); jj --> 0 ;)
+            {
+                if( jj < reacts.size()-1 )
+                    reactR += " + ";
+
+                coefficient(reactR, coeffs[jj]);
+                reactR += reacts[jj];
+            }
+    }
+
+    auto coefficient( std::string& reactR, const double& coeff) -> void
+    {
+        if( coeff != 1)
+         {
+             long intPart = coeff;
+             double fractionalPart = fabs(coeff - intPart);
+             if (fractionalPart == 0)
+                 reactR += std::to_string( intPart );
+             else
+             {
+                 auto str = std::to_string( coeff );
+                 str.erase ( str.find_last_not_of('0') + 1, std::string::npos );
+                 reactR += str;
+             }
+         }
+    }
+
+    auto reactionString(const Reactants& reaction, bool reactantsOrder) -> std::string
+    {
+       std::string reactR; // reactants, products;
+       std::vector<std::string> reactants, products;
+       std::vector<double> reacCoeff, prodCoeff;
+       int re=0;
+       int pr=0;
+
+       for (const auto& r : reaction )
+       {
+            if (r.second < 0) // reactants
+            {
+                reactants.push_back(r.first); 
+                reacCoeff.push_back(-1*r.second); 
+            }
+
+            if (r.second > 0) // products
+            {
+                products.push_back(r.first); 
+                prodCoeff.push_back(r.second); 
+            }
+       }
+
+       halfReaction(reactR, reactants, reacCoeff, reactantsOrder);
+       reactR += " = ";
+       halfReaction(reactR, products, prodCoeff, reactantsOrder);
+
+       return reactR;
     }
 
 };
@@ -80,16 +215,20 @@ ChemicalReactions::ChemicalReactions()
 : pimpl(new Impl())
 {}
 
-ChemicalReactions::ChemicalReactions(std::vector<std::string> substancesList, bool valence)
-: pimpl(new Impl(substancesList, valence))
+ChemicalReactions::ChemicalReactions(std::vector<std::string> substanceFormulasList, std::vector<std::string> substanceSymbolsList, bool valence)
+: pimpl(new Impl(substanceFormulasList, substanceSymbolsList, valence))
+{this->eraseZeroRowsFormulaMatrix(); /*std::cout << pimpl->formulaMatrix << std::endl;*compute(A);*/}
+
+ChemicalReactions::ChemicalReactions(std::vector<std::string> substanceFormulasList, bool valence)
+: pimpl(new Impl(substanceFormulasList, valence))
 {this->eraseZeroRowsFormulaMatrix(); /*std::cout << pimpl->formulaMatrix << std::endl;*compute(A);*/}
 
 ChemicalReactions::ChemicalReactions(std::vector<std::vector<double>> A)
 : pimpl(new Impl(A))
 {this->eraseZeroRowsFormulaMatrix(); /*std::cout << pimpl->formulaMatrix << std::endl;*compute(A);*/}
 
-ChemicalReactions::ChemicalReactions(MatrixXd A, std::vector<std::string> substancesList)
-: pimpl(new Impl(A, substancesList))
+ChemicalReactions::ChemicalReactions(MatrixXd A, std::vector<std::string> substanceFormulasList)
+: pimpl(new Impl(A, substanceFormulasList))
 {this->eraseZeroRowsFormulaMatrix(); /*std::cout << pimpl->formulaMatrix << std::endl;*compute(A);*/}
 
 ChemicalReactions::ChemicalReactions(const ChemicalReactions& other)
@@ -105,28 +244,77 @@ auto ChemicalReactions::operator=(ChemicalReactions other) -> ChemicalReactions&
     return *this;
 }
 
-auto ChemicalReactions::formulaMatrix () -> MatrixXd
+auto ChemicalReactions::formulaMatrix () const -> const MatrixXd&
 {
     return pimpl->formulaMatrix;
 }
 
-auto ChemicalReactions::reactionsMatrix () -> MatrixXd
+auto ChemicalReactions::reactionsMatrix () const -> const MatrixXd&
 {
     return pimpl->reactionsMatrix;
 }
 
-auto ChemicalReactions::sizeSubstancesMap() -> size_t
+auto ChemicalReactions::generator () const -> const Generator&
 {
-    return pimpl->iColSubstancesMap.size();
+    return pimpl->generator;
 }
 
-auto ChemicalReactions::generateReactions() -> void
+auto ChemicalReactions::masterSubstances () const -> const std::vector<std::string>&
 {
-    /// need to add try chatch and chekc if formula matrix is empty
-    auto generator = Generator();
-    generator.compute(pimpl->formulaMatrix);
-    pimpl->reactionsMatrix   = generator.reactionMatrix();
-    //return pimpl->iColSubstancesMap.size();
+    return pimpl->masterSubstances;
+}
+
+auto ChemicalReactions::dependentSubstances () const -> const std::vector<std::string>&
+{
+    return pimpl->dependentSubstances;
+}
+
+
+auto ChemicalReactions::sizeSubstancesMap() -> size_t
+{
+    return pimpl->iColFormulasMap.size();
+}
+
+auto ChemicalReactions::generateReactions(bool formation) const -> const std::vector<Reactants>&
+{
+    ChemicalFun::funErrorIf(pimpl->formulaMatrix.size() == 0, "Chemical Reactions", 
+        "Chemical formulas stoiechiometry matrix is empty.", __LINE__, __FILE__ );
+
+    pimpl->generator = Generator();
+    pimpl->generator.compute(pimpl->formulaMatrix);
+    
+    if (formation)
+        pimpl->reactionsMatrix   = pimpl->generator.reactionMatrix()*-1;
+    else
+        pimpl->reactionsMatrix   = pimpl->generator.reactionMatrix();
+
+    pimpl->iSubstances = pimpl->generator.isubstances();
+
+    pimpl->makeReactions();
+
+    return pimpl->reactions;
+    //return pimpl->iColFormulasMap.size();
+}
+
+auto ChemicalReactions::stringReactions(bool reactantsOrder) const -> const std::vector<std::string>&
+{
+    pimpl->strReactions.clear();
+    
+    if (pimpl->reactions.size() == 0)
+        generateReactions();
+
+    for (const auto& rr : pimpl->reactions)
+        pimpl->strReactions.push_back(pimpl->reactionString(rr, reactantsOrder));
+        
+    return pimpl->strReactions;
+}
+
+auto ChemicalReactions::printReactions(std::ostream &stream, bool reactantsOrder) -> void
+{
+    std::string reactants, products;
+
+    for (const auto& rr : pimpl->reactions)
+        stream << pimpl->reactionString(rr, reactantsOrder) << std::endl;;
 }
 
 auto ChemicalReactions::eraseZeroRowsFormulaMatrix ( ) -> void
@@ -154,7 +342,7 @@ auto ChemicalReactions::eraseZeroRowsFormulaMatrix ( ) -> void
 auto ChemicalReactions::mapIndex(std::string symbol) -> int
 {
     IndexSubstancesMap::iterator it_;
-    IndexSubstancesMap map = pimpl->iColSubstancesMap;
+    IndexSubstancesMap map = pimpl->iColSymbolsMap;
     for (it_ = map.begin(); it_ != map.end(); ++it_ )
         if (it_->second == symbol)
             return it_->first;
@@ -196,8 +384,8 @@ auto ChemicalReactions::reactionsChargesMap(MatrixXd reactionM, Indices iSubstan
     std::vector<ReactionChargesMap> reactionsChargesMaps;
 
     int charge;
-    auto substMap = pimpl->iColSubstancesMap;
-//    iColSubstancesMap.insert( std::pair<Index,std::string>(i,substancesList[i]) );
+    auto substMap = pimpl->iColFormulasMap;
+//    iColFormulasMap.insert( std::pair<Index,std::string>(i,substanceFormulasList[i]) );
 //    mymap.erase (it);
     for (unsigned c = 0; c<reactionM.cols(); c++)
     {

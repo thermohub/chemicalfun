@@ -29,6 +29,8 @@ namespace ReactionsGenerator {
 using IndexSubstancesMap    = std::map<Index, std::string>;
 using IndexElementsMap      = std::map<Index, std::string>;
 
+using Reactants = std::vector<std::pair<std::string, double>>;
+
 class Generator;
 
 class ChemicalReactions
@@ -37,14 +39,17 @@ public:
     /// Construct a default ChemicalReactions instance.
     ChemicalReactions();
 
-    /// Construct a ChemicalReactions instance with given formula list.
-    ChemicalReactions(std::vector<std::string> substances, bool valence=false);
+    /// Construct a ChemicalReactions instance with given substance formula list.
+    ChemicalReactions(std::vector<std::string> substanceFormulasList, bool valence=false);
 
-    /// Construct a ChemicalReactions instance with given formula matrix (elements X substances).
+    /// Construct a ChemicalReactions instance with given substance formulas and symbols list.
+    ChemicalReactions(std::vector<std::string> substanceFormulasList, std::vector<std::string> substanceSymbolsList, bool valence=false);
+
+    /// Construct a ChemicalReactions instance with given substance formula matrix (elements X substances).
     ChemicalReactions(std::vector<std::vector<double>> A);
 
-    /// Construct a ChemicalReactions instance with given formula matrix and substances (columns) list.
-    ChemicalReactions(MatrixXd A, std::vector<std::string> substancesList);
+    /// Construct a ChemicalReactions instance with given substance formula matrix and substances (columns) list.
+    ChemicalReactions(MatrixXd A, std::vector<std::string> substanceFormulasList);
 
     /// Construct a copy of a ChemicalReactions instance.
     ChemicalReactions(const ChemicalReactions &other);
@@ -56,15 +61,29 @@ public:
     auto operator=(ChemicalReactions other) -> ChemicalReactions&;
 
     /// Returns the substances formula matrix
-    auto formulaMatrix () -> MatrixXd;
+    auto formulaMatrix () const -> const MatrixXd&;
 
     /// Returns the reactions formula matrix
-    auto reactionsMatrix () -> MatrixXd;
+    auto reactionsMatrix () const -> const MatrixXd&;
 
     auto sizeSubstancesMap() -> size_t;
 
-    // gnerates all independet reactions based on the given substances list
-    auto generateReactions() -> void;
+    // Returns a reactions Generator instance
+    auto generator () const -> const Generator&;
+
+    // Returns the list of dependent substances
+    auto dependentSubstances () const -> const std::vector<std::string>&;
+
+    // Returns the list of master substances
+    auto masterSubstances () const -> const std::vector<std::string>&;
+
+    // gnerates all independent reactions based on the given substances list
+    auto generateReactions(bool formation = false) const -> const std::vector<Reactants>&;
+
+    // returns the list of string of chemical reactions
+    auto stringReactions(bool reactantsOrder = false) const -> const std::vector<std::string>&;
+
+    auto printReactions(std::ostream &stream, bool reactantsOrder = false) -> void;
 
     /// Generates reactions
 //    auto generateReactions(MatrixXd &Reactions, Indices &iSubstances, Indices &iMaster) -> void;
