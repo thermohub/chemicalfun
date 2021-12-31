@@ -54,8 +54,8 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # Set the C++ standard
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 11)
+#set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Set the list of compiler flags for MSVC compiler
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
@@ -69,10 +69,10 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     )
 endif()
 
-add_compile_options(-std=c++17)
+add_compile_options(-std=c++11)
 
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
-add_compile_options(-Wall -Wno-ignored-attributes -Wno-pedantic -Wno-variadic-macros -Wno-deprecated)
+add_compile_options(-std=gnu++1z -Wall -Wno-ignored-attributes -Wno-pedantic -Wno-variadic-macros -Wno-deprecated)
 endif()
 
 # Find Eigen library and include its directory
