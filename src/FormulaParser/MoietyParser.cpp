@@ -79,7 +79,7 @@ std::vector<MoietyTerm> MoietyParser::parse(const std::string& aformula, int&  n
                 terms.push_back(MoietyTerm{"Va", nsites, nj});
                 break;
             }
-            [[fallthrough]];
+            [[gnu::fallthrough]];
         default:
             // else other symbol
             parsed_string = parsed_string.substr(1);

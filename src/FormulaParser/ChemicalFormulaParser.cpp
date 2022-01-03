@@ -211,7 +211,7 @@ void ChemicalFormulaParser::add_charge(std::list<ElementsTerm>& terms_list)
     {
     case CHARGE_NUL:    break;
     case CHARGE_MINUS:  sign = -1;
-        [[fallthrough]];
+        [[gnu::fallthrough]];
     case CHARGE_PLUS:
         chan = chan.substr(1);
         get_real( cha, chan );
@@ -292,7 +292,7 @@ void ChemicalFormulaParser::scan_element(std::list<ElementsTerm>& terms_list, st
             parsed_string = parsed_string.substr(2);
             break;
         } // else goto default - other <icsymb>
-        [[fallthrough]];
+        [[gnu::fallthrough]];
     default: // <isotope_mass><icsymb><valence>
     {
         std::string isotop = std::string(NOISOTOPE_CLASS);
