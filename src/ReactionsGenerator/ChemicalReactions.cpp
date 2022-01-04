@@ -339,24 +339,24 @@ auto ChemicalReactions::eraseZeroRowsFormulaMatrix ( ) -> void
     pimpl->formulaMatrix = M;
 }
 
-auto ChemicalReactions::mapIndex(std::string symbol) -> int
+auto ChemicalReactions::mapIndex(std::string substance) -> int
 {
     IndexSubstancesMap::iterator it_;
-    IndexSubstancesMap map = pimpl->iColSymbolsMap;
+    IndexSubstancesMap map = pimpl->iColFormulasMap;
     for (it_ = map.begin(); it_ != map.end(); ++it_ )
-        if (it_->second == symbol)
+        if (it_->second == substance)
             return it_->first;
 
     return -1;
 }
 
-auto ChemicalReactions::getCharge(std::string symbol) -> int
+auto ChemicalReactions::getCharge(std::string substance) -> int
 {
-    auto index = mapIndex(symbol);
+    auto index = mapIndex(substance);
 
     if ( index < 0 )
     {
-        ChemicalFun::errorSubstanceNotFound(symbol, "Database::getCharge", __LINE__);
+        ChemicalFun::errorSubstanceNotFound(substance, "Database::getCharge", __LINE__);
     }
 
     auto R = pimpl->formulaMatrix.rows();

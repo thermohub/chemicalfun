@@ -137,7 +137,7 @@ private:
     auto reactionsChargesMap(MatrixXd reactionMatrix, Indices iSubstances) -> std::vector<ReactionChargesMap>;
 
     /// Returns the index of the column for a substance from the formula matrix
-    auto mapIndex(std::string symbol) -> int;
+    auto mapIndex(std::string substance) -> int;
 
     struct Impl;
 

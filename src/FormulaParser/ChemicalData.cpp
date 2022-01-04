@@ -641,4 +641,16 @@ StoichiometryMatrixData substancesStoichiometryMatrix(const std::vector<std::str
     return matrA;
 }
 
+StoichiometryMatrixData stoichiometryMatrix(const std::vector<std::string> &formulalist,
+                                                      std::vector<ElementKey> all_elements)
+{
+    StoichiometryMatrixData matrA;
+    FormulaToken formula("");
+    for(const auto& aformula: formulalist) {
+        formula.setFormula(aformula, false);
+        matrA.push_back(formula.makeStoichiometryRow(all_elements));
+    }
+    return matrA;
+}
+
 }

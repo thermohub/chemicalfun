@@ -246,9 +246,13 @@ protected:
 
 std::string to_string(const std::vector<ElementKey>& keys );
 
-/// Generate stoichiometry matrix from the formula list and elements list.
+/// Generate stoichiometry matrix from the formula list.
 StoichiometryMatrixData substancesStoichiometryMatrix(const std::vector<std::string> &formulalist,
-                                                            bool valence = false);
+                                                      bool valence = false);
+
+/// Generate stoichiometry matrix from the formula list and elements list.
+StoichiometryMatrixData stoichiometryMatrix(const std::vector<std::string> &formulalist,
+                                                      std::vector<ElementKey> all_elements);
 
 /// Generate elements used list
 std::vector<ElementKey> elementsInFormulas(const std::vector<std::string> &formulalist,
