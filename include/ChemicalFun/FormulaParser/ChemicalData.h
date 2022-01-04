@@ -1,4 +1,22 @@
-﻿#pragma once
+﻿// ChemicalFun is a C++ and Python library 
+// for Chemical Formula Parser and Reactions Generator.
+//
+// Copyright (C) 2018-2022 G.D.Miron, D.Kulik, S.Dmytriieva
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -95,7 +113,7 @@ struct FormulaValues
 };
 
 /// Values calculated from the formula of substances.
-struct FormulaProperites
+struct FormulaProperties
 {
     std::string formula;
     double charge;
@@ -118,12 +136,12 @@ class FormulaToken final
 {
 public:
     /// Constructor
-    FormulaToken(const std::string& aformula, bool with_valences = false) {
-        setFormula(aformula, with_valences);
+    FormulaToken(const std::string& aformula, bool valence = false) {
+        setFormula(aformula, valence);
     }
 
     /// Disassemble the formula.
-    void setFormula(const std::string& aformula, bool with_valences = false);
+    void setFormula(const std::string& aformula, bool valence = false);
     /// Disassembled formula.
     const std::string& formula() const  {
         return current_formula;
@@ -155,11 +173,11 @@ public:
     /// Build list of elements not present into system.
     std::string testElements(const std::string& aformula, const ElementsKeys& dbelementkeys);
     /// Throw exeption if charge imbalance.
-    void testCargeImbalance(const ElementsData& dbelements = {});
+    void testChargeImbalance(const ElementsData& dbelements = {});
 
     /// Calculate charge, molar mass, elemental entropy, atoms per formula unit
     /// for chemical formulae.
-    FormulaProperites calculateProperites(const ElementsData& dbelements);
+    FormulaProperties properties(const ElementsData& dbelements);
 
 protected:
     /// If we need a matrix with separate element valences
@@ -184,57 +202,61 @@ public:
     static int defaultValence(const std::string& symbol);
 
     /// List of elements collected from the list of formulas.
-    static ElementsKeys extractElements(const std::vector<std::string>& formulalist);
+    static ElementsKeys formulasElements(const std::vector<std::string>& formulalist);
 
     /// Add new element to internal.
     void addElement(const ElementKey &elkey, const ElementValues &elvalue);
 
-    const ElementsData& getElements() const {
-        return dbElements;
+    const ElementsData& elements() const {
+        return dbElements_;
     }
-    const ElementsKeys& getElementsKeys() const {
-        return dbElementsKeys;
+    const ElementsKeys& elementsKeys() const {
+        return dbElementsKeys_;
     }
-    std::vector<ElementKey> getElementsKeysList() const {
-        return std::vector<ElementKey>(dbElementsKeys.begin(), dbElementsKeys.end());
+    std::vector<ElementKey> elementsKeysList() const {
+        return std::vector<ElementKey>(dbElementsKeys_.begin(), dbElementsKeys_.end());
     }
 
     /// Calculate charge, molar mass, elemental entropy, atoms per formula.
-    FormulaProperites calcThermo(const std::string aformula) const {
-        return FormulaToken(aformula).calculateProperites(this->dbElements);
+    FormulaProperties formulasProperties(const std::string aformula) const {
+        return FormulaToken(aformula).properties(this->dbElements_);
     }
     /// Calculate charge, molar mass, elemental entropy, atoms per formula list.
-    std::vector<FormulaProperites> calcThermo(const std::vector<std::string>& formulalist);
+    std::vector<FormulaProperties> formulasProperties(const std::vector<std::string>& formulalist);
 
     /// Generate stoichiometry matrix from the formula list.
-    StoichiometryMatrixData calcStoichiometryMatrix(const std::vector<std::string>& formulalist);
+    StoichiometryMatrixData stoichiometryMatrix(const std::vector<std::string>& formulalist);
 
     /// Restore elements DB from JSON array format output string.
     void readElements(const std::string &json_array);
     /// Download elements DB to JSON array format output string.
-    std::string writeElements(bool dense = false);
+    std::string writeElements(bool dense = false) const;
 
     void printCSV(std::ostream &stream);
-    void printThermo(std::ostream &stream, const std::vector<std::string> &formulalist);
+    void formulasPropertiesCSV(std::ostream &stream, const std::vector<std::string> &formulalist);
     void printStoichiometryMatrix(std::ostream &stream, const std::vector<std::string> &formulalist);
 
 protected:
     /// Loading from database elements
-    ElementsData dbElements;
+    ElementsData dbElements_;
     /// Set of keys of elements downloaded from the database
-    ElementsKeys dbElementsKeys;
+    ElementsKeys dbElementsKeys_;
 
 };
 
 std::string to_string(const std::vector<ElementKey>& keys );
+
+/// Generate stoichiometry matrix from the formula list.
+StoichiometryMatrixData substancesStoichiometryMatrix(const std::vector<std::string> &formulalist,
+                                                      bool valence = false);
+
 /// Generate stoichiometry matrix from the formula list and elements list.
-StoichiometryMatrixData generateStoichiometryMatrixValences(const std::vector<std::string> &formulalist,
-                                                            std::vector<ElementKey> all_elements,
-                                                            bool with_valences = false);
+StoichiometryMatrixData stoichiometryMatrix(const std::vector<std::string> &formulalist,
+                                                      std::vector<ElementKey> all_elements);
 
 /// Generate elements used list
-std::vector<ElementKey> generateElementsListValences(const std::vector<std::string> &formulalist,
-                                                     bool with_valences = false);
+std::vector<ElementKey> elementsInFormulas(const std::vector<std::string> &formulalist,
+                                                     bool valence = false);
 }
 
 

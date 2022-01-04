@@ -1,11 +1,29 @@
-#include "ChemicalFun/ReactionsGenerator/ReactionGen.h"
-#include "ChemicalFun/ReactionsGenerator/DatabaseGenerator.h"
+// ChemicalFun is a C++ and Python library 
+// for Chemical Formula Parser and Reactions Generator.
+//
+// Copyright (C) 2018-2022 G.D.Miron, D.Kulik, S.Dmytriieva
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+#include "ChemicalFun/ReactionsGenerator/Reaction.h"
+#include "ChemicalFun/ReactionsGenerator/ChemicalReactions.h"
 
 namespace ReactionsGenerator {
 
 struct Reaction::Impl
 {
-    DatabaseGenerator *db;
+    ChemicalReactions *db;
 
     VectorXd reacCoeff;
 
@@ -18,7 +36,7 @@ struct Reaction::Impl
     Impl()
     {}
 
-    Impl(VectorXd coefficients, Indices iSubstances, DatabaseGenerator* databaseGenerator, std::string idReac_)
+    Impl(VectorXd coefficients, Indices iSubstances, ChemicalReactions* databaseGenerator, std::string idReac_)
     {
         reacCoeff = coefficients;
         iSubst    = iSubstances;
@@ -32,7 +50,7 @@ Reaction::Reaction()
 : pimpl(new Impl())
 {}
 
-Reaction::Reaction(VectorXd coefficients, Indices iSubstances, DatabaseGenerator *databaseGenerator, std::string idReac_)
+Reaction::Reaction(VectorXd coefficients, Indices iSubstances, ChemicalReactions *databaseGenerator, std::string idReac_)
 : pimpl(new Impl(coefficients, iSubstances, databaseGenerator, idReac_))
 {this->updateChPattern();}
 
@@ -69,19 +87,36 @@ auto Reaction::chargePattern () -> ChargeCoeffMap
     return pimpl->chPattern;
 }
 
-auto Reaction::operator*(double aa) -> Reaction
+
+Reaction &Reaction::operator+=(const Reaction &rhs)
 {
-    this->setCoefficients((this->coefficients()*aa));
+    this->setCoefficients((this->coefficients()+rhs.coefficients()));
     this->updateChPattern();
     return *this;
 }
 
-auto Reaction::operator+( Reaction b) -> Reaction
+Reaction &Reaction::operator*=(double aa)
 {
-    this->setCoefficients((this->coefficients()+b.coefficients()));
-    this->updateChPattern();
-    return *this;
+   this->setCoefficients((this->coefficients()*aa));
+   this->updateChPattern();
+   return *this;
 }
+
+//auto Reaction::operator*(double aa) -> Reaction
+//{
+//    this->setCoefficients((this->coefficients()*aa));
+//    this->updateChPattern();
+//    return *this;
+//}
+
+
+//auto Reaction::operator+(const Reaction &rhs) -> Reaction
+//{
+//    this->setCoefficients((this->coefficients()+rhs.coefficients()));
+//    this->updateChPattern();
+//    return *this;
+//}
+
 
 bool Reaction::operator==( const Reaction &b) const
 {
@@ -124,6 +159,8 @@ auto Reaction::updateChPattern( )-> void
         }
     pimpl->chPattern = chPattern;
 }
+
+
 
 auto Reaction::isIsocoulombic( ) -> bool
 {

@@ -16,9 +16,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "pyChemicalData.hpp"
+#include "pyReactionsGenerator.hpp"
 
-#include "FormulaParser/ChemicalData.h"
-#include "FormulaParser/ChemicalFormulaParser.h"
-#include "FormulaParser/MoietyParser.h"
-
+PYBIND11_MODULE(PyChemicalFun, m)
+{
+    exportChemicalData(m);
+    exportReactionsGenerator(m);
+}

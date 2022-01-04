@@ -7,8 +7,8 @@ HEADERS += \
     $$PWD/MatrixUtils.h \
     $$PWD/Exception.h \
     $$PWD/Combiner.h \
-    $$PWD/DatabaseGenerator.h \
-    $$PWD/ReactionGen.h
+    $$PWD/ChemicalReactions.h \
+    $$PWD/ReactionGenerator.h
 
 SOURCES += \
     $$PWD/Generator.cpp \
@@ -18,7 +18,7 @@ SOURCES += \
     $$PWD/MatrixUtils.cpp \
     $$PWD/Exception.cpp \
     $$PWD/Combiner.cpp \
-    $$PWD/DatabaseGenerator.cpp \
-    $$PWD/ReactionGen.cpp
+    $$PWD/ChemicalReactions.cpp \
+    $$PWD/ReactionGenerator.cpp
 
 # INCLUDEPATH  += $$PWD/Eigen3/

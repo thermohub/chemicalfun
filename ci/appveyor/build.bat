@@ -7,6 +7,6 @@ if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" (
 )
 
 echo "Configuring..."
-cmake -G"Visual Studio 15 2017" -DREACTIONGENERATOR_PYTHON_INSTALL_PREFIX:PATH="C:/Miniconda36-x64/envs/chemicalfun/" -A x64 -S . -B build
-echo "Building..."
+cmake -G"Visual Studio 15 2017" -DCHEMICALFUN_PYTHON_INSTALL_PREFIX:PATH="C:/Miniconda36-x64/envs/chemicalfun/" -A x64 -S . -B build
+echo "Building..." 
 cmake --build build --config %CONFIGURATION% --target install

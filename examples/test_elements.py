@@ -1,11 +1,25 @@
-#include <fstream>
-#include <sstream>
-#include <iomanip>
-#include "ChemicalFun/FormulaParser.h"
-#include "Common/Exception.h"
-using namespace std;
+# ChemicalFun is a C++ and Python library 
+# for Chemical Formula Parser and Reactions Generator.
+#
+# Copyright (C) 2021 G.D.Miron, D.Kulik, S.Dmytriieva
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-const char* const dbElements_str = R"([
+from chemicalfun import *
+
+
+dbElements_str = """[
       {
           "element" :   {
                "symbol" :   "Al",
@@ -175,85 +189,135 @@ const char* const dbElements_str = R"([
                "number" :   0,
                "name" :   "Zz"
           }
-     }
-])";
-
-// Read whole ASCII file into string.
-static std::string read_ascii_file(const std::string& file_path)
-{
-    std::ifstream t(file_path);
-    ChemicalFun::funErrorIf(!t.good(), "file open error...  ", file_path, __LINE__, __FILE__);
-    std::stringstream buffer;
-    buffer << t.rdbuf();
-    return buffer.str();
-}
-
-int main(int argc, char* argv[])
-{
-    string test_file;
-
-    if( argc > 1) {
-        test_file = argv[1];
     }
+]"""
 
-    try{
-        ChemicalFun::DBElements all_elements;
-        std::string str_json_array = dbElements_str;
-        if( !test_file.empty() ) {
-            str_json_array = read_ascii_file("elementsDB.json");
-        }
-        all_elements.readElements(str_json_array);
+#DBElements
 
-        std::cout << "All elements " <<  std::endl;
-        std::cout << all_elements.writeElements(true) <<  std::endl;
+all_elements = DBElements()
+all_elements.readElements(dbElements_str);
 
-        std::cout << "---------\n\nAll elements to csv" <<  std::endl;
-        all_elements.printCSV(std::cout);
+print("DBElements")
+print(all_elements.elementsKeys())
+print("")
+print(all_elements.elementsKeysList())
+print("")
+print(all_elements.elements())
+print("")
+print(all_elements.writeElements())
+print("")
+print(all_elements.CSV())
+print("")
+print(all_elements.formulasProperties("Al(OH)2+"))
 
-        std::vector<std::string> formulalist{
-            "Al+3",
-            "Al(OH)2+",
-            "Al(OH)3@",
-            "HSiO3-",
-            "H+",
-            "O|0|2@",
-            "O|0|2",
-            "HOO|0|-",
-            "H2OO|0|@",
-            "Al2SiO4(OH)2",
-            "FeFe|3|2O4",
-            "Mg48Si34O85(OH)62",
-            "{Va}:{Al}2:{Si}2:{Si}2:O10(OH)2",
-            "Mg5Al(AlSi3)O10(OH)8",
-        };
-        std::cout << "---------\n\nTest Formula list" <<  std::endl;
-        for(const auto& aformula: formulalist) {
-           std::cout << aformula <<  std::endl;
-        }
+formula_list = [
+    "H2O",
+    "H2O@",
+    "H+",
+    "OH-",
+    "H|0|2",
+    "O|0|2",
+    "HOO|0|-",
+]
 
-        auto used_elements = all_elements.formulasElements(formulalist);
-        std::cout << "---------\n\nAll elements from list" <<  std::endl;
-        for(const auto& elm: used_elements) {
-           std::cout << elm.Symbol() <<  ", ";
-        }
+print("")
+print(all_elements.formulasProperties(formula_list))
+print("")
+print(all_elements.stoichiometryMatrix(formula_list))
+print("")
+print(all_elements.CSV())
+print("")
+print(all_elements.formulasPropertiesCSV(formula_list))
+print("")
+print(all_elements.stoichiometryMatrixCSV(formula_list))
 
-        std::cout << "\n---------\n\nStoichiometryMatrix to csv" <<  std::endl;
-        all_elements.printStoichiometryMatrix(std::cout, formulalist);
+# functions
 
-        std::cout << "---------\n\nProperties to csv" <<  std::endl;
-        all_elements.formulasPropertiesCSV(std::cout, formulalist);
+test_elments = elementsInFormulas(formula_list);
+print(test_elments)
+print(substancesStoichiometryMatrix(formula_list))
 
-        return 0;
-    }
-    catch( std::exception& e )
-    {
-        std::cout << "std::exception: " << e.what() <<  std::endl;
-    }
-    catch(...)
-    {
-        std::cout <<  "unknown exception" <<  std::endl;
-    }
+# addElement
 
-    return 1;
-}
+el_key = ElementKey("Vol", 5)
+el_val = ElementValues()
+el_val.from_json_string("""{
+"atomic_mass": 0.0,
+"entropy": 0.0,
+"heat_capacity": 0.0,
+"name": "Vol",
+"number": 100,
+"recid": "",
+"valence": 0,
+"volume": 1.0
+}""")
+all_elements.addElement(el_key, el_val)
+print("")
+print(all_elements.elementsKeys())
 
+#FormulaToken
+print("")
+print("FormulaToken")
+print("")
+
+form_tok = FormulaToken("Al(OH)2+")
+print(form_tok.formula())
+print(form_tok.stoichCoefficients())
+print(form_tok.elementsList())
+print(form_tok.charge())
+#form_tok.testChargeImbalance(all_elements.elements())  exception
+print(form_tok.stoichiometryRow(all_elements.elementsKeysList()))
+print(form_tok.properties(all_elements.elements()))
+print(form_tok.testElements("Am|3|(Oxa)3-3", all_elements.elementsKeys()))
+print(form_tok.checkElements("Am|3|(Oxa)3-3", all_elements.elementsKeys()))
+
+el_lst = form_tok.parsed_list()
+print(el_lst)
+
+form_tok.setFormula("FeS|0|S|-2|", 1);
+el_lst = form_tok.parsed_list()
+print(el_lst)
+
+#ElementKey
+print("ElementKey")
+print("")
+element = ElementKey("Al", 1)
+s = element.Symbol()
+c = element.Class()
+ist = element.Isotope()
+str = element.to_json_string()
+element.from_json_string('{"symbol" :"Zz","class_":4}')
+print(s,c, ist)
+print(str)
+print(element)
+
+#ElementValues
+print("ElementValues")
+print("")
+el_val = ElementValues()
+print(el_val)
+el_val.from_json_string("""{
+"recid" :   "",
+"atomic_mass" :   26.9815406799316,
+"entropy" :   28.2999992370605,
+"heat_capacity" :   24.2000007629395,
+"volume" :   9.99300003051758,
+"valence" :   3,
+"number" :   13,
+"name" :   "Al"
+}""")
+print(el_val.heat_capacity)
+print(el_val)
+
+#FormulaValues
+print("FormulaValues")
+print("")
+form_values = FormulaValues(element, 1,2)
+print(form_values.valence, form_values.key )
+print(form_values)
+
+#FormulaProperties
+print("FormulaProperties")
+#print("")
+form_prop = FormulaProperties()
+print(form_prop)

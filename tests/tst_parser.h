@@ -392,9 +392,9 @@ TEST(FormulaParser, ParserError)
     EXPECT_THROW( formparser.parse( "FeS|1.2|S|-2|" ) , std::exception );
 }
 
-TEST(MoityParser, Parser)
+TEST(MoietyParser, Parser)
 {
-    ChemicalFun::MoityParser moiparser;
+    ChemicalFun::MoietyParser moiparser;
 
     int nsites=0;
     auto moieties = moiparser.parse( "{K}:{Fe}:{Fe}2:{Al}{Si}:Si2O10(OH)2", nsites );

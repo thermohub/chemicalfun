@@ -4,6 +4,7 @@
 *.pro.user
 *.pro.user.*
 *.pro.autosave
-
+.vscode
+examples/.ipynb_checkpoints
 
 

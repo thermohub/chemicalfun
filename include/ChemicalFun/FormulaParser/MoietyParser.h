@@ -1,21 +1,21 @@
-//-------------------------------------------------------------------
-// $Id: formula-parser.h 1373 2009-07-22 12:25:22Z gems $
+// ChemicalFun is a C++ and Python library 
+// for Chemical Formula Parser and Reactions Generator.
 //
-// Declaration of TFormula - gems chemical formulas parser
+// Copyright (C) 2018-2022 G.D.Miron, D.Kulik, S.Dmytriieva
 //
-// Rewritten from C to C++ by S.Dmytriyeva
-// Copyright (C) 1995-2016  D.Kulik, S.Dmytriyeva
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
-// This file is part of a GEM-Selektor library for thermodynamic
-// modelling by Gibbs energy minimization
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
 //
-// This file may be distributed under the terms of GEMS4 Development
-// Quality Assurance Licence (GEMS4.QAL)
-//
-// See http://gems.web.psi.ch/ for more information
-// E-mail: gems2.support@psi.ch
-//-------------------------------------------------------------------
-//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 #pragma once
 
 #include <vector>
@@ -56,12 +56,12 @@ private:
 std::ostream &operator<<(std::ostream& os, const MoietyTerm& dt);
 
 
-/// Parser for Moity
-class MoityParser : public BaseParser
+/// Parser for Moiety
+class MoietyParser : public BaseParser
 {
 public:
-    MoityParser(){}
-    ~MoityParser();
+    MoietyParser(){}
+    ~MoietyParser();
 
     /// Parse the Moiety terms
     std::vector<MoietyTerm> parse(const std::string& aformula, int& nsites);

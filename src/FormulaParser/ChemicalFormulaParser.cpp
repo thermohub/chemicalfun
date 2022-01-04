@@ -1,3 +1,21 @@
+// ChemicalFun is a C++ and Python library 
+// for Chemical Formula Parser and Reactions Generator.
+//
+// Copyright (C) 2018-2022 G.D.Miron, D.Kulik, S.Dmytriieva
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 #include <sstream>
 #include <iomanip>
 #include "ChemicalFun/FormulaParser/ChemicalFormulaParser.h"
@@ -193,7 +211,7 @@ void ChemicalFormulaParser::add_charge(std::list<ElementsTerm>& terms_list)
     {
     case CHARGE_NUL:    break;
     case CHARGE_MINUS:  sign = -1;
-        [[fallthrough]];
+        [[gnu::fallthrough]];
     case CHARGE_PLUS:
         chan = chan.substr(1);
         get_real( cha, chan );
@@ -274,7 +292,7 @@ void ChemicalFormulaParser::scan_element(std::list<ElementsTerm>& terms_list, st
             parsed_string = parsed_string.substr(2);
             break;
         } // else goto default - other <icsymb>
-        [[fallthrough]];
+        [[gnu::fallthrough]];
     default: // <isotope_mass><icsymb><valence>
     {
         std::string isotop = std::string(NOISOTOPE_CLASS);
@@ -343,14 +361,14 @@ void ChemicalFormulaParser::scan_symbol(std::string& icname, std::string& parsed
         return;
     }
     if( !is_capital(parsed_string[0]) ) {
-        funError("Fromula Parser"," A symbol of element expected here!", __LINE__, __FILE__ );
+        funError("Fromula Parser", parsed_string+ " a symbol of element expected here!", __LINE__, __FILE__ );
     }
     for( i=1; i<=MAXICNAME+2; i++ ) {
         if( !is_lowercase(parsed_string[i]) ) {
             break;
         }
     }
-    funErrorIf(i>=MAXICNAME, "Fromula Parser","IC Symbol scan error", __LINE__, __FILE__ );
+    funErrorIf(i>=MAXICNAME, "Fromula Parser",parsed_string+ " element symbol scan error", __LINE__, __FILE__ );
     icname = std::string( parsed_string, 0, i ); //  strncpy( ic, aFa.cur, len );
     parsed_string = parsed_string.substr(i);
 }

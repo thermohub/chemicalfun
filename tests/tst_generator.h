@@ -3,7 +3,7 @@
 #include <sstream>
 #include <gtest/gtest.h>
 #include "ChemicalFun/ReactionsGenerator.h"
-#include "ChemicalFun/ReactionsGenerator/ReactionGen.h"
+#include "ChemicalFun/ReactionsGenerator/Reaction.h"
 #include "ChemicalFun/FormulaParser.h"
 
 using namespace testing;
@@ -46,22 +46,22 @@ std::string AtoString( const Eigen::MatrixXd& A)
 
 TEST(ReactionsGenerator, StoichiometryMatrix)
 {
-    auto elemens_list = ChemicalFun::generateElementsListValences(formulas, true);
+    auto elemens_list = ChemicalFun::elementsInFormulas(formulas, true);
     EXPECT_EQ(to_string(elemens_list), elements_true);
-    Eigen::MatrixXd A1 =  calcStoichiometryMatrix(formulas, true).transpose();
+    Eigen::MatrixXd A1 =  stoichiometryMatrix(formulas, true).transpose();
     EXPECT_EQ(A1, A_true);
     EXPECT_EQ(AtoString(A1),AtoString(A_true));
 
-    elemens_list = ChemicalFun::generateElementsListValences(formulas, false);
+    elemens_list = ChemicalFun::elementsInFormulas(formulas, false);
     EXPECT_EQ(to_string(elemens_list), elements_false);
-    Eigen::MatrixXd A2 =  calcStoichiometryMatrix(formulas, false).transpose();
+    Eigen::MatrixXd A2 =  stoichiometryMatrix(formulas, false).transpose();
     EXPECT_EQ(A2, A_false);
     EXPECT_EQ(AtoString(A2),AtoString(A_false));
 }
 
 TEST(ReactionsGenerator, DatabaseGeneratorF)
 {
-    ReactionsGenerator::DatabaseGenerator reactionsDB(A_false, symbols);
+    ReactionsGenerator::ChemicalReactions reactionsDB(A_false, symbols);
     MatrixXd B = reactionsDB.formulaMatrix();
     EXPECT_EQ(B, A_false);
     EXPECT_EQ(reactionsDB.sizeSubstancesMap(), 12);
@@ -74,7 +74,7 @@ TEST(ReactionsGenerator, DatabaseGeneratorF)
 
 TEST(ReactionsGenerator, DatabaseGeneratorT)
 {
-    ReactionsGenerator::DatabaseGenerator reactionsDB(A_true, symbols);
+    ReactionsGenerator::ChemicalReactions reactionsDB(A_true, symbols);
     MatrixXd B = reactionsDB.formulaMatrix();
     EXPECT_EQ(B, A_true);
     EXPECT_EQ(reactionsDB.sizeSubstancesMap(), 12);
@@ -88,7 +88,7 @@ TEST(ReactionsGenerator, DatabaseGeneratorT)
 
 TEST(ReactionsGenerator, GeneratorF_GramSchmidt )
 {
-    ReactionsGenerator::DatabaseGenerator reactionsDB(A_false, symbols);
+    ReactionsGenerator::ChemicalReactions reactionsDB(A_false, symbols);
     ReactionsGenerator::Generator generator;
     generator.setMethod(GramSchmidt);
     generator.compute(reactionsDB.formulaMatrix());
@@ -107,7 +107,7 @@ TEST(ReactionsGenerator, GeneratorF_GramSchmidt )
 
 TEST(ReactionsGenerator, GeneratorT_GramSchmidt )
 {
-    ReactionsGenerator::DatabaseGenerator reactionsDB(A_true, symbols);
+    ReactionsGenerator::ChemicalReactions reactionsDB(A_true, symbols);
     ReactionsGenerator::Generator generator;
     generator.setMethod(GramSchmidt);
     generator.compute(reactionsDB.formulaMatrix());
@@ -126,7 +126,7 @@ TEST(ReactionsGenerator, GeneratorT_GramSchmidt )
 
 TEST(ReactionsGenerator, GeneratorF_GramSchmidtWe94 )
 {
-    ReactionsGenerator::DatabaseGenerator reactionsDB(A_false, symbols);
+    ReactionsGenerator::ChemicalReactions reactionsDB(A_false, symbols);
     ReactionsGenerator::Generator generator;
     generator.setMethod(GramSchmidtWe94);
     generator.compute(reactionsDB.formulaMatrix());
@@ -156,7 +156,7 @@ TEST(ReactionsGenerator, GeneratorF_GramSchmidtWe94 )
 
 TEST(ReactionsGenerator, GeneratorT_GramSchmidtWe94 )
 {
-    ReactionsGenerator::DatabaseGenerator reactionsDB(A_true, symbols);
+    ReactionsGenerator::ChemicalReactions reactionsDB(A_true, symbols);
     ReactionsGenerator::Generator generator;
     generator.setMethod(GramSchmidtWe94);
     generator.compute(reactionsDB.formulaMatrix());
@@ -186,7 +186,7 @@ TEST(ReactionsGenerator, GeneratorT_GramSchmidtWe94 )
 
 TEST(ReactionsGenerator, GeneratorF_RowReduceSmMi98 )
 {
-    ReactionsGenerator::DatabaseGenerator reactionsDB(A_false, symbols);
+    ReactionsGenerator::ChemicalReactions reactionsDB(A_false, symbols);
     ReactionsGenerator::Generator generator;
     generator.setMethod(RowReduceSmMi98);
     generator.compute(reactionsDB.formulaMatrix());
@@ -215,7 +215,7 @@ TEST(ReactionsGenerator, GeneratorF_RowReduceSmMi98 )
 
 TEST(ReactionsGenerator, GeneratorT_RowReduceSmMi98 )
 {
-    ReactionsGenerator::DatabaseGenerator reactionsDB(A_true, symbols);
+    ReactionsGenerator::ChemicalReactions reactionsDB(A_true, symbols);
     ReactionsGenerator::Generator generator;
     generator.setMethod(RowReduceSmMi98);
     generator.compute(reactionsDB.formulaMatrix());
@@ -244,7 +244,7 @@ TEST(ReactionsGenerator, GeneratorT_RowReduceSmMi98 )
 
 TEST(ReactionsGenerator, GeneratorF_CanonicalLe16 )
 {
-    ReactionsGenerator::DatabaseGenerator reactionsDB(A_false, symbols);
+    ReactionsGenerator::ChemicalReactions reactionsDB(A_false, symbols);
     ReactionsGenerator::Generator generator;
     generator.setMethod(CanonicalLe16);
     generator.compute(reactionsDB.formulaMatrix());
@@ -273,7 +273,7 @@ TEST(ReactionsGenerator, GeneratorF_CanonicalLe16 )
 
 TEST(ReactionsGenerator, GeneratorT_CanonicalLe16 )
 {
-    ReactionsGenerator::DatabaseGenerator reactionsDB(A_true, symbols);
+    ReactionsGenerator::ChemicalReactions reactionsDB(A_true, symbols);
     ReactionsGenerator::Generator generator;
     generator.setMethod(CanonicalLe16);
     generator.compute(reactionsDB.formulaMatrix());
@@ -303,7 +303,7 @@ TEST(ReactionsGenerator, GeneratorT_CanonicalLe16 )
 
 TEST(ReactionsGenerator, ReactionsF_RowReduceSmMi98 )
 {
-    ReactionsGenerator::DatabaseGenerator reactionsDB(A_false, symbols);
+    ReactionsGenerator::ChemicalReactions reactionsDB(A_false, symbols);
     ReactionsGenerator::Generator generator;
     generator.setMethod(RowReduceSmMi98);
     generator.compute(reactionsDB.formulaMatrix());

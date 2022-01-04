@@ -1,3 +1,21 @@
+// ChemicalFun is a C++ and Python library for of C++ and Python API
+// for Chemical Formula Parser and Reactions Generator.
+//
+// Copyright (C) 2018-2022 G.D.Miron, D.Kulik, S.Dmytriieva
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 #include "ChemicalFun/ReactionsGenerator/MatrixUtils.h"
 #include "ChemicalFun/FormulaParser/ChemicalData.h"
 
@@ -226,7 +244,7 @@ auto removeMasterColls(MatrixXd &M, unsigned i) -> void
     }
 }
 
-auto getStoichiometryMatrix( std::vector<std::vector<double>> vMatrix) -> Eigen::MatrixXd
+auto stoichiometryMatrix( std::vector<std::vector<double>> vMatrix) -> Eigen::MatrixXd
 {
     MatrixXd A(vMatrix.size(), vMatrix[0].size());
 
@@ -236,15 +254,15 @@ auto getStoichiometryMatrix( std::vector<std::vector<double>> vMatrix) -> Eigen:
     return A;
 }
 
-auto calcStoichiometryMatrix(const std::vector<std::string>& vFormulalist,
-                             bool with_valences ) -> Eigen::MatrixXd
+auto stoichiometryMatrix(const std::vector<std::string>& vFormulalist,
+                             bool valence ) -> Eigen::MatrixXd
 {
-    auto elemens_list = ChemicalFun::generateElementsListValences(vFormulalist, with_valences);
+    auto elemens_list = ChemicalFun::elementsInFormulas(vFormulalist, valence);
     MatrixXd A(vFormulalist.size(), elemens_list.size());
     ChemicalFun::FormulaToken formula("");
 
     for (size_t i = 0; i < vFormulalist.size(); i++) {
-        formula.setFormula(vFormulalist[i], with_valences);
+        formula.setFormula(vFormulalist[i], valence);
         auto row = formula.makeStoichiometryRow(elemens_list);
         for (size_t j = 0; j < row.size(); j++) {
             A(i,j) = row[j];
