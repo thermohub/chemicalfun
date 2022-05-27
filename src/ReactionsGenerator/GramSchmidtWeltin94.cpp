@@ -17,7 +17,8 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "ReactionsGenerator/GramSchmidtWeltin94.h"
-#include <iostream>
+#include "Common/Exception.h"
+#include "spdlog/fmt/ostr.h"
 
 namespace ReactionsGenerator {
 
@@ -98,7 +99,10 @@ auto gramSchmidt(MatrixXd F, unsigned &m)-> MatrixXd
             }
         }
     }
-//    cout << "m = "<< m << endl;
+    if( ChemicalFun::chfun_logger->should_log(spdlog::level::debug)) {
+        ChemicalFun::chfun_logger->debug("m = {} ", m);
+        ChemicalFun::chfun_logger->debug("gramSchmidt \n {} ", F);
+    }
   return F;
 }
 
@@ -122,7 +126,9 @@ auto weltin94(MatrixXd &M, /*Indices &iMaster,*/ Indices &iNonMaster) -> MatrixX
     removeMasterColls(M, r);
 
     iNonMaster = indices(M.rows());
-
+    if( ChemicalFun::chfun_logger->should_log(spdlog::level::debug)) {
+        ChemicalFun::chfun_logger->debug("weltin94 \n {} ", R);
+    }
     return R;
 }
 

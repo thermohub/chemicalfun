@@ -17,6 +17,8 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "CanonicalizerLeal16.h"
+#include "Common/Exception.h"
+#include "spdlog/fmt/ostr.h"
 
 namespace ReactionsGenerator {
 
@@ -92,6 +94,10 @@ auto leal16(MatrixXd &M, Indices &iMaster, Indices &iNonMaster) -> MatrixXd
 
     // remove master coefficients columns
     removeMasterColls(M, iMaster.size());
+
+    if( ChemicalFun::chfun_logger->should_log(spdlog::level::debug)) {
+        ChemicalFun::chfun_logger->debug("leal16 \n {} ", R);
+    }
 
     return R;
 }

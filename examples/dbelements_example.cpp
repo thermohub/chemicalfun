@@ -1,6 +1,7 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include <iostream>
 #include "ChemicalFun/FormulaParser.h"
 #include "Common/Exception.h"
 using namespace std;

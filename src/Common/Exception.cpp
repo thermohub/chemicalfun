@@ -21,8 +21,13 @@
 // C++ includes
 #include <algorithm>
 #include <sstream>
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 namespace ChemicalFun {
+
+// Thread-safe logger to stdout with colors
+std::shared_ptr<spdlog::logger> chfun_logger = spdlog::stdout_color_mt("chemicalfun");
+
 namespace internal {
 /// Creates the location string from the file name and line number.
 /// The result of this function on the file `/home/user/gitThermoFun/ThermoFun/src/Substance.cpp`
@@ -79,6 +84,7 @@ auto errorSubstanceNotFound(std::string function, std::string name, int line) ->
 
 auto funError(const std::string& error, const std::string& reason, const int& line, const std::string& file) -> void
 {
+    chfun_logger->error(" {} - {} {}", line, error, reason);
     Exception exception;
     exception.error << error;
     exception.reason << reason;

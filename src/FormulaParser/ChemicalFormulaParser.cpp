@@ -143,11 +143,12 @@ std::list<ElementsTerm> ChemicalFormulaParser::parse( const std::string& aformul
     if( !charge.empty() ) {
         add_charge( terms_list );
     }
-    // TEST OUTPUT
-    //std::cout << "Formula: " << aformula;
-    //for( const auto& aterm: newtt) {
-    //   std::cout << "\n   " << aterm;
-    //}
+
+    if( chfun_logger->should_log(spdlog::level::trace)) {
+        std::ostringstream logs;
+        std::copy(terms_list.begin(), terms_list.end(), std::ostream_iterator<ElementsTerm>( logs, "\n "));
+        chfun_logger->trace(" {} \n {} ", formula, logs.str());
+    }
     return terms_list;
 }
 

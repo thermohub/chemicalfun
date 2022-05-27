@@ -17,6 +17,8 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "RowReduceSmithMissen98.h"
+#include "Common/Exception.h"
+#include "spdlog/fmt/ostr.h"
 
 namespace ReactionsGenerator {
 
@@ -156,6 +158,9 @@ auto smithMissen98(MatrixXd &M, Indices &iMaster, Indices &iNonMaster)-> MatrixX
     // remove master coefficients columns
     removeMasterColls(M, iMaster.size());
 
+    if( ChemicalFun::chfun_logger->should_log(spdlog::level::debug)) {
+        ChemicalFun::chfun_logger->debug("smithMissen98 \n {} ", R);
+    }
     return R;
 }
 

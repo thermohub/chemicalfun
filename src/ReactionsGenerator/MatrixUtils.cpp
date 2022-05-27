@@ -18,6 +18,8 @@
 
 #include "ChemicalFun/ReactionsGenerator/MatrixUtils.h"
 #include "ChemicalFun/FormulaParser/ChemicalData.h"
+#include "Common/Exception.h"
+#include "spdlog/fmt/ostr.h"
 
 namespace ReactionsGenerator {
 
@@ -251,6 +253,10 @@ auto stoichiometryMatrix( std::vector<std::vector<double>> vMatrix) -> Eigen::Ma
     for (size_t i = 0; i < vMatrix.size(); i++)
         for (size_t j = 0; j < vMatrix[0].size(); j++)
             A(i,j) = vMatrix[i][j];
+
+    if( ChemicalFun::chfun_logger->should_log(spdlog::level::debug)) {
+        ChemicalFun::chfun_logger->debug("Stoichiometry Matrix \n {}", A);
+    }
     return A;
 }
 
@@ -267,6 +273,9 @@ auto stoichiometryMatrix(const std::vector<std::string>& vFormulalist,
         for (size_t j = 0; j < row.size(); j++) {
             A(i,j) = row[j];
         }
+    }
+    if( ChemicalFun::chfun_logger->should_log(spdlog::level::debug)) {
+        ChemicalFun::chfun_logger->debug("Stoichiometry Matrix \n{} ", A);
     }
     return A;
 }
