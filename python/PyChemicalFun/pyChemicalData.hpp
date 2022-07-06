@@ -123,4 +123,5 @@ void exportChemicalData(py::module& m)
           py::arg("formulalist"), py::arg("valence")=false);
     m.def("elementsInFormulas", &elementsInFormulas,
           py::arg("formulalist"), py::arg("valence")=false);
+    m.def("update_loggers", &update_loggers);
 }

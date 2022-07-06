@@ -22,11 +22,39 @@
 #include <algorithm>
 #include <sstream>
 #include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/sinks/rotating_file_sink.h>
+
+#define LOG_PATTERN "[%n] [%^%l%$] %v"
 
 namespace ChemicalFun {
 
 // Thread-safe logger to stdout with colors
 std::shared_ptr<spdlog::logger> chfun_logger = spdlog::stdout_color_mt("chemicalfun");
+
+void update_loggers( bool use_cout, const std::string& logfile_name, size_t log_level)
+{
+    auto chemicalfun_logger = spdlog::get("chemicalfun");
+
+    // change level
+    spdlog::level::level_enum log_lev = spdlog::level::info;
+    if( log_level<7 ) {
+        log_lev = static_cast<spdlog::level::level_enum>(log_level);
+    }
+    chemicalfun_logger->set_level(log_lev);
+
+    //change sinks
+    chemicalfun_logger->sinks().clear();
+    if(use_cout) {
+        auto console_output = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+        console_output->set_pattern(LOG_PATTERN);
+        chemicalfun_logger->sinks().push_back(console_output);
+    }
+    if(!logfile_name.empty()) {
+        auto file_output = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(logfile_name, 1048576, 3);
+        chemicalfun_logger->sinks().push_back(file_output);
+    }
+}
+
 
 namespace internal {
 /// Creates the location string from the file name and line number.

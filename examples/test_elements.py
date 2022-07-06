@@ -194,6 +194,8 @@ dbElements_str = """[
 
 #DBElements
 
+update_loggers(True, "test2.log", 0)
+
 all_elements = DBElements()
 all_elements.readElements(dbElements_str);
 
