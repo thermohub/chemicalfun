@@ -21,7 +21,7 @@
 
 PYBIND11_MODULE(PyChemicalFun, m)
 {
-    ChemicalFun::update_loggers(false, "chemicalfun.log", 0);
+    ChemicalFun::update_loggers(false, "chemicalfun.log", 2);
     exportChemicalData(m);
     exportReactionsGenerator(m);
 }

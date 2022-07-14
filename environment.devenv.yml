@@ -13,8 +13,7 @@ dependencies:
   - eigen
   - nlohmann_json
   - fmt
-  - spdlog>=1.10.0 # [win]
-  - spdlog # [unix]
+  - spdlog>=1.10.0
   - python={{ python_version }}
   - pytest
 
