@@ -20,7 +20,11 @@
 #define MATRIXUTILS_H
 
 // Eigen includes
+#ifdef _WIN32
+#include "Eigen/Dense"
+#else
 #include "eigen3/Eigen/Dense"
+#endif
 
 #include <map>
 #include <vector>

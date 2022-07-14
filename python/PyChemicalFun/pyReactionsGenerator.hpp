@@ -16,12 +16,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "ChemicalFun/FormulaParser/ChemicalData.h"
-#include "ChemicalFun/ReactionsGenerator/ChemicalReactions.h"
-#include "ChemicalFun/ReactionsGenerator/Reaction.h"
-#include "ChemicalFun/ReactionsGenerator/Generator.h"
-#include "ChemicalFun/ReactionsGenerator/Combiner.h"
-using namespace ReactionsGenerator;
+#if _MSC_VER >= 1929
+#include <corecrt.h>
+#endif
 
 // pybind11 includes
 #include <pybind11/pybind11.h>
@@ -31,6 +28,12 @@ using namespace ReactionsGenerator;
 namespace py = pybind11;
 using namespace pybind11::literals;
 
+#include "ChemicalFun/FormulaParser/ChemicalData.h"
+#include "ChemicalFun/ReactionsGenerator/ChemicalReactions.h"
+#include "ChemicalFun/ReactionsGenerator/Reaction.h"
+#include "ChemicalFun/ReactionsGenerator/Generator.h"
+#include "ChemicalFun/ReactionsGenerator/Combiner.h"
+using namespace ReactionsGenerator;
 
 void exportReactionsGenerator(py::module& m)
 {

@@ -86,6 +86,12 @@ std::vector<MoietyTerm> MoietyParser::parse(const std::string& aformula, int&  n
             break;
         }
     }
+
+    if( chfun_logger->should_log(spdlog::level::trace)) {
+        std::ostringstream logs;
+        std::copy(terms.begin(), terms.end(), std::ostream_iterator<MoietyTerm>( logs, "\n "));
+        chfun_logger->trace(" {} \n {} ", formula, logs.str());
+    }
     return terms;
 }
 

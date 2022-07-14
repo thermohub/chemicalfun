@@ -18,7 +18,6 @@
 
 #pragma once
 
-#include <iostream>
 #include <string>
 #include <vector>
 #include <map>
@@ -26,6 +25,8 @@
 #include <list>
 
 namespace ChemicalFun {
+
+void update_loggers( bool use_cout, const std::string& logfile_name, size_t log_level);
 
 class DBElements;
 class ElementsTerm;

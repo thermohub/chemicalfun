@@ -23,8 +23,12 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include "spdlog/spdlog.h"
 
 namespace ChemicalFun {
+
+/// Default logger for ChemicalFun library
+extern std::shared_ptr<spdlog::logger> chfun_logger;
 
 /// Provides a convenient way to initialized an exception with helpful error messages.
 struct Exception
