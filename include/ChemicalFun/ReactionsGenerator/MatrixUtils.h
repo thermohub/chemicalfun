@@ -20,7 +20,7 @@
 #define MATRIXUTILS_H
 
 // Eigen includes
-#ifdef _WIN32
+#ifdef if _MSC_VER >= 1929
 #include "Eigen/Dense"
 #else
 #include "eigen3/Eigen/Dense"
