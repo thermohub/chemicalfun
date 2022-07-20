@@ -33,3 +33,4 @@ echo "The install failed" >&2
 exit 1
 fi
 conda list
+python -c "import chemicalfun"
