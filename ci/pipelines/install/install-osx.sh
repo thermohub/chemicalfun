@@ -27,10 +27,10 @@ cmake \
     -DCMAKE_INSTALL_LIBDIR=lib \
     ..
 make install
+conda list
+python -c "import chemicalfun"
 if [ $? -eq 1 ]
 then
 echo "The install failed" >&2
 exit 1
 fi
-conda list
-python -c "import chemicalfun"
