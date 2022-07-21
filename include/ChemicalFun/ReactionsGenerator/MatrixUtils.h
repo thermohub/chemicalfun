@@ -20,11 +20,11 @@
 #define MATRIXUTILS_H
 
 // Eigen includes
-#if _MSC_VER >= 1929
-#include "Eigen/Dense"
-#else
+//#if _MSC_VER >= 1929
+//#include "Eigen/Dense"
+//#else
 #include "eigen3/Eigen/Dense"
-#endif
+//#endif
 
 #include <map>
 #include <vector>
