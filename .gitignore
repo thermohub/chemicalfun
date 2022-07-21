@@ -6,5 +6,6 @@
 *.pro.autosave
 .vscode
 examples/.ipynb_checkpoints
+environment.yml
 
 
