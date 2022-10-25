@@ -1,4 +1,4 @@
-// ChemicalFun is a C++ and Python library 
+// ChemicalFun is a C++ and Python library
 // for Chemical Formula Parser and Reactions Generator.
 //
 // Copyright (C) 2018-2022 G.D.Miron, D.Kulik, S.Dmytriieva
@@ -23,7 +23,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
 
 namespace ChemicalFun {
 

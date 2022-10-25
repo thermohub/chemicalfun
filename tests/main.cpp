@@ -4,7 +4,7 @@
 #include "tst_parser.h"
 #include "tst_elements.h"
 #include "tst_generator.h"
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
 
 int main(int argc, char *argv[])
 {

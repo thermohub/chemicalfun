@@ -159,7 +159,8 @@ auto smithMissen98(MatrixXd &M, Indices &iMaster, Indices &iNonMaster)-> MatrixX
     removeMasterColls(M, iMaster.size());
 
     if( ChemicalFun::chfun_logger->should_log(spdlog::level::debug)) {
-        ChemicalFun::chfun_logger->debug("smithMissen98 \n {} ", R);
+        std::ostringstream ss; ss << R;
+        ChemicalFun::chfun_logger->debug("smithMissen98 \n {} ", ss.str());
     }
     return R;
 }

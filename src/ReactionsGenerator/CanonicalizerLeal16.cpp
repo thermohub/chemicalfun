@@ -96,7 +96,8 @@ auto leal16(MatrixXd &M, Indices &iMaster, Indices &iNonMaster) -> MatrixXd
     removeMasterColls(M, iMaster.size());
 
     if( ChemicalFun::chfun_logger->should_log(spdlog::level::debug)) {
-        ChemicalFun::chfun_logger->debug("leal16 \n {} ", R);
+        std::ostringstream ss; ss << R;
+        ChemicalFun::chfun_logger->debug("leal16 \n {} ", ss.str());
     }
 
     return R;

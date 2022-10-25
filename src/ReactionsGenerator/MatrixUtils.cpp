@@ -16,6 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+#include <sstream>
 #include "ChemicalFun/ReactionsGenerator/MatrixUtils.h"
 #include "ChemicalFun/FormulaParser/ChemicalData.h"
 #include "Common/Exception.h"
@@ -255,7 +256,8 @@ auto stoichiometryMatrix( std::vector<std::vector<double>> vMatrix) -> Eigen::Ma
             A(i,j) = vMatrix[i][j];
 
     if( ChemicalFun::chfun_logger->should_log(spdlog::level::debug)) {
-        ChemicalFun::chfun_logger->debug("Stoichiometry Matrix \n {}", A);
+        std::ostringstream ss; ss << A;
+        ChemicalFun::chfun_logger->debug("Stoichiometry Matrix \n {}", ss.str());
     }
     return A;
 }
@@ -275,7 +277,8 @@ auto stoichiometryMatrix(const std::vector<std::string>& vFormulalist,
         }
     }
     if( ChemicalFun::chfun_logger->should_log(spdlog::level::debug)) {
-        ChemicalFun::chfun_logger->debug("Stoichiometry Matrix \n{} ", A);
+        std::ostringstream ss; ss << A;
+        ChemicalFun::chfun_logger->debug("Stoichiometry Matrix \n{} ", ss.str());
     }
     return A;
 }
