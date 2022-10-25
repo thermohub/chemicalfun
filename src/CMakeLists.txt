@@ -21,7 +21,7 @@ add_library(ChemicalFun ${HEADER_FILES_TOP} ${HEADER_FILES} ${SOURCE_FILES})
 # Add an alias ChemicalFun::ChemicalFun to the target library ChemicalFun
 add_library(ChemicalFun::ChemicalFun ALIAS ChemicalFun)
 
-target_link_libraries(ChemicalFun PRIVATE spdlog::spdlog)
+target_link_libraries(ChemicalFun PUBLIC spdlog::spdlog)
 
 
 # Add the include paths to the ReactionsGenerator target
