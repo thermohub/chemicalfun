@@ -12,7 +12,8 @@ dependencies:
   - pybind11
   - eigen=3.4.0
   - nlohmann_json
-  - spdlog=1.10.0
+  - spdlog=1.11.0
+  - fmt=9.1.0
   - python={{ python_version }}
   - pytest
 
