@@ -17,3 +17,11 @@ if(NOT spdlog_FOUND)
 else()
   message(STATUS "Found spdlog v${spdlog_VERSION}")
 endif()
+
+
+find_package(fmt REQUIRED)
+if(NOT fmt_FOUND)
+  message(FATAL_ERROR "fmt not found")
+else()
+  message(STATUS "Found fmt v${fmt_VERSION}")
+endif()
