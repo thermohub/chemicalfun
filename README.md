@@ -2,9 +2,50 @@
 
 ChemicalFun is a C++ library (Python and C++ API) for generating balanced chemical reactions and for parsing and calculating properties of chemical formulas.
 
-### Compiling the C++ library
+## Installation using Conda
 
-In the terminal ```~/chemicalfun$```, execute the following commands:
+ThermoFun can be easily installed using [Conda](https://conda.io/docs/) package manager. If you have Conda installed, first add the conda-forge channel by executing 
+
+```
+#!bash
+conda config --add channels conda-forge
+```
+
+install ChemicalFun by executing the following command:
+
+```
+#!bash
+conda install chemicalfun
+```
+
+Conda can be installed from [Miniconda](https://conda.io/miniconda.html).
+
+## Compiling the C++ library
+
+### Install Dependencies (if not using Conda environment)
+
+The thermofun library uses nlohmann/json.hpp as thirdparty dependency to parse database files in json format. To install the header only json library in a terminal ```~/thermofun$``` execute the following: 
+
+```
+#!bash
+sudo ./install-dependencies.sh
+```
+
+### If using conda environment (recommended)
+
+Create the thermofun environnement by executing in ```~/chemicalfun$```:
+
+```
+conda devenv
+```
+
+then activate the environnement
+
+```
+conda activate chemicalfun
+```
+
+In the terminal ```(chemicalfun)~/chemicalfun$```, execute the following commands:
 
 ```
 mkdir build && \
@@ -12,6 +53,13 @@ cd build && \
 cmake .. && \
 make install
 ``` 
+
+For a local installation, you can specify a directory path for the installed files as follows:
+
+```
+#!bash
+cmake .. -DCMAKE_INSTALL_PREFIX=/home/username/local/
+```
 
 ### How to use?
 
