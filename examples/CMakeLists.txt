@@ -1,11 +1,13 @@
 message(STATUS "Building examples: ${CHEMICALFUN_BUILD_EXAMPLES}")
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/../Resources/elementsDB.json" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/")
 
 include_directories(${CMAKE_SOURCE_DIR})
 
 set(Examples
         formula_parser_example
         elements_example
-        dbelements_example )
+        dbelements_example
+        thread_example )
 
 foreach (exampleName ${Examples})
     add_executable(${exampleName} ${exampleName}.cpp)

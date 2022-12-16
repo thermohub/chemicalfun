@@ -69,11 +69,14 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     )
 endif()
 
-#add_compile_options(-std=c++11)
 
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
 add_compile_options(-Wall -Wno-ignored-attributes -Wno-pedantic -Wno-variadic-macros -Wno-deprecated)
 endif()
+
+# test thread safe
+#set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=thread")
+#set (CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_LINKER_FLAGS_DEBUG} -fsanitize=thread")
 
 # Find Eigen library and include its directory
 #find_package(Eigen3 3.3.7 REQUIRED)
