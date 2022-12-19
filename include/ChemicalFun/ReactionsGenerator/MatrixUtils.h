@@ -42,7 +42,7 @@ class ElementKey;
 namespace ReactionsGenerator {
 
 /// Threshold viarable below which the matrix coefficients are considered 0
-static const double thresholdCoeffZero = 1e-05;
+static const double thresholdCoeffZero = 1e-10;
 
 ///
 static const double thresholdGramSchmidtWeltin = 1e-10;
