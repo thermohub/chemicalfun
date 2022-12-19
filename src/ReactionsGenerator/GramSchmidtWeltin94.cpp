@@ -27,7 +27,7 @@ namespace ReactionsGenerator {
  * @brief gramSchmidt
  * @param F input formula matrix
  * @param m number of non-master substances, or rank of matrix
- * @return reaction matrix[cols-reactions,rows-substacnes] with
+ * @return reaction matrix[cols-reactions,rows-substances] with
  * the last m columns representing the independent reactions
  */
 auto gramSchmidt(MatrixXd F, unsigned &m)-> MatrixXd
