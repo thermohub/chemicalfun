@@ -53,10 +53,10 @@ auto rowReduce(MatrixXd M)-> MatrixXd
         M.row(r) = Mtemp.row(i);
         M.row(r) = M.row(r) / M(r, p);
 
-        for (unsigned i=0; i<=(R-1); i++ )
+        for (unsigned l=0; l<=(R-1); l++ )
         {
-            if (i != r)
-                M.row(i) = M.row(i) - M.row(r) * M(i, p);
+            if (l != r)
+                M.row(l) = M.row(l) - M.row(r) * M(l, p);
         }
         p = p + 1;
     }
@@ -64,10 +64,10 @@ auto rowReduce(MatrixXd M)-> MatrixXd
 }
 
 /**
- * @brief arrangeIdentityMatrixLeft ordes the matrix so that the identity part is in the left part
- * of the ractions matrix
+ * @brief arrangeIdentityMatrixLeft orders the matrix so that the identity part is in the left part
+ * of the reactions matrix
  * @param S input and output matrix
- * @param ind indices of the swaped columns
+ * @param ind indices of the swapped columns
  */
 auto arrangeIdentityMatrixLeft(MatrixXd &S, Indices &I) -> void
 {
@@ -82,14 +82,14 @@ auto arrangeIdentityMatrixLeft(MatrixXd &S, Indices &I) -> void
             M = S.col(i);
             if (M(i) == 1) // makes S(i, i) = 0
                 M(i) = 0;
-            if (!M.isZero(0)) // if there are non 0 coefficients on the column i, we search for the column which has S(i,i) = 1 and other coeff 0
+            if (!M.isZero(thresholdCoeffZero)) // if there are non 0 coefficients on the column i, we search for the column which has S(i,i) = 1 and other coeff 0
             {
                 for (unsigned j = i+1; j <S.cols(); j++) // go through the rest of the columns
                 {
                     M = S.col(j);
                     if (M(i) == 1) // find which of the following columns has 1 on position i
                         M(i) = 0;
-                    if (M.isZero(0)) // if all the other coefificents in the column are zero, we found the column with S(i,i) = 1 and other coeff 0
+                    if (M.isZero(thresholdCoeffZero)) // if all the other coefficients in the column are zero, we found the column with S(i,i) = 1 and other coeff 0
                     {
                         // swap columns
                         S.col(i).swap(S.col(j));
@@ -115,12 +115,12 @@ auto removeZeroRows(MatrixXd &M) -> void
     {
         V = M.row(i);
         // remove row of 0s
-        if (V.isZero(0))
+        if (V.isZero(thresholdCoeffZero))
         {
             unsigned int numRows = M.rows()-1;
             unsigned int numCols = M.cols();
 
-            M.block(i,0,numRows-i,numCols) = M.block(i+1,0,numRows-i,numCols);
+            M.block(i,0.,numRows-i,numCols) = M.block(i+1.,0.,numRows-i,numCols);
             M.conservativeResize(numRows,numCols);
             i--;
         }

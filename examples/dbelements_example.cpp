@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <iostream>
 #include "ChemicalFun/FormulaParser.h"
+#include "ChemicalFun/ReactionsGenerator/ChemicalReactions.h"
 #include "Common/Exception.h"
 using namespace std;
 
@@ -248,6 +249,16 @@ int main(int argc, char* argv[])
 
         std::cout << "---------\n\nProperties to csv" <<  std::endl;
         all_elements.formulasPropertiesCSV(std::cout, formulalist);
+
+        std::vector<std::string> formulalist2{
+"H2O", "Al(OH)4-", "Fe(OH)4-", "H4SiO4", "Ca+2", "H+", "(AlFe|3|O3)[Ca3O3(SiO2)0.84(H2O)4.32]"
+        };
+
+        auto chemical_reactions = ReactionsGenerator::ChemicalReactions(formulalist2);
+
+        chemical_reactions.generateReactions();
+
+        chemical_reactions.printReactions(std::cout);
 
         return 0;
     }

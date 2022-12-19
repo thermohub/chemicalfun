@@ -5,7 +5,7 @@
 #sudo rm -rf /usr/local/include/nlohmann
 #sudo rm -rf /usr/local/include/eigen3/Eigen/Eigen
 #sudo rm -rf /usr/local/include/pybind11
-#sudo rm -rf /usr/local/include/spdlog
+sudo rm -rf /usr/local/include/spdlog
 #sudo rm -rf /usr/local/include/fmt
 
 threads=4
@@ -50,6 +50,26 @@ test -d /usr/local/include/eigen3/Eigen || {
 		 rm -rf ~/code
 }
 
+# fmt 
+# if no spdlog installed in /usr/local/lib/ (/usr/local/include/fmt)
+test -d /usr/local/include/fmt || {
+
+        # Building thermofun library
+        mkdir -p ~/code && \
+                cd ~/code && \
+                git clone https://github.com/fmtlib/fmt.git -b 9.1.0  && \
+                cd fmt && \
+                mkdir -p build && \
+                cd build && \
+                cmake .. && \
+                make && \
+                sudo make install
+
+        # Removing generated build files
+        cd ~ && \
+                 rm -rf ~/code
+}
+
 # spdlog 
 # if no spdlog installed in /usr/local/lib/ (/usr/local/include/spdlog)
 test -d /usr/local/include/spdlog || {
@@ -61,7 +81,7 @@ test -d /usr/local/include/spdlog || {
                 cd spdlog && \
                 mkdir -p build && \
                 cd build && \
-                cmake .. -DCMAKE_BUILD_TYPE=Release -DSPDLOG_BUILD_TESTS=OFF -DCMAKE_INSTALL_LIBDIR=lib -DSPDLOG_BUILD_SHARED=ON -DSPDLOG_FMT_EXTERNAL=ON \
+                cmake .. -DCMAKE_BUILD_TYPE=Release -DSPDLOG_BUILD_TESTS=OFF -DCMAKE_CXX_FLAGS=-fPIC && \
                 make && \
                 sudo make install
 
@@ -70,25 +90,7 @@ test -d /usr/local/include/spdlog || {
                  rm -rf ~/code
 }
 
-# fmt 
-# if no spdlog installed in /usr/local/lib/ (/usr/local/include/fmt)
-test -d /usr/local/include/fmt || {
 
-        # Building thermofun library
-        mkdir -p ~/code && \
-                cd ~/code && \
-                git clone hhttps://github.com/fmtlib/fmt.git -b v9.1.0  && \
-                cd fmt && \
-                mkdir -p build && \
-                cd build && \
-                cmake .. \
-                make && \
-                sudo make install
-
-        # Removing generated build files
-        cd ~ && \
-                 rm -rf ~/code
-}
 
 #Pybind11
 test -d /usr/local/include/pybind11 || {
