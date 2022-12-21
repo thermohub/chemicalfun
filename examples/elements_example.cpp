@@ -50,9 +50,7 @@ int main(int argc, char* argv[])
     }
 
     try{
-        ChemicalFun::DBElements all_elements;
-        auto json_string = read_ascii_file("elementsDB.json");
-        all_elements.readElements(json_string);
+        ChemicalFun::DBElements all_elements;;
         std::cout << all_elements.writeElements(true) <<  std::endl;
 
         if( !test_formula.empty() ) {

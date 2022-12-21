@@ -58,8 +58,8 @@ int main(int argc, char* argv[])
         ar_logger->set_level(spdlog::level::trace);
 
         ChemicalFun::DBElements all_elements;
-        auto json_string = read_ascii_file("elementsDB.json");
-        all_elements.readElements(json_string);
+        //auto json_string = read_ascii_file("elementsDB.json");
+        //all_elements.readElements(json_string);
         //std::cout << all_elements.writeElements(true) <<  std::endl;
 
         std::thread th1(parse_formula,"HOO|0|-",all_elements);

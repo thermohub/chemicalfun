@@ -200,6 +200,9 @@ protected:
 class DBElements final
 {
 public:
+    /// The constructor with default elements list.
+    explicit DBElements();
+
     static int defaultValence(const std::string& symbol);
 
     /// List of elements collected from the list of formulas.

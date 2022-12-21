@@ -21,9 +21,10 @@ add_library(ChemicalFun ${HEADER_FILES_TOP} ${HEADER_FILES} ${SOURCE_FILES})
 # Add an alias ChemicalFun::ChemicalFun to the target library ChemicalFun
 add_library(ChemicalFun::ChemicalFun ALIAS ChemicalFun)
 
-# target_compile_definitions(ChemicalFun PUBLIC -DSPDLOG_FMT_EXTERNAL=yes)  
+#target_compile_definitions(ChemicalFun PUBLIC -DSPDLOG_FMT_EXTERNAL=yes)
 
-target_link_libraries(ChemicalFun PUBLIC spdlog::spdlog fmt::fmt)
+#target_link_libraries(ChemicalFun PUBLIC spdlog::spdlog fmt::fmt)
+target_link_libraries(ChemicalFun PUBLIC spdlog::spdlog)
 
 # Add the include paths to the ReactionsGenerator target
 target_include_directories(ChemicalFun

@@ -52,8 +52,8 @@ OBJECTS_DIR   = obj
 include($$CHEMICALFUN_DIR/chemicalfun.pri)
 
 SOURCES += \
-#      examples/elements_example.cpp \
+      examples/elements_example.cpp \
 #      examples/dbelements_example.cpp \
 #      examples/formula_parser_example.cpp
-    examples/thread_example.cpp
+#    examples/thread_example.cpp
 
