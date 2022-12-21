@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
     }
 
     try{
-        ChemicalFun::DBElements all_elements;;
+        ChemicalFun::DBElements all_elements;
         std::cout << all_elements.writeElements(true) <<  std::endl;
 
         if( !test_formula.empty() ) {
