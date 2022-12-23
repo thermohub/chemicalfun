@@ -510,7 +510,7 @@ void FormulaToken::testChargeImbalance(const ElementsData& dbelements)
 
 DBElements::DBElements()
 {
-    readElements(dbElements_default);
+    readElements(dbElements_default1+dbElements_default2);
 }
 
 
