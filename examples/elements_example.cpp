@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
 
     try{
         ChemicalFun::DBElements all_elements;
-        std::cout << all_elements.writeElements(true) <<  std::endl;
+        std::cout << "<<<" << all_elements.writeElements(false) <<  ">>>" << std::endl;
 
         if( !test_formula.empty() ) {
             parse_formula(test_formula, all_elements);
