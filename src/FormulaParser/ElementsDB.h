@@ -1,8 +1,6 @@
 #pragma once
 
-#include <string>
-
-static const std::string dbElements_default = R"([
+const char* dbElements_default = R"([
      {
           "element" :   {
                "symbol" :   "Ag",
