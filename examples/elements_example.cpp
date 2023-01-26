@@ -51,9 +51,7 @@ int main(int argc, char* argv[])
 
     try{
         ChemicalFun::DBElements all_elements;
-        auto json_string = read_ascii_file("elementsDB.json");
-        all_elements.readElements(json_string);
-        std::cout << all_elements.writeElements(true) <<  std::endl;
+        std::cout << "<<<" << all_elements.writeElements(false) <<  ">>>" << std::endl;
 
         if( !test_formula.empty() ) {
             parse_formula(test_formula, all_elements);

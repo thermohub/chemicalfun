@@ -13,7 +13,8 @@ HEADERS += \
     $$CHEMICALFUN_DIR/Common/Exception.h \
     $$CHEMICALFUN_DIR/ReactionsGenerator/CanonicalizerLeal16.h \
     $$CHEMICALFUN_DIR/ReactionsGenerator/GramSchmidtWeltin94.h \
-    $$CHEMICALFUN_DIR/ReactionsGenerator/RowReduceSmithMissen98.h
+    $$CHEMICALFUN_DIR/ReactionsGenerator/RowReduceSmithMissen98.h \
+    $$CHEMICALFUN_DIR/FormulaParser/ElementsDB.h
 
 SOURCES += \
     $$CHEMICALFUN_DIR/Common/Exception.cpp \

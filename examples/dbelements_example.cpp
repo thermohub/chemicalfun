@@ -7,7 +7,7 @@
 #include "Common/Exception.h"
 using namespace std;
 
-const char* const dbElements_str = R"([
+const char* const dbElements_string = R"([
       {
           "element" :   {
                "symbol" :   "Al",
@@ -205,9 +205,9 @@ int main(int argc, char* argv[])
         ChemicalFun::update_loggers( false, "test.log", 0);
 
         ChemicalFun::DBElements all_elements;
-        std::string str_json_array = dbElements_str;
+        std::string str_json_array = dbElements_string;
         if( !test_file.empty() ) {
-            str_json_array = read_ascii_file("elementsDB.json");
+            str_json_array = read_ascii_file(test_file);
         }
         all_elements.readElements(str_json_array);
 

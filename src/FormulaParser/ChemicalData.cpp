@@ -19,6 +19,7 @@
 #include "ChemicalFun/FormulaParser/ChemicalData.h"
 #include "ChemicalFun/FormulaParser/ChemicalFormulaParser.h"
 #include "Common/Exception.h"
+#include "ElementsDB.h"
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
@@ -506,6 +507,12 @@ void FormulaToken::testChargeImbalance(const ElementsData& dbelements)
 }
 
 //------------------------------------------
+
+DBElements::DBElements()
+{
+    readElements(dbElements_default1+dbElements_default2);
+}
+
 
 int DBElements::defaultValence(const std::string& symbol)
 {
