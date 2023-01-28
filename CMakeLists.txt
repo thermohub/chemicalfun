@@ -35,8 +35,8 @@ else()
     include(CondaAware)
     option(CHEMICALFUN_BUILD_SHARED_LIBS "Build shared libraries." ON)
     option(CHEMICALFUN_BUILD_STATIC_LIBS "Build static libraries." ON)
-    option(CHEMICALFUN_BUILD_EXAMPLES "Build examples." OFF)
-    option(CHEMICALFUN_BUILD_TESTS "Build tests." OFF)
+    option(CHEMICALFUN_BUILD_EXAMPLES "Build examples." ON)
+    option(CHEMICALFUN_BUILD_TESTS "Build tests." ON)
     option(CHEMICALFUN_BUILD_PYTHON "Build the python wrappers and python package." ON)
     # Define if shared library should be build instead of static.
     option(BUILD_SHARED_LIBS "Build shared libraries." ON)
@@ -84,14 +84,9 @@ endif()
 
 # Find the Python interpreter
 if(CHEMICALFUN_BUILD_PYTHON)
-    #if(NOT PYBIND11_PYTHON_VERSION)
-    #    set(PYBIND11_PYTHON_VERSION 2.7)
-    #endif()
 
-    #find_package(pybind11 2.0.0 REQUIRED)
     find_package(pybind11 2.2.0 REQUIRED)
     message(STATUS "Found pybind11 v${pybind11_VERSION}: ${pybind11_INCLUDE_DIRS}")
-
     if(NOT pybind11_FOUND)
         set(CHEMICALFUN_BUILD_PYTHON OFF)
         message(WARNING "pybind11 has not been found. "
@@ -119,10 +114,6 @@ include(ChemicalFunFindDeps)
 
 # Build ChemicalFun library
 add_subdirectory(src)
-
-# Copy Resources folder
-#file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Resources
-#        DESTINATION ${CMAKE_BINARY_DIR})
 
 # Build the tests
 if(CHEMICALFUN_BUILD_TESTS)

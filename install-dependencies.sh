@@ -5,7 +5,7 @@
 #sudo rm -rf /usr/local/include/nlohmann
 #sudo rm -rf /usr/local/include/eigen3/Eigen/Eigen
 #sudo rm -rf /usr/local/include/pybind11
-sudo rm -rf /usr/local/include/spdlog
+#sudo rm -rf /usr/local/include/spdlog
 #sudo rm -rf /usr/local/include/fmt
 
 threads=4

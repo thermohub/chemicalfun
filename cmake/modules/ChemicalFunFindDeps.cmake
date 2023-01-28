@@ -11,12 +11,12 @@ if(CHEMICALFUN_BUILD_PYTHON)
 endif()
 
 
-find_package(spdlog REQUIRED)
-if(NOT spdlog_FOUND)
-  message(FATAL_ERROR "spdlog not found")
-else()
-  message(STATUS "Found spdlog v${spdlog_VERSION}")
-endif()
+#find_package(spdlog REQUIRED)
+#if(NOT spdlog_FOUND)
+#  message(FATAL_ERROR "spdlog not found")
+#else()
+#  message(STATUS "Found spdlog v${spdlog_VERSION}")
+#endif()
 
 
 #find_package(fmt REQUIRED)
