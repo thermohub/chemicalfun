@@ -1,10 +1,9 @@
 TEMPLATE = app
-CONFIG += console c++17
+CONFIG += thread console c++17
 CONFIG -= app_bundle
-CONFIG += thread
 CONFIG -= qt
 
-QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.15
+#QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.15
 
 !win32 {
   DEFINES += __unix
@@ -12,6 +11,19 @@ QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.15
 
 macx-g++ {
   DEFINES += __APPLE__
+}
+
+macx-clang {
+  DEFINES += __APPLE__
+  INCLUDEPATH   += "/usr/local/include"
+  DEPENDPATH   += "/usr/local/include"
+  LIBPATH += "/usr/local/lib/"
+}
+
+win32 {
+  INCLUDEPATH   += "C:\usr\local\include"
+  DEPENDPATH   += "C:\usr\local\include"
+  LIBPATH += "C:\usr\local\lib"
 }
 
 # Define the directory where source code is located
@@ -28,18 +40,6 @@ INCLUDEPATH   += $$CHEMICALFUN_HEADERS_DIR
 INCLUDEPATH   += $$TESTS_DIR
 
 
-macx-clang {
-  DEFINES += __APPLE__
-  INCLUDEPATH   += "/usr/local/include"
-  DEPENDPATH   += "/usr/local/include"
-  LIBPATH += "/usr/local/lib/"
-}
-
-win32 {
-  INCLUDEPATH   += "C:\usr\local\include"
-  DEPENDPATH   += "C:\usr\local\include"
-  LIBPATH += "C:\usr\local\lib"
-}
 
 
 OBJECTS_DIR   = obj

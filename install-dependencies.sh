@@ -6,9 +6,6 @@
 #sudo rm -rf /usr/local/include/eigen3/Eigen/Eigen
 #sudo rm -rf /usr/local/include/pybind11
 #sudo rm -rf /usr/local/include/spdlog
-#sudo rm -rf /usr/local/include/fmt
-
-threads=4
 
 # nlohmann/json library v. 3.6.1 or up
 # if not installed in /usr/local/include/nlohmann)
@@ -50,52 +47,27 @@ test -d /usr/local/include/eigen3/Eigen || {
 		 rm -rf ~/code
 }
 
-# fmt 
-# if no spdlog installed in /usr/local/lib/ (/usr/local/include/fmt)
-test -d /usr/local/include/fmt || {
-
-        # Building thermofun library
-        mkdir -p ~/code && \
-                cd ~/code && \
-                git clone https://github.com/fmtlib/fmt.git -b 9.1.0  && \
-                cd fmt && \
-                mkdir -p build && \
-                cd build && \
-                cmake .. && \
-                make && \
-                sudo make install
-
-        # Removing generated build files
-        cd ~ && \
-                 rm -rf ~/code
-}
-
 # spdlog 
-# if no spdlog installed in /usr/local/lib/ (/usr/local/include/spdlog)
+# if no spdlog installed in /usr/local/include/spdlog (copy only headers)
 test -d /usr/local/include/spdlog || {
 
-        # Building thermofun library
+        # Building spdlog library
         mkdir -p ~/code && \
                 cd ~/code && \
-                git clone https://github.com/gabime/spdlog -b v1.11.0  && \
-                cd spdlog && \
-                mkdir -p build && \
-                cd build && \
-                cmake .. -DCMAKE_BUILD_TYPE=Release -DSPDLOG_BUILD_TESTS=OFF -DCMAKE_CXX_FLAGS=-fPIC && \
-                make && \
-                sudo make install
+                #git clone https://github.com/gabime/spdlog -b v1.11.0  && \
+                git clone https://github.com/gabime/spdlog && \
+                cd spdlog/include && \
+                sudo cp -r spdlog /usr/local/include
 
         # Removing generated build files
         cd ~ && \
                  rm -rf ~/code
 }
-
-
 
 #Pybind11
 test -d /usr/local/include/pybind11 || {
 
-	# Building yaml-cpp library
+        # Building pybind11 library
 	mkdir -p ~/code && \
 		cd ~/code && \
 		git clone https://github.com/pybind/pybind11.git && \

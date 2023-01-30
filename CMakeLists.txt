@@ -40,6 +40,7 @@ else()
     option(CHEMICALFUN_BUILD_PYTHON "Build the python wrappers and python package." ON)
     # Define if shared library should be build instead of static.
     option(BUILD_SHARED_LIBS "Build shared libraries." ON)
+
     # Set libraries to be compiled with position independent code mode (i.e., fPIC option in GNU compilers)
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
