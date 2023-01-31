@@ -4,6 +4,9 @@ CONFIG -= app_bundle
 CONFIG -= qt
 #CONFIG += sanitaze sanitaze_thread
 
+DEFINES += SPDLOG_HEADER_ONLY
+#DEFINES += SPDLOG_FMT_EXTERNAL
+
 !win32 {
   DEFINES += __unix
 

@@ -45,6 +45,13 @@ else()
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
 
+# Used into conda only
+option(USE_SPDLOG_FMT_EXTERNAL "Use external fmt library instead of bundled" OFF)
+add_definitions(-DSPDLOG_HEADER_ONLY)
+if (USE_SPDLOG_FMT_EXTERNAL MATCHES ON)
+   add_definitions(-DSPDLOG_FMT_EXTERNAL)
+endif()
+
 # Set the default build type to Release
 if(NOT CMAKE_BUILD_TYPE)
     # The build type selection for the project
@@ -85,7 +92,6 @@ endif()
 
 # Find the Python interpreter
 if(CHEMICALFUN_BUILD_PYTHON)
-
     find_package(pybind11 2.2.0 REQUIRED)
     message(STATUS "Found pybind11 v${pybind11_VERSION}: ${pybind11_INCLUDE_DIRS}")
     if(NOT pybind11_FOUND)
