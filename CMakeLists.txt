@@ -35,7 +35,7 @@ else()
     include(CondaAware)
     option(CHEMICALFUN_BUILD_SHARED_LIBS "Build shared libraries." ON)
     option(CHEMICALFUN_BUILD_STATIC_LIBS "Build static libraries." ON)
-    option(CHEMICALFUN_BUILD_EXAMPLES "Build examples." OFF)
+    option(CHEMICALFUN_BUILD_EXAMPLES "Build examples." ON)
     option(CHEMICALFUN_BUILD_TESTS "Build tests." ON)
     option(CHEMICALFUN_BUILD_PYTHON "Build the python wrappers and python package." ON)
     # Define if shared library should be build instead of static.
