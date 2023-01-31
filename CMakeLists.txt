@@ -47,10 +47,6 @@ endif()
 
 # Used into conda only
 option(USE_SPDLOG_FMT_EXTERNAL "Use external fmt library instead of bundled" OFF)
-add_definitions(-DSPDLOG_HEADER_ONLY)
-if (USE_SPDLOG_FMT_EXTERNAL MATCHES ON)
-   add_definitions(-DSPDLOG_FMT_EXTERNAL)
-endif()
 
 # Set the default build type to Release
 if(NOT CMAKE_BUILD_TYPE)

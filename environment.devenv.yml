@@ -10,10 +10,9 @@ dependencies:
   - ninja
   - ccache  # [unix]
   - pybind11
-  - eigen
+  - eigen=3.4.0
   - nlohmann_json
-  #- fmt
-  - spdlog
+  - spdlog=1.11.0
   - python>={{ python_version }}
   - pytest
 
