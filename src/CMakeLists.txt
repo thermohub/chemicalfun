@@ -24,7 +24,7 @@ add_library(ChemicalFun::ChemicalFun ALIAS ChemicalFun)
 if (USE_SPDLOG_FMT_EXTERNAL MATCHES ON)
 #add_definitions(-DSPDLOG_FMT_EXTERNAL)
 #add_definitions(-DSPDLOG_HEADER_ONLY)
-#target_compile_definitions(ChemicalFun PUBLIC -DSPDLOG_FMT_EXTERNAL=yes)
+target_compile_definitions(ChemicalFun PUBLIC -DSPDLOG_FMT_EXTERNAL=yes)
 target_link_libraries(ChemicalFun PUBLIC spdlog::spdlog fmt::fmt)
 endif()
 
