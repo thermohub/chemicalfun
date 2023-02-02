@@ -47,3 +47,9 @@ install(CODE
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 "
 )
+
+# https://www.scivision.dev/cmake-install-python-package/
+# https://github.com/pybind/cmake_example
+#https://medium.com/practical-coding/setting-up-a-c-python-project-with-pybind11-and-cmake-8de391494fca
+# https://github.com/smrfeld/cmake_cpp_pybind11_tutorial
+#  https://stackoverflow.com/questions/45225381/pybind11-cmake-how-to-install-files
