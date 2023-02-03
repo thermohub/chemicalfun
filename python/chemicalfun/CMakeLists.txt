@@ -11,11 +11,15 @@ set(SETUP_PY ${CMAKE_CURRENT_BINARY_DIR}/setup.py)
 # Configure the setup.py script with the provided CMake variables
 configure_file(${SETUP_PY_IN} ${SETUP_PY})
 
+# https://pip.pypa.io/en/stable/cli/pip_install/
+# https://www.scivision.dev/cmake-install-python-package/
+# https://pip.pypa.io/en/stable/topics/local-project-installs/#editable-installs
+
 # Create a custom target to build ChemicalFun python package during build stage
 add_custom_target(chemicalfun ALL
     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:PyChemicalFun>
         ${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:PyChemicalFun>
-    COMMAND ${PYTHON_EXECUTABLE} ${SETUP_PY} --quiet install --prefix=${CMAKE_BINARY_DIR}
+    COMMAND ${PYTHON_EXECUTABLE} -m pip install -e ${CMAKE_CURRENT_BINARY_DIR}
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
 # Set dependencies of PyChemicalFun target
@@ -43,13 +47,7 @@ install(CODE
     endif()
 
     execute_process(
-        COMMAND ${PYTHON_EXECUTABLE} ${SETUP_PY} install --prefix=\${CHEMICALFUN_PYTHON_INSTALL_PREFIX_NATIVE}
+        COMMAND ${PYTHON_EXECUTABLE} -m pip install --prefix ${CHEMICALFUN_PYTHON_INSTALL_PREFIX} .
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 "
 )
-
-# https://www.scivision.dev/cmake-install-python-package/
-# https://github.com/pybind/cmake_example
-#https://medium.com/practical-coding/setting-up-a-c-python-project-with-pybind11-and-cmake-8de391494fca
-# https://github.com/smrfeld/cmake_cpp_pybind11_tutorial
-#  https://stackoverflow.com/questions/45225381/pybind11-cmake-how-to-install-files
