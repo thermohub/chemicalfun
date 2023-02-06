@@ -18,7 +18,6 @@
 
 #include "RowReduceSmithMissen98.h"
 #include "Common/Exception.h"
-#include "spdlog/fmt/ostr.h"
 
 namespace ReactionsGenerator {
 

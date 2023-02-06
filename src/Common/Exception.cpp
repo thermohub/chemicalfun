@@ -31,9 +31,11 @@ namespace ChemicalFun {
 // Thread-safe logger to stdout with colors
 std::shared_ptr<spdlog::logger> chfun_logger = spdlog::stdout_color_mt("chemicalfun");
 
-void update_loggers( bool use_cout, const std::string& logfile_name, size_t log_level)
+void update_loggers(bool use_cout, const std::string& logfile_name, size_t log_level)
 {
     auto chemicalfun_logger = spdlog::get("chemicalfun");
+    if(!chemicalfun_logger)
+        return;
 
     // change level
     spdlog::level::level_enum log_lev = spdlog::level::info;
@@ -50,7 +52,7 @@ void update_loggers( bool use_cout, const std::string& logfile_name, size_t log_
         chemicalfun_logger->sinks().push_back(console_output);
     }
     if(!logfile_name.empty()) {
-        auto file_output = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(logfile_name, 1048576, 3);
+        auto file_output = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(logfile_name, 1048576, 2);
         chemicalfun_logger->sinks().push_back(file_output);
     }
 }

@@ -19,7 +19,6 @@
 #include <sstream>
 #include "ReactionsGenerator/GramSchmidtWeltin94.h"
 #include "Common/Exception.h"
-#include "spdlog/fmt/ostr.h"
 
 namespace ReactionsGenerator {
 
