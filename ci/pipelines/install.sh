@@ -25,7 +25,7 @@ cmake -GNinja \
     -DPYTHON_EXECUTABLE:FILEPATH=$python_path \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_LIBDIR=lib \
-    -DUSE_SPDLOG_FMT_EXTERNAL=ON \
+    -DUSE_SPDLOG_PRECOMPILED=ON \
     ..
 ninja install
 conda list

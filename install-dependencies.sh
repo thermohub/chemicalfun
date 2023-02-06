@@ -1,5 +1,5 @@
 #!/bin/bash
-# Installing dependencies needed to build CemicalFun on (k)ubuntu linux 18.04 or macOS
+# Installing dependencies needed to build CemicalFun on (k)ubuntu linux 20.04 or macOS
 
 # Temporarily uncomment rows for packages that need to be re-installed
 #sudo rm -rf /usr/local/include/nlohmann
@@ -54,8 +54,7 @@ test -d /usr/local/include/spdlog || {
         # Building spdlog library
         mkdir -p ~/code && \
                 cd ~/code && \
-                #git clone https://github.com/gabime/spdlog -b v1.11.0  && \
-                git clone https://github.com/gabime/spdlog && \
+                git clone https://github.com/gabime/spdlog -b v1.11.0  && \
                 cd spdlog/include && \
                 sudo cp -r spdlog /usr/local/include
 

@@ -16,10 +16,15 @@ configure_file(${SETUP_PY_IN} ${SETUP_PY})
 # https://pip.pypa.io/en/stable/topics/local-project-installs/#editable-installs
 
 # Create a custom target to build ChemicalFun python package during build stage
+#Then, to install from local only, you’ll be using --find-links and --no-index like so:
+#https://pip.pypa.io/en/stable/user_guide/#user-installs
+## Problem make with empty build generate error permissin and remove global setuped chemicalfun python lib
+## when pip install try uninstall previos installed and if local not exist try to unistall from /usr/local\
+## if installed to home/<usr>/.local.lib removes from here
 add_custom_target(chemicalfun ALL
     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:PyChemicalFun>
         ${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:PyChemicalFun>
-    COMMAND ${PYTHON_EXECUTABLE} -m pip install -e ${CMAKE_CURRENT_BINARY_DIR}
+    COMMAND ${PYTHON_EXECUTABLE} -m pip install --user -e ${CMAKE_CURRENT_BINARY_DIR}
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
 # Set dependencies of PyChemicalFun target
@@ -47,7 +52,7 @@ install(CODE
     endif()
 
     execute_process(
-        COMMAND ${PYTHON_EXECUTABLE} -m pip install --prefix ${CHEMICALFUN_PYTHON_INSTALL_PREFIX} .
+        COMMAND ${PYTHON_EXECUTABLE} -m pip install --prefix ${CHEMICALFUN_PYTHON_INSTALL_PREFIX} ${CMAKE_CURRENT_BINARY_DIR}
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 "
 )
