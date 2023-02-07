@@ -46,7 +46,7 @@ else()
 endif()
 
 # Used into conda only
-option(USE_SPDLOG_PRECOMPILED "Use external fmt library instead of bundled" OFF)
+option(USE_SPDLOG_PRECOMPILED "Use spdlog in compiled version" OFF)
 
 # Set the default build type to Release
 if(NOT CMAKE_BUILD_TYPE)
