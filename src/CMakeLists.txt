@@ -21,7 +21,11 @@ add_library(ChemicalFun ${HEADER_FILES_TOP} ${HEADER_FILES} ${SOURCE_FILES})
 # Add an alias ChemicalFun::ChemicalFun to the target library ChemicalFun
 add_library(ChemicalFun::ChemicalFun ALIAS ChemicalFun)
 
-if(USE_SPDLOG_PRECOMPILED MATCHES ON)
+if(USE_SPDLOG_PRECOMPILED)
+   if(NOT TARGET spdlog::spdlog)
+       find_package(spdlog CONFIG REQUIRED)
+   endif()
+   target_compile_definitions(ChemicalFun PUBLIC USE_SPDLOG_PRECOMPILED)
    target_link_libraries(ChemicalFun PUBLIC spdlog::spdlog)
 endif()
 

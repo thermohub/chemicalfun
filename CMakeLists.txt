@@ -35,8 +35,8 @@ else()
     include(CondaAware)
     option(CHEMICALFUN_BUILD_SHARED_LIBS "Build shared libraries." ON)
     option(CHEMICALFUN_BUILD_STATIC_LIBS "Build static libraries." ON)
-    option(CHEMICALFUN_BUILD_EXAMPLES "Build examples." ON)
-    option(CHEMICALFUN_BUILD_TESTS "Build tests." ON)
+    option(CHEMICALFUN_BUILD_EXAMPLES "Build examples." OFF)
+    option(CHEMICALFUN_BUILD_TESTS "Build tests." OFF)
     option(CHEMICALFUN_BUILD_PYTHON "Build the python wrappers and python package." ON)
     # Define if shared library should be build instead of static.
     option(BUILD_SHARED_LIBS "Build shared libraries." ON)
@@ -46,7 +46,11 @@ else()
 endif()
 
 # Used into conda only
-option(USE_SPDLOG_PRECOMPILED "Use spdlog in compiled version" OFF)
+if(DEFINED ENV{CONDA_PREFIX})
+   option(USE_SPDLOG_PRECOMPILED "Use spdlog in compiled version" ON)
+else()
+   option(USE_SPDLOG_PRECOMPILED "Use spdlog in compiled version" OFF)
+endif()
 
 # Set the default build type to Release
 if(NOT CMAKE_BUILD_TYPE)
