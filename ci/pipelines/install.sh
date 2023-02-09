@@ -1,6 +1,6 @@
 if [ ! -f $HOME/miniconda/bin/conda ]; then
     echo "Downloading and installing miniconda"
-    wget -O miniconda.sh https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    wget -O miniconda.sh https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
     rm -rf $HOME/miniconda
     bash miniconda.sh -b -p $HOME/miniconda
 fi
@@ -28,6 +28,11 @@ cmake -GNinja \
     -DUSE_SPDLOG_PRECOMPILED=ON \
     ..
 ninja install
+if [ $? -eq 1 ]
+then
+echo "The install failed" >&2
+exit 1
+fi
 conda list
 cd ..
 #pytest -ra -vv --color=yes .

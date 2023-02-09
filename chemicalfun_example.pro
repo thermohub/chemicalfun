@@ -2,7 +2,7 @@ TEMPLATE = app
 CONFIG += thread console c++17
 CONFIG -= app_bundle
 CONFIG -= qt
-#CONFIG += sanitaze sanitaze_thread
+CONFIG += sanitaze sanitaze_thread
 
 #DEFINES += SPDLOG_HEADER_ONLY
 #DEFINES += SPDLOG_FMT_EXTERNAL

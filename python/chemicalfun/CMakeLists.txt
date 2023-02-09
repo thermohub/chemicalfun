@@ -12,7 +12,6 @@ set(SETUP_PY ${CMAKE_CURRENT_BINARY_DIR}/setup.py)
 # Configure the setup.py script with the provided CMake variables
 configure_file(${SETUP_PY_IN} ${SETUP_PY})
 
-
 # https://www.scivision.dev/cmake-install-python-package/
 # https://pip.pypa.io/en/stable/topics/local-project-installs/#editable-installs
 # detect virtualenv and set Pip args accordingly

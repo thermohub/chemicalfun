@@ -30,21 +30,20 @@ test -f /usr/local/include/nlohmann/json.hpp || {
 # if not installed in /usr/local/include/eigen3)
 test -d /usr/local/include/eigen3/Eigen || {
 
-	# Downloading and unpacking eigen3 source code into ~/code/eigen-code
-	mkdir -p ~/code && cd ~/code && mkdir eigen-code
-	wget -c https://bitbucket.org/eigen/eigen/get/default.tar.bz2
-	tar xvjf default.tar.bz2 -C eigen-code --strip-components 1
+        # Building eigen library
+        mkdir -p ~/code && \
+                cd ~/code && \
+                git clone https://gitlab.com/libeigen/eigen.git -b 3.4.0 && \
+                cd eigen && \
+                mkdir -p build && \
+                cd build && \
+                cmake .. \
+                make && \
+                sudo make install
 
-	# Building Eigen3 library
-	cd eigen-code && \
-		mkdir -p build && \
-		cd build && \
-		cmake .. && \
-		sudo make install
-
-	# Removing generated build files
-	cd ~ && \
-		 rm -rf ~/code
+        # Removing generated build files
+        cd ~ && \
+                 rm -rf ~/code
 }
 
 # spdlog 
