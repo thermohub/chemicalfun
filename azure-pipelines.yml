@@ -17,6 +17,9 @@ jobs:
     inputs:
       filePath: 'ci/pipelines/install.sh'
 
+  - script: ./ci/pipelines/test.sh
+        displayName: Test
+
 - job: macOS
   pool:
     vmImage: 'macOS-11'
@@ -26,13 +29,13 @@ jobs:
     inputs:
       filePath: 'ci/pipelines/install/install-osx.sh'
 
+  - script: |
+        ./ci/pipelines/test.sh
+      displayName: Test
+
 - job: win64_VS
   pool:
     vmImage: 'windows-2019'
-  strategy:
-    matrix:
-      Python37:
-        python.version: '3.7'
 
   steps:
   - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
