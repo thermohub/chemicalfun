@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.9)
 
 # Set the name of the project
-project(ChemicalFun VERSION 0.1.7 LANGUAGES CXX)
+project(ChemicalFun VERSION 0.1.8 LANGUAGES CXX)
 
 # Set the cmake module path of the project
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
@@ -36,12 +36,20 @@ else()
     option(CHEMICALFUN_BUILD_SHARED_LIBS "Build shared libraries." ON)
     option(CHEMICALFUN_BUILD_STATIC_LIBS "Build static libraries." ON)
     option(CHEMICALFUN_BUILD_EXAMPLES "Build examples." OFF)
-    option(CHEMICALFUN_BUILD_TESTS "Build tests." OFF)
+    option(CHEMICALFUN_BUILD_TESTS "Build tests." ON)
     option(CHEMICALFUN_BUILD_PYTHON "Build the python wrappers and python package." ON)
     # Define if shared library should be build instead of static.
     option(BUILD_SHARED_LIBS "Build shared libraries." ON)
+
     # Set libraries to be compiled with position independent code mode (i.e., fPIC option in GNU compilers)
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+endif()
+
+# Used into conda only
+if(DEFINED ENV{CONDA_PREFIX})
+   option(USE_SPDLOG_PRECOMPILED "Use spdlog in compiled version" ON)
+else()
+   option(USE_SPDLOG_PRECOMPILED "Use spdlog in compiled version" OFF)
 endif()
 
 # Set the default build type to Release
@@ -84,14 +92,8 @@ endif()
 
 # Find the Python interpreter
 if(CHEMICALFUN_BUILD_PYTHON)
-    #if(NOT PYBIND11_PYTHON_VERSION)
-    #    set(PYBIND11_PYTHON_VERSION 2.7)
-    #endif()
-
-    #find_package(pybind11 2.0.0 REQUIRED)
     find_package(pybind11 2.2.0 REQUIRED)
     message(STATUS "Found pybind11 v${pybind11_VERSION}: ${pybind11_INCLUDE_DIRS}")
-
     if(NOT pybind11_FOUND)
         set(CHEMICALFUN_BUILD_PYTHON OFF)
         message(WARNING "pybind11 has not been found. "
@@ -119,10 +121,6 @@ include(ChemicalFunFindDeps)
 
 # Build ChemicalFun library
 add_subdirectory(src)
-
-# Copy Resources folder
-#file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Resources
-#        DESTINATION ${CMAKE_BINARY_DIR})
 
 # Build the tests
 if(CHEMICALFUN_BUILD_TESTS)

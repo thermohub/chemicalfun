@@ -54,8 +54,10 @@ int main(int argc, char* argv[])
 
     try{
 
-        auto ar_logger = spdlog::get("chemicalfun");
-        ar_logger->set_level(spdlog::level::trace);
+        //auto ar_logger = spdlog::get("chemicalfun");
+        //ar_logger->set_level(spdlog::level::trace);
+
+        ChemicalFun::update_loggers(false, "chemicalfun_thread.log", spdlog::level::trace);
 
         ChemicalFun::DBElements all_elements;
         std::thread th1(parse_formula,"HOO|0|-",all_elements);

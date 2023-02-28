@@ -20,7 +20,6 @@
 #include "ChemicalFun/ReactionsGenerator/MatrixUtils.h"
 #include "ChemicalFun/FormulaParser/ChemicalData.h"
 #include "Common/Exception.h"
-#include "spdlog/fmt/ostr.h"
 
 namespace ReactionsGenerator {
 

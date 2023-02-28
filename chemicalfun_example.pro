@@ -2,7 +2,10 @@ TEMPLATE = app
 CONFIG += thread console c++17
 CONFIG -= app_bundle
 CONFIG -= qt
-#CONFIG += sanitaze sanitaze_thread
+CONFIG += sanitaze sanitaze_thread
+
+#DEFINES += SPDLOG_HEADER_ONLY
+#DEFINES += SPDLOG_FMT_EXTERNAL
 
 !win32 {
   DEFINES += __unix
@@ -52,8 +55,8 @@ OBJECTS_DIR   = obj
 include($$CHEMICALFUN_DIR/chemicalfun.pri)
 
 SOURCES += \
-      examples/elements_example.cpp \
+#   examples/elements_example.cpp \
 #      examples/dbelements_example.cpp \
 #      examples/formula_parser_example.cpp
-#    examples/thread_example.cpp
+    examples/thread_example.cpp
 
