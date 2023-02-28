@@ -20,6 +20,6 @@ call activate chemicalfun
 call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat -vcvars_ver=19.29.30139.0"
 
 echo "Configuring..."
-cmake -G"Visual Studio 16 2019" -DCHEMICALFUN_PYTHON_INSTALL_PREFIX:PATH="%CONDA_PREFIX%" -A x64 -S . -DUSE_SPDLOG_PRECOMPILED=ON -B build
+cmake -G"Visual Studio 16 2019" -DCHEMICALFUN_PYTHON_INSTALL_PREFIX:PATH="%CONDA_PREFIX%" -A x64 -S . -B build
 echo "Building..."
 cmake --build build --target install

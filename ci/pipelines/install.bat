@@ -23,6 +23,5 @@ call activate chemicalfun
 cmake -G Ninja ^
     -DCHEMICALFUN_PYTHON_INSTALL_PREFIX:PATH="%CONDA_PREFIX%" ^
     -DCMAKE_BUILD_TYPE=Release ^
-    -DUSE_SPDLOG_PRECOMPILED=ON ^
     ..
 ninja install
