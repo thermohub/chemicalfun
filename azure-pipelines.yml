@@ -59,4 +59,5 @@ jobs:
      call activate chemicalfun
      conda list
      call python -c "import chemicalfun"
+     call build\tests\test_main.exe
     displayName: Test
