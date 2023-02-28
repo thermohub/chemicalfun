@@ -18,7 +18,7 @@ jobs:
       filePath: 'ci/pipelines/install.sh'
 
   - script: ./ci/pipelines/test.sh
-        displayName: Test
+    displayName: Test
 
 - job: macOS
   pool:
@@ -31,7 +31,7 @@ jobs:
 
   - script: |
         ./ci/pipelines/test.sh
-      displayName: Test
+    displayName: Test
 
 - job: win64_VS
   pool:
