@@ -9,5 +9,8 @@ if(NOT TARGET ChemicalFun::ChemicalFun)
     include("@PACKAGE_CHEMICALFUN_INSTALL_CONFIGDIR@/ChemicalFunTargets.cmake")
 endif()
 
+# Find all dependencies below.
+find_package(spdlog CONFIG REQUIRED)
+
 # Recommended check at the end of a cmake config file.
 check_required_components(ChemicalFun)
