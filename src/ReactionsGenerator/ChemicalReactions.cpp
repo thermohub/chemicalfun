@@ -4,16 +4,16 @@
 // Copyright (C) 2018-2022 G.D.Miron, D.Kulik, S.Dmytriieva
 //
 // This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 2.1 of the License, or
 // (at your option) any later version.
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
+// GNU Lesser General Public License for more details.
 //
-// You should have received a copy of the GNU General Public License
+// You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "ChemicalFun/ReactionsGenerator/ChemicalReactions.h"
@@ -36,7 +36,7 @@ struct ChemicalReactions::Impl
     MatrixXd substancesStoichMatrix;
 
     IndexSubstancesMap iColFormulasMap;
-    
+
     IndexSubstancesMap iColSymbolsMap;
 
     Indices iSubstances;
@@ -86,7 +86,7 @@ struct ChemicalReactions::Impl
     {
         //Impl(ChemicalFun::substancesStoichiometryMatrix(substanceFormulasList));
 
-        ChemicalFun::funErrorIf(substanceFormulasList.size() != substanceSymbolsList.size(), "Chemical Reactions", 
+        ChemicalFun::funErrorIf(substanceFormulasList.size() != substanceSymbolsList.size(), "Chemical Reactions",
         "Different number of formulas "+ std::to_string(substanceFormulasList.size()) +" and symbols " + std::to_string(substanceSymbolsList.size()) , __LINE__, __FILE__ );
 
         formulaMatrix = stoichiometryMatrix(ChemicalFun::substancesStoichiometryMatrix(substanceFormulasList, valence)).transpose();
@@ -109,7 +109,7 @@ struct ChemicalReactions::Impl
 
     auto makeReactions() -> void
     {
-        ChemicalFun::funErrorIf(reactionsMatrix.size() == 0, "Chemical Reactions", 
+        ChemicalFun::funErrorIf(reactionsMatrix.size() == 0, "Chemical Reactions",
         "Reactions matrix is empty. Call generateReactions() first.", __LINE__, __FILE__ );
 
         reactions.clear();
@@ -147,7 +147,7 @@ struct ChemicalReactions::Impl
             {
                 if( jj > 0 )
                     reactR += " + ";
-                
+
                 coefficient(reactR, coeffs[jj]);
                 reactR += reacts[jj];
             }
@@ -191,14 +191,14 @@ struct ChemicalReactions::Impl
        {
             if (r.second < 0) // reactants
             {
-                reactants.push_back(r.first); 
-                reacCoeff.push_back(-1*r.second); 
+                reactants.push_back(r.first);
+                reacCoeff.push_back(-1*r.second);
             }
 
             if (r.second > 0) // products
             {
-                products.push_back(r.first); 
-                prodCoeff.push_back(r.second); 
+                products.push_back(r.first);
+                prodCoeff.push_back(r.second);
             }
        }
 
@@ -277,12 +277,12 @@ auto ChemicalReactions::sizeSubstancesMap() -> size_t
 
 auto ChemicalReactions::generateReactions(bool formation) const -> const std::vector<Reactants>&
 {
-    ChemicalFun::funErrorIf(pimpl->formulaMatrix.size() == 0, "Chemical Reactions", 
+    ChemicalFun::funErrorIf(pimpl->formulaMatrix.size() == 0, "Chemical Reactions",
         "Chemical formulas stoiechiometry matrix is empty.", __LINE__, __FILE__ );
 
     pimpl->generator = Generator();
     pimpl->generator.compute(pimpl->formulaMatrix);
-    
+
     if (formation)
         pimpl->reactionsMatrix   = pimpl->generator.reactionMatrix()*-1;
     else
@@ -299,13 +299,13 @@ auto ChemicalReactions::generateReactions(bool formation) const -> const std::ve
 auto ChemicalReactions::stringReactions(bool reactantsOrder) const -> const std::vector<std::string>&
 {
     pimpl->strReactions.clear();
-    
+
     if (pimpl->reactions.size() == 0)
         generateReactions();
 
     for (const auto& rr : pimpl->reactions)
         pimpl->strReactions.push_back(pimpl->reactionString(rr, reactantsOrder));
-        
+
     return pimpl->strReactions;
 }
 
