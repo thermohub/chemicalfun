@@ -8,7 +8,7 @@ dependencies:
   - ninja
   - ccache  # [unix]
   - pybind11
-  - eigen=3.4.0
+  - eigen>=3.4.0
   - nlohmann_json
   - spdlog
   - python>=3.7
