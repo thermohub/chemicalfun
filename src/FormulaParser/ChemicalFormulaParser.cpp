@@ -18,6 +18,7 @@
 
 #include <sstream>
 #include <iomanip>
+#include <iterator>
 #include "ChemicalFun/FormulaParser/ChemicalFormulaParser.h"
 #include "Common/Exception.h"
 
