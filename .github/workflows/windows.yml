@@ -47,8 +47,8 @@ jobs:
       
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v2
-        #with:
-          #vs-version: '[16.4,16.5)'
+        with:
+          vs-version: '16.11'
 
       - uses: conda-incubator/setup-miniconda@v2
         with:
