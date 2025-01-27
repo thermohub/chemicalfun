@@ -44,6 +44,11 @@ jobs:
             ${{ runner.os }}-${{ matrix.config }}-${{ runner.python-version }}-${{ github.ref }}-clcache-${ { steps.timestamp.outputs.now } }
           restore-keys: |
             ${{ runner.os }}-${{ matrix.config }}-${{ runner.python-version }}-${{ github.ref }}-clcache-
+      
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        #with:
+          #vs-version: '[16.4,16.5)'
 
       - uses: conda-incubator/setup-miniconda@v2
         with:
@@ -71,7 +76,7 @@ jobs:
           clcache -s || goto :eof
           clcache -z || goto :eof
           mkdir .build && cd .build || goto :eof
-          cmake -G "Visual Studio 16 2019" -A x64 .. -DCMAKE_BUILD_TYPE=${{ matrix.config }} || goto :eof
+          cmake -GNinja .. -DCMAKE_BUILD_TYPE=${{ matrix.config }} || goto :eof
           ninja || goto :eof
           ninja install || goto :eof
           python -c "import chemicalfun" || goto :eof
