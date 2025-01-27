@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Timestamp  # Idea from https://tinyurl.com/47wz7vpv
+      - name: Timestamp
         id: timestamp
         shell: cmake -P {0}
         run: |
@@ -40,10 +40,16 @@ jobs:
           path: |
             C:\Users\runneradmin\clcache
             C:\Users\runneradmin\conda_pkgs_dir
-          key:
-            ${{ runner.os }}-${{ matrix.config }}-${{ runner.python-version }}-${{ github.ref }}-clcache-${ { steps.timestamp.outputs.now } }
+          key: ${{ runner.os }}-${{ matrix.config }}-${{ runner.python-version }}-${{ github.ref }}-clcache-${{ steps.timestamp.outputs.now }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.config }}-${{ runner.python-version }}-${{ github.ref }}-clcache-
+
+      - uses: actions/setup-msbuild@v1
+
+      - name: Set up Visual Studio
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
 
       - uses: conda-incubator/setup-miniconda@v2
         with:
@@ -71,8 +77,8 @@ jobs:
           clcache -s || goto :eof
           clcache -z || goto :eof
           mkdir .build && cd .build || goto :eof
-          cmake -GNinja .. -DCMAKE_BUILD_TYPE=${{ matrix.config }} || goto :eof
-          ninja || goto :eof
-          ninja install || goto :eof
+          cmake -G "Visual Studio 16 2019" -A x64 .. -DCMAKE_BUILD_TYPE=${{ matrix.config }} || goto :eof
+          cmake --build . --config ${{ matrix.config }} || goto :eof
+          cmake --install . || goto :eof
           python -c "import chemicalfun" || goto :eof
           clcache -s || goto :eof
