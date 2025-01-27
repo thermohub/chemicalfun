@@ -4,8 +4,10 @@ name: chemicalfun
 dependencies:
   - pip
   - gxx_linux-64>=9.4.0  # [linux]
+  - clangxx_osx-64  # [osx]
   - cmake>=3.13
   - ninja
+  - clcache  # [win]
   - ccache  # [unix]
   - pybind11
   - eigen>=3.4.0
