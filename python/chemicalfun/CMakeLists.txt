@@ -39,14 +39,17 @@ add_dependencies(chemicalfun PyChemicalFun)
 
 # Set the path where the python package is installed to CMAKE_INSTALL_PREFIX if not given
 if(NOT DEFINED CHEMICALFUN_PYTHON_INSTALL_PREFIX)
-    # Determine the global site-packages directory
-    # We execute a Python script to get this path reliably.
-    execute_process(
-    COMMAND "${PYTHON_EXECUTABLE}" -c "import site; print(site.getsitepackages()[0])"
-    OUTPUT_VARIABLE CHEMICALFUN_PYTHON_INSTALL_PREFIX
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-    message(STATUS "Python global site-packages: ${CHEMICALFUN_PYTHON_INSTALL_PREFIX}")
+    if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+       # Determine the global site-packages directory
+       # We execute a Python script to get this path reliably.
+       execute_process(
+         COMMAND "${PYTHON_EXECUTABLE}" -c "import site; print(site.getsitepackages()[0])"
+         OUTPUT_VARIABLE CHEMICALFUN_PYTHON_INSTALL_PREFIX
+         OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+    else()
+       set(CHEMICALFUN_PYTHON_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
+    endif()
 endif()
 
 # If the path is already in Windows format (with backslashes), it can't be added directly
