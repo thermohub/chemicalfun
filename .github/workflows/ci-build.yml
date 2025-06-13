@@ -63,7 +63,9 @@ jobs:
         run: |
           call conda activate chemicalfun || goto :eof
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH="%CONDA_PREFIX%\Library" -A x64 -S . -B build  || goto :eof
-          cmake --build build --target install --config Release || goto :eof
+          cmake --build . --config Release || goto :eof
+          cmake --install . || goto :eof
+          python -c "import chemicalfun" || goto :eof
 
       - name: Check conda
         run: |
