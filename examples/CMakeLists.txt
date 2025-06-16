@@ -10,20 +10,9 @@ set(Examples
 
 foreach (exampleName ${Examples})
     add_executable(${exampleName} ${exampleName}.cpp)
-    if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-          target_link_libraries(${exampleName}
-                PUBLIC ${PROJECT_NAME}
-                PUBLIC pthread )
-   elseif(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
-
-          target_link_libraries( ${exampleName}
-                PUBLIC ${PROJECT_NAME}
-                PUBLIC pthread )
-    else()
-          target_link_libraries( ${exampleName}
-               PUBLIC ${PROJECT_NAME}
-               PUBLIC pthread )
-    endif()
+    target_link_libraries(${exampleName}
+         PUBLIC ChemicalFun
+         PUBLIC pthread)
 endforeach()
 
 
