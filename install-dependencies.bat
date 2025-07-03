@@ -19,6 +19,7 @@ echo Downloading and building dependencies
 
 :: nlohmann/json library v. 3.6.1 or up
 :: if not located in /extern/json/include/nlohmann)
+cd %~dp0
 IF EXIST "%~dp0extern\" (
 echo Folder extern already exists
 ) ELSE (
@@ -26,13 +27,22 @@ echo Creating folder extern
 mkdir extern
 )
 
-cd extern
+cd %~dp0extern
 
+IF DEFINED EMSDK (
 IF EXIST "%~dp0extern\installedwasm\" (
 echo Folder installedwasm already exists
 ) ELSE (
 echo Creating folder installedwasm
 mkdir installedwasm
+)
+) ELSE (
+IF EXIST "%~dp0extern\installed\" (
+echo Folder installed already exists
+) ELSE (
+echo Creating folder installedwasm
+mkdir installed
+)
 )
 
 IF DEFINED EMSDK (
