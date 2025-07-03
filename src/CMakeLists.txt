@@ -32,7 +32,7 @@ endif()
 # Add the include paths to the ReactionsGenerator target
 target_include_directories(ChemicalFun
     PUBLIC
-        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+        "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR};${PROJECT_SOURCE_DIR}/src;${PROJECT_SOURCE_DIR}/include>"
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 # Create install target for library
