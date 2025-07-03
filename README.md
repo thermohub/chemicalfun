@@ -31,7 +31,7 @@ The thermofun library uses nlohmann/json.hpp as thirdparty dependency to parse d
 sudo ./install-dependencies.sh
 ```
 
-On Windows run the following bstch file in cmd:
+On Windows run the following batch file in cmd:
 
 ```
 install-dependencies.bat
