@@ -1,6 +1,7 @@
 .directory
 .DS_Store
 /build
+buildwasm
 extern
 *.pro.user
 *.pro.user.*
