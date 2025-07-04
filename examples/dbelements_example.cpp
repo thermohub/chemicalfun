@@ -200,7 +200,12 @@ int main(int argc, char* argv[])
 
     try{
         auto ar_logger = spdlog::get("chemicalfun");
-        ar_logger->set_level(spdlog::level::trace);
+        if (ar_logger) {
+            ar_logger->set_level(spdlog::level::trace);
+        } else {
+            spdlog::set_level(spdlog::level::trace);
+        }
+        
 
         ChemicalFun::update_loggers( false, "test.log", 0);
 

@@ -10,9 +10,16 @@ set(Examples
 
 foreach (exampleName ${Examples})
     add_executable(${exampleName} ${exampleName}.cpp)
-    target_link_libraries(${exampleName}
+	if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+		target_link_libraries(${exampleName}
+         PUBLIC ChemicalFun)
+		 # We don't have or need pthread in the standard MSVC kit.
+	else()
+		target_link_libraries(${exampleName}
          PUBLIC ChemicalFun
          PUBLIC pthread)
+	endif()
+    
 endforeach()
 
 
