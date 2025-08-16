@@ -18,6 +18,10 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 # Build a ChemicalFun C++ library
 add_library(ChemicalFun ${HEADER_FILES_TOP} ${HEADER_FILES} ${SOURCE_FILES})
 
+if(EMSCRIPTEN)
+	set_target_properties(ChemicalFun PROPERTIES POSITION_INDEPENDENT_CODE ON)
+endif()
+
 # Add an alias ChemicalFun::ChemicalFun to the target library ChemicalFun
 add_library(ChemicalFun::ChemicalFun ALIAS ChemicalFun)
 
@@ -32,7 +36,7 @@ endif()
 # Add the include paths to the ReactionsGenerator target
 target_include_directories(ChemicalFun
     PUBLIC
-        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
+        "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR};${PROJECT_SOURCE_DIR}/src;${PROJECT_SOURCE_DIR}/include>"
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 # Create install target for library
