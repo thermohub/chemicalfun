@@ -30,10 +30,10 @@ if(CHEMICALFUN_BUILD_ALL MATCHES ON)
     set(CHEMICALFUN_BUILD_PYTHON   ON)
 endif()
 
-if (CHEMICALFUN_WASM MATCHES ON)
+if (CHEMICALFUN_WASM MATCHES ON OR EMSCRIPTEN)
     # Define which types of libraries to build
     option(BUILD_STATIC_LIBS "Build static libraries." ON)
-    set(CHEMICALFUN_BUILD_PYTHON   ON)
+    #set(CHEMICALFUN_BUILD_PYTHON   ON)
 else()
     # Ensure proper configuration if in a conda environment
     option(BUILD_SHARED_LIBS "Build shared libraries." ON)
@@ -83,26 +83,44 @@ endif()
 
 # Find the Python interpreter
 if(CHEMICALFUN_BUILD_PYTHON)
-    find_package(pybind11 2.2.0 REQUIRED)
-    message(STATUS "Found pybind11 v${pybind11_VERSION}: ${pybind11_INCLUDE_DIRS}")
-    if(NOT pybind11_FOUND)
-        set(CHEMICALFUN_BUILD_PYTHON OFF)
-        message(WARNING "pybind11 has not been found. "
-            "Cannot build python bindings for chemicalfun")
-    endif()
+	if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+		find_package(pybind11 2.2.0 REQUIRED PATHS "${CMAKE_CURRENT_SOURCE_DIR}/extern/installed/share/cmake/pybind11")
+	else()
+		find_package(pybind11 2.2.0 REQUIRED)
+	endif()
+	message(STATUS "Found pybind11 v${pybind11_VERSION}: ${pybind11_INCLUDE_DIRS}")
+	if(NOT pybind11_FOUND)
+		set(CHEMICALFUN_BUILD_PYTHON OFF)
+		message(WARNING "pybind11 has not been found. "
+			"Cannot build python bindings for chemicalfun")
+	endif()
 endif()
 
 # Set the thermofun source directory path
 set(CHEMICALFUN_SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
 
 # Set the include directories
-if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
+
+if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+	# be friendly to our fellow developers, do not pollute the userspace with dev stuff
+    include_directories("${CMAKE_CURRENT_SOURCE_DIR}/extern/installed/include")
+    link_directories("${CMAKE_CURRENT_SOURCE_DIR}/extern/installed/include")
+	# put binaries into one place, so we can run the executables without libraries not being foung (I know this will clutter the folder)
+	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+elseif(CMAKE_HOST_WIN32 AND EMSCRIPTEN)
+	# be friendly to our fellow developers, do not pollute the userspace with dev stuff
+    include_directories("${CMAKE_CURRENT_SOURCE_DIR}/extern/installedwasm/include")
+    link_directories("${CMAKE_CURRENT_SOURCE_DIR}/extern/installedwasm/include")
+	
+	# put binaries into one place, so we can run the executables without libraries not being foung (I know this will clutter the folder)
+	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+elseif(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
     include_directories("/usr/local/include")
     link_directories("/usr/local/lib")
-endif()
-if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-    include_directories("c:/usr/local/include")
-    link_directories("c:/usr/local/lib")
 endif()
 include_directories(${CHEMICALFUN_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/include)
@@ -125,6 +143,11 @@ endif()
 
 # Build python wraper
 if(CHEMICALFUN_BUILD_PYTHON)
+	if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+		include_directories("${CMAKE_CURRENT_SOURCE_DIR}/extern/installed/include/eigen3")
+	elseif(CMAKE_HOST_WIN32 AND EMSCRIPTEN)
+		include_directories("${CMAKE_CURRENT_SOURCE_DIR}/extern/installedwasm/include/eigen3")
+	endif()
     add_subdirectory(python)
 endif()
 
