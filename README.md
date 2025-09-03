@@ -2,6 +2,8 @@
 
 ChemicalFun is a C++ library (Python and C++ API) for generating balanced chemical reactions and for parsing and calculating properties of chemical formulas.
 
+[![ci-build](https://github.com/thermohub/chemicalfun/actions/workflows/ci-build.yml/badge.svg?branch=master)](https://github.com/thermohub/chemicalfun/actions/workflows/ci-build.yml)
+
 ## Installation using Conda
 
 ThermoFun can be easily installed using [Conda](https://conda.io/docs/) package manager. If you have Conda installed, first add the conda-forge channel by executing 
