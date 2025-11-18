@@ -28,6 +28,8 @@ using json = nlohmann::json;
 
 namespace ChemicalFun {
 
+bool FormulaToken::get_harge_from_formula = false;
+
 static const std::map<std::string, int> map_elements_valences = {
     {"Ac",	3},
     {"Ag",	1},
@@ -439,7 +441,7 @@ std::string FormulaToken::testElements(const std::string& aformula, const Elemen
     return notPresent;
 }
 
-FormulaProperties FormulaToken::properties(const ElementsData& dbelements)
+FormulaProperties FormulaToken::properties(const ElementsData& dbelements, bool use_formula_charge)
 {
     FormulaProperties propert;
     double Sc;
@@ -462,8 +464,15 @@ FormulaProperties FormulaToken::properties(const ElementsData& dbelements)
         if(is_undefined_valence(valence)) {
             valence = itrdb->second.valence;
         }
-        if(token.key.Class() != CHARGE_CLASS) {
-            propert.charge += Sc * valence;
+        if(use_formula_charge) { // FormulaTokenOxa 779, FormulaTokenComplex 541
+            if(token.key.Class() == CHARGE_CLASS) {
+                propert.charge += Sc;
+            }
+        }
+        else {
+            if(token.key.Class() != CHARGE_CLASS) {
+                propert.charge += Sc * valence;
+            }
         }
     }
     return propert;
@@ -789,11 +798,11 @@ ElementsKeys DBElements::formulasElements(const std::vector<std::string>& formul
     return elements;
 }
 
-std::vector<FormulaProperties> DBElements::formulasProperties(const std::vector<std::string>& formulalist)
+std::vector<FormulaProperties> DBElements::formulasProperties(const std::vector<std::string>& formulalist, bool use_formula_charge)
 {
     std::vector<FormulaProperties> thermo;
     for(const auto& aformula: formulalist) {
-        thermo.push_back(formulasProperties(aformula));
+        thermo.push_back(formulasProperties(aformula, use_formula_charge));
     }
     return thermo;
 }
@@ -827,9 +836,11 @@ void DBElements::printStoichiometryMatrix(std::ostream& stream, const std::vecto
     }
 }
 
-void DBElements::formulasPropertiesCSV(std::ostream& stream, const std::vector<std::string>& formulalist)
+void DBElements::formulasPropertiesCSV(std::ostream& stream,
+                                       const std::vector<std::string>& formulalist,
+                                       bool use_formula_charge)
 {
-    std::vector<FormulaProperties> thermo = formulasProperties(formulalist);
+    std::vector<FormulaProperties> thermo = formulasProperties(formulalist, use_formula_charge);
     stream << "formula,charge,atomic_mass,elemental_entropy,atoms_formula\n";
     for( const auto& row: thermo) {
         stream << row.formula << ","<< row.charge << "," << row.atomic_mass << ",";
