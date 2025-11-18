@@ -62,7 +62,7 @@ jobs:
           ninja
           ninja install
           python -c "import chemicalfun"
-          ctest --test-dir tests
+          ctest -V --test-dir tests
 
       - name: Building, Testing & Installing chemicalfun (Windows)
         if: matrix.os == 'windows-latest'
@@ -72,7 +72,7 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH="%CONDA_PREFIX%\Library" -A x64 -S . -B build  || goto :eof
           cmake --build build --target install --config Release || goto :eof
           python -c "import chemicalfun" || goto :eof
-          ctest -C Release --test-dir "build/tests" || goto :eof
+          ctest -C -V Release --test-dir "build/tests" || goto :eof
 
 
       - name: Check conda
