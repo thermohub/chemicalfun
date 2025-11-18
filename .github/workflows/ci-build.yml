@@ -72,7 +72,7 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH="%CONDA_PREFIX%\Library" -A x64 -S . -B build  || goto :eof
           cmake --build build --target install --config Release || goto :eof
           python -c "import chemicalfun" || goto :eof
-          ctest -C -V Release --test-dir "build/tests" || goto :eof
+          ctest -C Release --test-dir "build/tests" || goto :eof
 
 
       - name: Check conda

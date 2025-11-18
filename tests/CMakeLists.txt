@@ -15,7 +15,8 @@ enable_testing()
 add_test(NAME test_main COMMAND test_main)
 
 
-# to do
+# https://google.github.io/googletest/quickstart-cmake.html
+#
 #include(GoogleTest)
 #gtest_add_tests(TARGET test_main
 #        TEST_SUFFIX .noArgs
