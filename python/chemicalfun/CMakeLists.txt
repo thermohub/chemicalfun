@@ -31,7 +31,7 @@ add_custom_target(chemicalfun ALL
     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:PyChemicalFun>
         ${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:PyChemicalFun>
     #COMMAND ${PYTHON_EXECUTABLE} -m pip install ${_PIP_ARG} -e ${CMAKE_CURRENT_BINARY_DIR}
-    COMMAND ${PYTHON_EXECUTABLE} -m pip install --prefix ${CMAKE_BINARY_DIR} --ignore-installed .
+    COMMAND ${Python3_EXECUTABLE} -m pip install --prefix ${CMAKE_BINARY_DIR} --ignore-installed .
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
 # Set dependencies of PyChemicalFun target
@@ -43,7 +43,7 @@ if(NOT DEFINED CHEMICALFUN_PYTHON_INSTALL_PREFIX)
        # Determine the global site-packages directory
        # We execute a Python script to get this path reliably.
        execute_process(
-         COMMAND "${PYTHON_EXECUTABLE}" -c "import site; print(site.getsitepackages()[0])"
+         COMMAND "${Python3_EXECUTABLE}" -c "import site; print(site.getsitepackages()[0])"
          OUTPUT_VARIABLE CHEMICALFUN_PYTHON_INSTALL_PREFIX
          OUTPUT_STRIP_TRAILING_WHITESPACE
         )
@@ -71,7 +71,7 @@ install(CODE
     endif()
 
     execute_process(
-        COMMAND ${PYTHON_EXECUTABLE} -m pip install --prefix \${CHEMICALFUN_PYTHON_INSTALL_PREFIX_NATIVE} ${CMAKE_CURRENT_BINARY_DIR}
+        COMMAND ${Python3_EXECUTABLE} -m pip install --prefix \${CHEMICALFUN_PYTHON_INSTALL_PREFIX_NATIVE} ${CMAKE_CURRENT_BINARY_DIR}
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 "
 )

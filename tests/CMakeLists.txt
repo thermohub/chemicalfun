@@ -12,6 +12,7 @@ target_link_libraries(test_main
     PUBLIC gtest)
 target_include_directories(test_main PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../src)
 
-add_test(NAME test_main COMMAND ./tests/test_main)
+enable_testing()
+add_test(NAME test_main COMMAND ./test_main)
 
 

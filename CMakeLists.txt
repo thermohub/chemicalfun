@@ -81,21 +81,6 @@ endif()
 #set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=thread")
 #set (CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_LINKER_FLAGS_DEBUG} -fsanitize=thread")
 
-# Find the Python interpreter
-if(CHEMICALFUN_BUILD_PYTHON)
-	if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-		find_package(pybind11 2.2.0 REQUIRED PATHS "${CMAKE_CURRENT_SOURCE_DIR}/extern/installed/share/cmake/pybind11")
-	else()
-		find_package(pybind11 2.2.0 REQUIRED)
-	endif()
-	message(STATUS "Found pybind11 v${pybind11_VERSION}: ${pybind11_INCLUDE_DIRS}")
-	if(NOT pybind11_FOUND)
-		set(CHEMICALFUN_BUILD_PYTHON OFF)
-		message(WARNING "pybind11 has not been found. "
-			"Cannot build python bindings for chemicalfun")
-	endif()
-endif()
-
 # Set the thermofun source directory path
 set(CHEMICALFUN_SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
 

@@ -8,8 +8,8 @@ if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/installed/include/eigen3")
 	# be friendly to our fellow developers, do not pollute the userspace with dev stuff
     include_directories("${CMAKE_CURRENT_SOURCE_DIR}/extern/installed/include/eigen3")
 else()
-	include_directories(${CONDA_AWARE_PREFIX}/include/eigen3)
-	include_directories("/usr/local/include/eigen3")
+    include_directories(${CONDA_AWARE_PREFIX}/include/eigen3)
+    include_directories("/usr/local/include/eigen3")
 endif()
 
 
