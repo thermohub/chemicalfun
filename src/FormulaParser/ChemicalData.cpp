@@ -28,8 +28,6 @@ using json = nlohmann::json;
 
 namespace ChemicalFun {
 
-bool FormulaToken::get_charge_from_formula = false;
-
 static const std::map<std::string, int> map_elements_valences = {
     {"Ac",	3},
     {"Ag",	1},
@@ -898,14 +896,19 @@ StoichiometryMatrixData stoichiometryMatrix(const std::vector<std::string> &form
     return matrA;
 }
 
+/// Global default settings for calculating the charge method.
+/// If get_charge_from_formula false, calculate the charge based on the elements and their default
+/// or specified valence; otherwise, take the charge based on the symbol in the given formula.
+static bool get_charge_from_formula = false;
+
 bool charge_from_formula()
 {
-    return FormulaToken::get_charge_from_formula;
+    return get_charge_from_formula;
 }
 
 void set_charge_from_formula(bool cond)
 {
-    FormulaToken::get_charge_from_formula = cond;
+    get_charge_from_formula = cond;
 }
 
 }

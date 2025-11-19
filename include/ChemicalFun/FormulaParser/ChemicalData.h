@@ -183,7 +183,7 @@ public:
     /// If use_formula_charge false, calculate the charge based on the elements and their default
     /// or specified valence; otherwise, take the charge based on the symbol in the given formula.
     FormulaProperties properties(const ElementsData& dbelements,
-                                 bool use_formula_charge = get_charge_from_formula);
+                                 bool use_formula_charge = charge_from_formula());
 
 protected:
     /// If we need a matrix with separate element valences
@@ -200,14 +200,6 @@ protected:
     void clear();
     void unpack(std::list<ElementsTerm>& parsed_data);
     double calculate_charge(const ElementsData& dbelements) const;
-
-    /// Global default settings for calculating the charge method.
-    /// If get_charge_from_formula false, calculate the charge based on the elements and their default
-    /// or specified valence; otherwise, take the charge based on the symbol in the given formula.
-    static bool get_charge_from_formula;
-
-    friend bool charge_from_formula();
-    friend void set_charge_from_formula(bool cond);
 };
 
 class DBElements final
