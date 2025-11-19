@@ -81,7 +81,7 @@ void exportChemicalData(py::module& m)
 
     py::class_<FormulaToken>(m, "FormulaToken", py::is_final())
         .def(py::init<const std::string&, bool>(), py::arg("aformula"), py::arg("valence")  = false)
-        .def_readwrite_static("get_charge_from_formula", &FormulaToken::get_charge_from_formula)
+        .def_readwrite_static("charge_from_formula", &FormulaToken::get_charge_from_formula)
         .def("setFormula", &FormulaToken::setFormula, py::arg("aformula"), py::arg("valence")  = false)
         .def("formula", &FormulaToken::formula)
         .def("elementsList", &FormulaToken::getElementsList)
@@ -91,12 +91,12 @@ void exportChemicalData(py::module& m)
         .def("testChargeImbalance", &FormulaToken::testChargeImbalance)
         .def("properties", [](FormulaToken& self, const ElementsData& elements, py::object is_formula)
              {
-                 bool useformula;
-                 if (py::isinstance<py::none>(is_formula)) {
-                     useformula = self.get_charge_from_formula;
-                 } else {
-                     useformula = is_formula.cast<bool>();
-                 }
+                 bool useformula = false;
+                 // if (py::isinstance<py::none>(is_formula)) {
+                 //     useformula = self.get_charge_from_formula;
+                 // } else {
+                 //     useformula = is_formula.cast<bool>();
+                 // }
                  return self.properties(elements, useformula);
              },
              py::arg("elements"), py::arg("is_formula") = py::none())
@@ -121,11 +121,10 @@ void exportChemicalData(py::module& m)
 
         .def("formulasPropertiesCSV", [](DBElements& self, const std::vector<std::string> &list, py::object is_formula)
              {
-                 bool useformula;
+            bool useformula = false;
                  if (py::isinstance<py::none>(is_formula)) {
-                     useformula = self.charge_from_formula();;
+                     useformula = self.charge_from_formula();
                  } else {
-                     // Otherwise, cast the provided Python object to a string.
                      useformula = is_formula.cast<bool>();
                  }
                  std::stringstream ss;
@@ -141,7 +140,6 @@ void exportChemicalData(py::module& m)
                  if (py::isinstance<py::none>(is_formula)) {
                      useformula = self.charge_from_formula();
                  } else {
-                     // Otherwise, cast the provided Python object to a string.
                      useformula = is_formula.cast<bool>();
                  }
                  return self.formulasProperties(data, useformula);
@@ -153,7 +151,6 @@ void exportChemicalData(py::module& m)
                  if (py::isinstance<py::none>(is_formula)) {
                      useformula = self.charge_from_formula();;
                  } else {
-                     // Otherwise, cast the provided Python object to a string.
                      useformula = is_formula.cast<bool>();
                  }
                  return self.formulasProperties(list, useformula);
