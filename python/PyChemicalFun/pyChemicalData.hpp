@@ -81,7 +81,7 @@ void exportChemicalData(py::module& m)
 
     py::class_<FormulaToken>(m, "FormulaToken", py::is_final())
         .def(py::init<const std::string&, bool>(), py::arg("aformula"), py::arg("valence")  = false)
-        .def_readwrite_static("charge_from_formula", &FormulaToken::get_charge_from_formula)
+        //.def_readwrite_static("charge_from_formula", &FormulaToken::get_charge_from_formula)
         .def("setFormula", &FormulaToken::setFormula, py::arg("aformula"), py::arg("valence")  = false)
         .def("formula", &FormulaToken::formula)
         .def("elementsList", &FormulaToken::getElementsList)
