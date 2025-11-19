@@ -93,7 +93,7 @@ void exportChemicalData(py::module& m)
              {
                  bool useformula;
                  if (py::isinstance<py::none>(is_formula)) {
-                     useformula = FormulaToken::get_charge_from_formula;
+                     useformula = self.get_charge_from_formula;
                  } else {
                      useformula = is_formula.cast<bool>();
                  }
@@ -123,7 +123,7 @@ void exportChemicalData(py::module& m)
              {
                  bool useformula;
                  if (py::isinstance<py::none>(is_formula)) {
-                     useformula = FormulaToken::get_charge_from_formula;
+                     useformula = self.charge_from_formula();;
                  } else {
                      // Otherwise, cast the provided Python object to a string.
                      useformula = is_formula.cast<bool>();
@@ -139,7 +139,7 @@ void exportChemicalData(py::module& m)
              {
                  bool useformula;
                  if (py::isinstance<py::none>(is_formula)) {
-                     useformula = FormulaToken::get_charge_from_formula;
+                     useformula = self.charge_from_formula();
                  } else {
                      // Otherwise, cast the provided Python object to a string.
                      useformula = is_formula.cast<bool>();
@@ -151,7 +151,7 @@ void exportChemicalData(py::module& m)
              {
                  bool useformula;
                  if (py::isinstance<py::none>(is_formula)) {
-                     useformula = FormulaToken::get_charge_from_formula;
+                     useformula = self.charge_from_formula();;
                  } else {
                      // Otherwise, cast the provided Python object to a string.
                      useformula = is_formula.cast<bool>();

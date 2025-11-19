@@ -256,12 +256,16 @@ public:
                                bool use_formula_charge = FormulaToken::get_charge_from_formula);
     void printStoichiometryMatrix(std::ostream &stream, const std::vector<std::string> &formulalist);
 
+    static bool charge_from_formula()
+    {
+        return FormulaToken::get_charge_from_formula;
+    }
+
 protected:
     /// Loading from database elements
     ElementsData dbElements_;
     /// Set of keys of elements downloaded from the database
     ElementsKeys dbElementsKeys_;
-
 };
 
 std::string to_string(const std::vector<ElementKey>& keys );
