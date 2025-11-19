@@ -801,7 +801,7 @@ ElementsKeys DBElements::formulasElements(const std::vector<std::string>& formul
 std::vector<FormulaProperties> DBElements::formulasProperties(const std::vector<std::string>& formulalist, bool use_formula_charge)
 {
     std::vector<FormulaProperties> thermo;
-    ChemicalFun::chfun_logger->debug("get_charge_from_formula {} ", FormulaToken::get_charge_from_formula);
+    ChemicalFun::chfun_logger->debug("get_charge_from_formula {} ", charge_from_formula());
     for(const auto& aformula: formulalist) {
         thermo.push_back(formulasProperties(aformula, use_formula_charge));
     }
@@ -896,6 +896,16 @@ StoichiometryMatrixData stoichiometryMatrix(const std::vector<std::string> &form
         matrA.push_back(formula.makeStoichiometryRow(all_elements));
     }
     return matrA;
+}
+
+bool charge_from_formula()
+{
+    return FormulaToken::get_charge_from_formula;
+}
+
+void set_charge_from_formula(bool cond)
+{
+    FormulaToken::get_charge_from_formula = cond;
 }
 
 }

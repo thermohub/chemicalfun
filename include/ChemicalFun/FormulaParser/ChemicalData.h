@@ -27,6 +27,8 @@
 namespace ChemicalFun {
 
 void update_loggers( bool use_cout, const std::string& logfile_name, size_t log_level);
+bool charge_from_formula();
+void set_charge_from_formula(bool cond);
 
 class DBElements;
 class ElementsTerm;
@@ -136,11 +138,6 @@ using StoichiometryMatrixData = std::vector<StoichiometryRowData>;
 class FormulaToken final
 {
 public:
-    /// Global default settings for calculating the charge method.
-    /// If get_charge_from_formula false, calculate the charge based on the elements and their default
-    /// or specified valence; otherwise, take the charge based on the symbol in the given formula.
-    static bool get_charge_from_formula;
-
     /// Constructor
     FormulaToken(const std::string& aformula, bool valence = false) {
         setFormula(aformula, valence);
@@ -203,6 +200,14 @@ protected:
     void clear();
     void unpack(std::list<ElementsTerm>& parsed_data);
     double calculate_charge(const ElementsData& dbelements) const;
+
+    /// Global default settings for calculating the charge method.
+    /// If get_charge_from_formula false, calculate the charge based on the elements and their default
+    /// or specified valence; otherwise, take the charge based on the symbol in the given formula.
+    static bool get_charge_from_formula;
+
+    friend bool charge_from_formula();
+    friend void set_charge_from_formula(bool cond);
 };
 
 class DBElements final
@@ -233,7 +238,7 @@ public:
     /// If use_formula_charge false, calculate the charge based on the elements and their default
     /// or specified valence; otherwise, take the charge based on the symbol in the given formula.
     FormulaProperties formulasProperties(const std::string aformula,
-                                         bool use_formula_charge = FormulaToken::get_charge_from_formula) const
+                                         bool use_formula_charge = charge_from_formula()) const
     {
         return FormulaToken(aformula).properties(this->dbElements_, use_formula_charge);
     }
@@ -241,7 +246,7 @@ public:
     /// If use_formula_charge false, calculate the charge based on the elements and their default
     /// or specified valence; otherwise, take the charge based on the symbol in the given formula.
     std::vector<FormulaProperties> formulasProperties(const std::vector<std::string>& formulalist,
-                                                      bool use_formula_charge = FormulaToken::get_charge_from_formula);
+                                                      bool use_formula_charge = charge_from_formula());
 
     /// Generate stoichiometry matrix from the formula list.
     StoichiometryMatrixData stoichiometryMatrix(const std::vector<std::string>& formulalist);
@@ -253,13 +258,8 @@ public:
 
     void printCSV(std::ostream &stream);
     void formulasPropertiesCSV(std::ostream &stream, const std::vector<std::string> &formulalist,
-                               bool use_formula_charge = FormulaToken::get_charge_from_formula);
+                               bool use_formula_charge = charge_from_formula());
     void printStoichiometryMatrix(std::ostream &stream, const std::vector<std::string> &formulalist);
-
-    static bool charge_from_formula()
-    {
-        return FormulaToken::get_charge_from_formula;
-    }
 
 protected:
     /// Loading from database elements
@@ -281,6 +281,8 @@ StoichiometryMatrixData stoichiometryMatrix(const std::vector<std::string> &form
 /// Generate elements used list
 std::vector<ElementKey> elementsInFormulas(const std::vector<std::string> &formulalist,
                                                      bool valence = false);
+
+
 }
 
 

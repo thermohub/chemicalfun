@@ -81,7 +81,6 @@ void exportChemicalData(py::module& m)
 
     py::class_<FormulaToken>(m, "FormulaToken", py::is_final())
         .def(py::init<const std::string&, bool>(), py::arg("aformula"), py::arg("valence")  = false)
-        //.def_readwrite_static("charge_from_formula", &FormulaToken::get_charge_from_formula)
         .def("setFormula", &FormulaToken::setFormula, py::arg("aformula"), py::arg("valence")  = false)
         .def("formula", &FormulaToken::formula)
         .def("elementsList", &FormulaToken::getElementsList)
@@ -92,11 +91,11 @@ void exportChemicalData(py::module& m)
         .def("properties", [](FormulaToken& self, const ElementsData& elements, py::object is_formula)
              {
                  bool useformula = false;
-                 // if (py::isinstance<py::none>(is_formula)) {
-                 //     useformula = self.get_charge_from_formula;
-                 // } else {
-                 //     useformula = is_formula.cast<bool>();
-                 // }
+                 if (py::isinstance<py::none>(is_formula)) {
+                     useformula = charge_from_formula();
+                 } else {
+                     useformula = is_formula.cast<bool>();
+                 }
                  return self.properties(elements, useformula);
              },
              py::arg("elements"), py::arg("is_formula") = py::none())
@@ -122,11 +121,11 @@ void exportChemicalData(py::module& m)
         .def("formulasPropertiesCSV", [](DBElements& self, const std::vector<std::string> &list, py::object is_formula)
              {
             bool useformula = false;
-                 // if (py::isinstance<py::none>(is_formula)) {
-                 //     useformula = self.charge_from_formula();
-                 // } else {
-                 //     useformula = is_formula.cast<bool>();
-                 // }
+                 if (py::isinstance<py::none>(is_formula)) {
+                     useformula = charge_from_formula();
+                 } else {
+                     useformula = is_formula.cast<bool>();
+                 }
                  std::stringstream ss;
                  self.formulasPropertiesCSV(ss, list, useformula);
                  return ss.str();
@@ -137,22 +136,22 @@ void exportChemicalData(py::module& m)
         .def("formulasProperties", [](const DBElements& self, const std::string& data, py::object is_formula)
              {
                  bool useformula = false;
-                 // if (py::isinstance<py::none>(is_formula)) {
-                 //     useformula = self.charge_from_formula();
-                 // } else {
-                 //     useformula = is_formula.cast<bool>();
-                 // }
+                 if (py::isinstance<py::none>(is_formula)) {
+                     useformula = charge_from_formula();
+                 } else {
+                     useformula = is_formula.cast<bool>();
+                 }
                  return self.formulasProperties(data, useformula);
              },
              py::arg("data"),  py::arg("is_formula") = py::none())
         .def("formulasProperties", [](DBElements& self, const std::vector<std::string>& list, py::object is_formula)
              {
                  bool useformula = false;
-                 // if (py::isinstance<py::none>(is_formula)) {
-                 //     useformula = self.charge_from_formula();;
-                 // } else {
-                 //     useformula = is_formula.cast<bool>();
-                 // }
+                 if (py::isinstance<py::none>(is_formula)) {
+                     useformula = charge_from_formula();
+                 } else {
+                     useformula = is_formula.cast<bool>();
+                 }
                  return self.formulasProperties(list, useformula);
              },
              py::arg("list"),  py::arg("is_formula") = py::none())
@@ -166,4 +165,6 @@ void exportChemicalData(py::module& m)
     m.def("elementsInFormulas", &elementsInFormulas,
           py::arg("formulalist"), py::arg("valence")=false);
     m.def("update_loggers", &update_loggers);
+    m.def("charge_from_formula", &charge_from_formula);
+    m.def("set_charge_from_formula", &set_charge_from_formula);
 }

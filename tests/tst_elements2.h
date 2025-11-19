@@ -192,7 +192,7 @@ TEST(ChemicalFormula, ChargeDefaultFormula)
     all_elements.readElements(dbElements_str2);
     EXPECT_EQ(all_elements.elements().size(), 8);
     EXPECT_EQ(all_elements.elementsKeys().size(), 8);
-    FormulaToken::get_charge_from_formula = true;
+    ChemicalFun::set_charge_from_formula(true);
 
     ChemicalFun::FormulaToken token("CaC2");
     EXPECT_EQ(token.charge(), 10.0);  // from valences

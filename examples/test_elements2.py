@@ -174,11 +174,11 @@ print( token.properties(all_elements.elements(), True) )
 
 formulalist = [ "CaC2", "Na2S", "Na2SO3", "Mn2O3", "MnO2", "Mn2O7" ]
 
-print("\nCalculate the charge based on  FormulaToken.get_charge_from_formula = ", FormulaToken.get_charge_from_formula)
+print("\nCalculate the charge based on charge_from_formula = ",  charge_from_formula())
 print( all_elements.formulasProperties(formulalist) )
 
-FormulaToken.get_charge_from_formula = True
-print("\n\nCalculate the charge based on  FormulaToken.get_charge_from_formula = ", FormulaToken.get_charge_from_formula)
+set_charge_from_formula(True)
+print("\n\nCalculate the charge based on  charge_from_formula = ", charge_from_formula())
 
 print("\n token properties")
 print( token.properties(all_elements.elements()) )
