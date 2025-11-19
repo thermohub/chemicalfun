@@ -17,7 +17,7 @@ endif()
 pybind11_add_module(PyChemicalFun ${SOURCE_FILES} NO_EXTRAS) # NO_EXTRAS used to decrease linking time, but causes larger module file size
 
 # Link PyChemicalData against ChemicalData library
-target_link_libraries(PyChemicalFun LINK_PRIVATE ChemicalFun::ChemicalFun)
+target_link_libraries(PyChemicalFun PUBLIC ChemicalFun::ChemicalFun)
 
 
 
