@@ -28,7 +28,7 @@ using json = nlohmann::json;
 
 namespace ChemicalFun {
 
-bool FormulaToken::get_harge_from_formula = false;
+bool FormulaToken::get_charge_from_formula = false;
 
 static const std::map<std::string, int> map_elements_valences = {
     {"Ac",	3},
@@ -801,6 +801,7 @@ ElementsKeys DBElements::formulasElements(const std::vector<std::string>& formul
 std::vector<FormulaProperties> DBElements::formulasProperties(const std::vector<std::string>& formulalist, bool use_formula_charge)
 {
     std::vector<FormulaProperties> thermo;
+    ChemicalFun::chfun_logger->debug("get_charge_from_formula {} ", FormulaToken::get_charge_from_formula);
     for(const auto& aformula: formulalist) {
         thermo.push_back(formulasProperties(aformula, use_formula_charge));
     }

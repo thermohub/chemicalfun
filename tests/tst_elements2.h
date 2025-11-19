@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <sstream>
 #include <gtest/gtest.h>
 #include "ChemicalFun/FormulaParser.h"
 
@@ -185,5 +186,36 @@ TEST(ChemicalFormula, ChargeFromFormula)
     EXPECT_EQ(properties.formula, "Mn2O3");
 }
 
+TEST(ChemicalFormula, ChargeDefaultFormula)
+{
+    ChemicalFun::DBElements all_elements;
+    all_elements.readElements(dbElements_str2);
+    EXPECT_EQ(all_elements.elements().size(), 8);
+    EXPECT_EQ(all_elements.elementsKeys().size(), 8);
+    FormulaToken::get_charge_from_formula = true;
+
+    ChemicalFun::FormulaToken token("CaC2");
+    EXPECT_EQ(token.charge(), 10.0);  // from valences
+
+    auto properties = token.properties(all_elements.elements()); // charge from formula
+    EXPECT_NEAR(properties.atomic_mass, 64.09959983825681, 1e-30);
+    EXPECT_NEAR(properties.atoms_formula_unit, 3.0, 1e-30);
+    EXPECT_NEAR(properties.charge, 0, 1e-30);
+    EXPECT_NEAR(properties.elemental_entropy, 53.06999969482422, 1e-30);
+    EXPECT_EQ(properties.formula, "CaC2");
+
+    std::vector<std::string> formulalist = { "CaC2", "Na2S", "Na2SO3", "Mn2O3", "MnO2", "Mn2O7" };
+    std::stringstream str;
+    all_elements.formulasPropertiesCSV(str, formulalist);
+    EXPECT_EQ(str.str(),
+"formula,charge,atomic_mass,elemental_entropy,atoms_formula\n"
+"CaC2,0,64.0996,53.07,3\n"
+"Na2S,0,78.0466,134.398,3\n"
+"Na2SO3,0,126.045,442.105,6\n"
+"Mn2O3,0,157.874,371.727,5\n"
+"MnO2,0,86.9368,237.148,3\n"
+"Mn2O7,0,221.872,782.003,9\n"
+                  );
+}
 
 #endif // TST_ELEMENTS2_H

@@ -137,9 +137,9 @@ class FormulaToken final
 {
 public:
     /// Global default settings for calculating the charge method.
-    /// If get_harge_from_formula false, calculate the charge based on the elements and their default
+    /// If get_charge_from_formula false, calculate the charge based on the elements and their default
     /// or specified valence; otherwise, take the charge based on the symbol in the given formula.
-    static bool get_harge_from_formula;
+    static bool get_charge_from_formula;
 
     /// Constructor
     FormulaToken(const std::string& aformula, bool valence = false) {
@@ -186,7 +186,7 @@ public:
     /// If use_formula_charge false, calculate the charge based on the elements and their default
     /// or specified valence; otherwise, take the charge based on the symbol in the given formula.
     FormulaProperties properties(const ElementsData& dbelements,
-                                 bool use_formula_charge = get_harge_from_formula);
+                                 bool use_formula_charge = get_charge_from_formula);
 
 protected:
     /// If we need a matrix with separate element valences
@@ -233,7 +233,7 @@ public:
     /// If use_formula_charge false, calculate the charge based on the elements and their default
     /// or specified valence; otherwise, take the charge based on the symbol in the given formula.
     FormulaProperties formulasProperties(const std::string aformula,
-                                         bool use_formula_charge = FormulaToken::get_harge_from_formula) const
+                                         bool use_formula_charge = FormulaToken::get_charge_from_formula) const
     {
         return FormulaToken(aformula).properties(this->dbElements_, use_formula_charge);
     }
@@ -241,7 +241,7 @@ public:
     /// If use_formula_charge false, calculate the charge based on the elements and their default
     /// or specified valence; otherwise, take the charge based on the symbol in the given formula.
     std::vector<FormulaProperties> formulasProperties(const std::vector<std::string>& formulalist,
-                                                      bool use_formula_charge = FormulaToken::get_harge_from_formula);
+                                                      bool use_formula_charge = FormulaToken::get_charge_from_formula);
 
     /// Generate stoichiometry matrix from the formula list.
     StoichiometryMatrixData stoichiometryMatrix(const std::vector<std::string>& formulalist);
@@ -253,7 +253,7 @@ public:
 
     void printCSV(std::ostream &stream);
     void formulasPropertiesCSV(std::ostream &stream, const std::vector<std::string> &formulalist,
-                               bool use_formula_charge = FormulaToken::get_harge_from_formula);
+                               bool use_formula_charge = FormulaToken::get_charge_from_formula);
     void printStoichiometryMatrix(std::ostream &stream, const std::vector<std::string> &formulalist);
 
 protected:

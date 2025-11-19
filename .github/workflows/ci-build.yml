@@ -61,7 +61,7 @@ jobs:
           cmake -GNinja .. -DCMAKE_BUILD_TYPE=Release
           ninja
           ninja install
-#          python -c "import chemicalfun"
+          python -c "import chemicalfun"
           ctest -V --test-dir tests
 
       - name: Building, Testing & Installing chemicalfun (Windows)
@@ -71,7 +71,7 @@ jobs:
           call conda activate chemicalfun || goto :eof
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH="%CONDA_PREFIX%\Library" -A x64 -S . -B build  || goto :eof
           cmake --build build --target install --config Release || goto :eof
-#          python -c "import chemicalfun" || goto :eof
+          python -c "import chemicalfun" || goto :eof
           ctest -C Release --test-dir "build/tests" || goto :eof
 
 
