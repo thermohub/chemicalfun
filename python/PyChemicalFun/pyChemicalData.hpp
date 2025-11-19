@@ -122,11 +122,11 @@ void exportChemicalData(py::module& m)
         .def("formulasPropertiesCSV", [](DBElements& self, const std::vector<std::string> &list, py::object is_formula)
              {
             bool useformula = false;
-                 if (py::isinstance<py::none>(is_formula)) {
-                     useformula = self.charge_from_formula();
-                 } else {
-                     useformula = is_formula.cast<bool>();
-                 }
+                 // if (py::isinstance<py::none>(is_formula)) {
+                 //     useformula = self.charge_from_formula();
+                 // } else {
+                 //     useformula = is_formula.cast<bool>();
+                 // }
                  std::stringstream ss;
                  self.formulasPropertiesCSV(ss, list, useformula);
                  return ss.str();
@@ -136,23 +136,23 @@ void exportChemicalData(py::module& m)
              { std::stringstream ss; self.printStoichiometryMatrix(ss, formulalist); return ss.str(); })
         .def("formulasProperties", [](const DBElements& self, const std::string& data, py::object is_formula)
              {
-                 bool useformula;
-                 if (py::isinstance<py::none>(is_formula)) {
-                     useformula = self.charge_from_formula();
-                 } else {
-                     useformula = is_formula.cast<bool>();
-                 }
+                 bool useformula = false;
+                 // if (py::isinstance<py::none>(is_formula)) {
+                 //     useformula = self.charge_from_formula();
+                 // } else {
+                 //     useformula = is_formula.cast<bool>();
+                 // }
                  return self.formulasProperties(data, useformula);
              },
              py::arg("data"),  py::arg("is_formula") = py::none())
         .def("formulasProperties", [](DBElements& self, const std::vector<std::string>& list, py::object is_formula)
              {
-                 bool useformula;
-                 if (py::isinstance<py::none>(is_formula)) {
-                     useformula = self.charge_from_formula();;
-                 } else {
-                     useformula = is_formula.cast<bool>();
-                 }
+                 bool useformula = false;
+                 // if (py::isinstance<py::none>(is_formula)) {
+                 //     useformula = self.charge_from_formula();;
+                 // } else {
+                 //     useformula = is_formula.cast<bool>();
+                 // }
                  return self.formulasProperties(list, useformula);
              },
              py::arg("list"),  py::arg("is_formula") = py::none())
