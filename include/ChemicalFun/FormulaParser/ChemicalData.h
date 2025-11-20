@@ -176,7 +176,7 @@ public:
     /// Build list of elements not present into system.
     std::string testElements(const std::string& aformula, const ElementsKeys& dbelementkeys);
     /// Throw exeption if charge imbalance.
-    void testChargeImbalance(const ElementsData& dbelements = {});
+    bool testChargeImbalance(const ElementsData& dbelements = {}, bool no_throw=false);
 
     /// Calculate charge, molar mass, elemental entropy, atoms per formula unit
     /// for chemical formulae.

@@ -442,7 +442,7 @@ std::string FormulaToken::testElements(const std::string& aformula, const Elemen
 FormulaProperties FormulaToken::properties(const ElementsData& dbelements, bool use_formula_charge)
 {
     FormulaProperties propert;
-    double Sc;
+    double Sc, aZ=0.0, Zzval=0.0;
     int valence;
     propert.formula = current_formula;
     propert.charge = propert.atomic_mass = 0.0;
@@ -462,16 +462,26 @@ FormulaProperties FormulaToken::properties(const ElementsData& dbelements, bool 
         if(is_undefined_valence(valence)) {
             valence = itrdb->second.valence;
         }
-        if(use_formula_charge) { // FormulaTokenOxa 779, FormulaTokenComplex 541
-            if(token.key.Class() == CHARGE_CLASS) {
-                propert.charge += Sc;
-            }
+        if(token.key.Class() == CHARGE_CLASS) {
+            Zzval += Sc;
         }
         else {
-            if(token.key.Class() != CHARGE_CLASS) {
-                propert.charge += Sc * valence;
-            }
+            aZ += Sc * valence;
         }
+    }
+
+    if(use_formula_charge) {
+        propert.charge = Zzval;
+    }
+    else {
+        propert.charge = aZ;
+    }
+
+    if(fabs(aZ - Zzval) > 1e-6)  {
+        std::string str = "In the formula: ";
+        str +=  current_formula + " calculated charge: ";
+        str +=  std::to_string(aZ) + " != " + std::to_string(Zzval);
+        ChemicalFun::chfun_logger->info(str);
     }
     return propert;
 }
@@ -495,25 +505,32 @@ StoichiometryRowData FormulaToken::makeStoichiometryRow(const std::vector<Elemen
     return rowA;
 }
 
-void FormulaToken::testChargeImbalance(const ElementsData& dbelements)
+bool FormulaToken::testChargeImbalance(const ElementsData& dbelements, bool no_throw)
 {
+    double Zzval = 0.0;  // by default 0
     ElementKey chargeKey(CHARGE_NAME,CHARGE_CLASS,0);
-    if(elements.find(chargeKey) == elements.end())
-        return;
 
     auto aZ = charge(dbelements);
 
     auto itZz = std::find_if(extracted_data.rbegin(), extracted_data.rend(),
                              [=](const FormulaValues& token) { return token.key == chargeKey; });
     if(itZz != extracted_data.rend()) {
-        double Zzval = itZz->stoich_coef;
-        if(fabs(aZ - Zzval) > 1e-6)  {
-            std::string str = "In the formula: ";
-            str +=  current_formula + "\n calculated charge: ";
-            str +=  std::to_string(aZ) + " != " + std::to_string(Zzval);
+        Zzval = itZz->stoich_coef;
+    }
+    if(fabs(aZ - Zzval) > 1e-6)  {
+        std::string str = "In the formula: ";
+        str +=  current_formula + "\n calculated charge: ";
+        str +=  std::to_string(aZ) + " != " + std::to_string(Zzval);
+        if(no_throw) {
+            ChemicalFun::chfun_logger->info(str);
+            return true;
+        }
+        else {
             funError("Charge imbalance", str, __LINE__, __FILE__);
         }
     }
+
+    return false;
 }
 
 //------------------------------------------

@@ -186,6 +186,20 @@ TEST(ChemicalFormula, ChargeFromFormula)
     EXPECT_EQ(properties.formula, "Mn2O3");
 }
 
+TEST(ChemicalFormula, ChargeImbalance)
+{
+    ChemicalFun::DBElements all_elements;
+    ChemicalFun::set_charge_from_formula(false);
+
+    ChemicalFun::FormulaToken token("CaC2");
+    EXPECT_EQ(token.charge(), 10.0);  // from valences
+
+    EXPECT_THROW(token.testChargeImbalance(all_elements.elements()), std::exception);
+    EXPECT_NO_THROW(token.testChargeImbalance(all_elements.elements(), true));
+    EXPECT_EQ(token.testChargeImbalance(all_elements.elements(), true), true);  // from valences
+
+}
+
 TEST(ChemicalFormula, ChargeDefaultFormula)
 {
     ChemicalFun::DBElements all_elements;
@@ -217,5 +231,6 @@ TEST(ChemicalFormula, ChargeDefaultFormula)
 "Mn2O7,0,221.872,782.003,9\n"
                   );
 }
+
 
 #endif // TST_ELEMENTS2_H
