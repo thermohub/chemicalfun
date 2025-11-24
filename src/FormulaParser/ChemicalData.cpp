@@ -372,7 +372,7 @@ double FormulaToken::calculate_charge(const ElementsData& dbelements) const
                 valence =  elm_inf->second.valence;
             }
             else {
-                funError("Charge for undefined valense", token.key.to_string(), __LINE__, __FILE__);
+                funError("Charge for undefined valence", token.key.to_string(), __LINE__, __FILE__);
             }
         }
         if(token.key.Class()!=CHARGE_CLASS) {
@@ -479,8 +479,8 @@ FormulaProperties FormulaToken::properties(const ElementsData& dbelements, bool 
 
     if(fabs(aZ - Zzval) > 1e-6)  {
         std::string str = "In the formula: ";
-        str +=  current_formula + " calculated charge: ";
-        str +=  std::to_string(aZ) + " != " + std::to_string(Zzval);
+        str +=  current_formula + " (calculated formula charge) ";
+        str +=  std::to_string(aZ) + " != " + std::to_string(Zzval)+ " (given formula charge). Set explicit element valence with bars ||.";
         ChemicalFun::chfun_logger->info(str);
     }
     return propert;
@@ -519,8 +519,8 @@ bool FormulaToken::testChargeImbalance(const ElementsData& dbelements, bool no_t
     }
     if(fabs(aZ - Zzval) > 1e-6)  {
         std::string str = "In the formula: ";
-        str +=  current_formula + "\n calculated charge: ";
-        str +=  std::to_string(aZ) + " != " + std::to_string(Zzval);
+        str +=  current_formula + " (calculated formula charge) ";
+        str +=  std::to_string(aZ) + " != " + std::to_string(Zzval)+ " (given formula charge). Set explicit element valence with bars ||.";
         if(no_throw) {
             ChemicalFun::chfun_logger->info(str);
             return true;

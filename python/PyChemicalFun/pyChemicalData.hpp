@@ -88,17 +88,17 @@ void exportChemicalData(py::module& m)
         .def("charge", &FormulaToken::charge, py::arg("dbelements")  = ElementsData({}))
         .def("stoichCoefficients", &FormulaToken::getStoichCoefficients)
         .def("testChargeImbalance", &FormulaToken::testChargeImbalance)
-        .def("properties", [](FormulaToken& self, const ElementsData& elements, py::object is_formula)
+        .def("properties", [](FormulaToken& self, const ElementsData& elements, py::object use_charge_from_formula)
              {
                  bool useformula = false;
-                 if (py::isinstance<py::none>(is_formula)) {
+                 if (py::isinstance<py::none>(use_charge_from_formula)) {
                      useformula = charge_from_formula();
                  } else {
-                     useformula = is_formula.cast<bool>();
+                     useformula = use_charge_from_formula.cast<bool>();
                  }
                  return self.properties(elements, useformula);
              },
-             py::arg("elements"), py::arg("is_formula") = py::none())
+             py::arg("elements"), py::arg("use_charge_from_formula") = py::none())
         .def("stoichiometryRow", &FormulaToken::makeStoichiometryRow)
         .def("testElements", &FormulaToken::testElements)
         .def("checkElements", py::overload_cast<const std::string&, const ElementsKeys&>(&FormulaToken::checkElements))
@@ -118,43 +118,43 @@ void exportChemicalData(py::module& m)
         .def("writeElements", &DBElements::writeElements, py::arg("dense")  = false)
         .def("CSV",[]( DBElements& self) { std::stringstream ss; self.printCSV(ss); return ss.str(); })
 
-        .def("formulasPropertiesCSV", [](DBElements& self, const std::vector<std::string> &list, py::object is_formula)
+        .def("formulasPropertiesCSV", [](DBElements& self, const std::vector<std::string> &list, py::object use_charge_from_formula)
              {
             bool useformula = false;
-                 if (py::isinstance<py::none>(is_formula)) {
+                 if (py::isinstance<py::none>(use_charge_from_formula)) {
                      useformula = charge_from_formula();
                  } else {
-                     useformula = is_formula.cast<bool>();
+                     useformula = use_charge_from_formula.cast<bool>();
                  }
                  std::stringstream ss;
                  self.formulasPropertiesCSV(ss, list, useformula);
                  return ss.str();
              },
-             py::arg("list"), py::arg("is_formula") = py::none())
+             py::arg("list"), py::arg("use_charge_from_formula") = py::none())
         .def("stoichiometryMatrixCSV", [](DBElements& self, const std::vector<std::string> &formulalist)
              { std::stringstream ss; self.printStoichiometryMatrix(ss, formulalist); return ss.str(); })
-        .def("formulasProperties", [](const DBElements& self, const std::string& data, py::object is_formula)
+        .def("formulasProperties", [](const DBElements& self, const std::string& data, py::object use_charge_from_formula)
              {
                  bool useformula = false;
-                 if (py::isinstance<py::none>(is_formula)) {
+                 if (py::isinstance<py::none>(use_charge_from_formula)) {
                      useformula = charge_from_formula();
                  } else {
-                     useformula = is_formula.cast<bool>();
+                     useformula = use_charge_from_formula.cast<bool>();
                  }
                  return self.formulasProperties(data, useformula);
              },
-             py::arg("data"),  py::arg("is_formula") = py::none())
-        .def("formulasProperties", [](DBElements& self, const std::vector<std::string>& list, py::object is_formula)
+             py::arg("data"),  py::arg("use_charge_from_formula") = py::none())
+        .def("formulasProperties", [](DBElements& self, const std::vector<std::string>& list, py::object use_charge_from_formula)
              {
                  bool useformula = false;
-                 if (py::isinstance<py::none>(is_formula)) {
+                 if (py::isinstance<py::none>(use_charge_from_formula)) {
                      useformula = charge_from_formula();
                  } else {
-                     useformula = is_formula.cast<bool>();
+                     useformula = use_charge_from_formula.cast<bool>();
                  }
                  return self.formulasProperties(list, useformula);
              },
-             py::arg("list"),  py::arg("is_formula") = py::none())
+             py::arg("list"),  py::arg("use_charge_from_formula") = py::none())
         .def("stoichiometryMatrix", &DBElements::stoichiometryMatrix)
         .def("__repr__", []( const DBElements& self) { std::stringstream ss; ss << self.writeElements(); return ss.str(); })
         ;
