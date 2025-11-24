@@ -2,7 +2,6 @@ name: chemicalfun
 
 channels:
   - conda-forge
-  - defaults
 
 dependencies:
   - pip
