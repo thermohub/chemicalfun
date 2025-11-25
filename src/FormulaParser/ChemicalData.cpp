@@ -361,9 +361,9 @@ void FormulaToken::unpack(std::list<ElementsTerm>& parsed_data)
     }
 }
 
-double FormulaToken::calculate_charge(const ElementsData& dbelements) const
+double FormulaToken::get_charge(const ElementsData& dbelements, bool use_formula_charge) const
 {
-    double Zz=0.0;
+    double Zz=0.0, Zzval=0.0;
     for(const auto& token: extracted_data) {
         auto valence = token.valence;
         if(is_undefined_valence(valence))  {
@@ -375,11 +375,27 @@ double FormulaToken::calculate_charge(const ElementsData& dbelements) const
                 funError("Charge for undefined valence", token.key.to_string(), __LINE__, __FILE__);
             }
         }
-        if(token.key.Class()!=CHARGE_CLASS) {
+        if(token.key.Class() == CHARGE_CLASS) {
+            Zzval += token.stoich_coef;
+        }
+        else {
             Zz += token.stoich_coef * valence;
         }
     }
-    return Zz;
+
+    if(fabs(Zz - Zzval) > 1e-6)  {
+        std::string str = "In the formula: ";
+        str +=  current_formula + " (calculated formula charge) ";
+        str +=  std::to_string(Zz) + " != " + std::to_string(Zzval)+ " (given formula charge). Set explicit element valence with bars ||.";
+        ChemicalFun::chfun_logger->info(str);
+    }
+
+    if(use_formula_charge) {
+        return Zzval;
+    }
+    else {
+        return Zz;
+    }
 }
 
 void FormulaToken::clear()

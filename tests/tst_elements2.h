@@ -193,11 +193,16 @@ TEST(ChemicalFormula, ChargeImbalance)
 
     ChemicalFun::FormulaToken token("CaC2");
     EXPECT_EQ(token.charge(), 10.0);  // from valences
-
-    EXPECT_THROW(token.testChargeImbalance(all_elements.elements()), std::exception);
+    EXPECT_EQ(token.charge({}, true), 0.0);  // from formula
+    EXPECT_THROW(token.testChargeImbalance(), std::exception);
     EXPECT_NO_THROW(token.testChargeImbalance(all_elements.elements(), true));
-    EXPECT_EQ(token.testChargeImbalance(all_elements.elements(), true), true);  // from valences
+    EXPECT_EQ(token.testChargeImbalance(all_elements.elements(), true), true);
 
+    token.setFormula("HOO|0|-");
+    EXPECT_DOUBLE_EQ(token.charge(), -1);
+    EXPECT_NO_THROW(token.testChargeImbalance());
+    EXPECT_NO_THROW(token.testChargeImbalance(all_elements.elements(), true));
+    EXPECT_EQ(token.testChargeImbalance(all_elements.elements(), true), false);
 }
 
 TEST(ChemicalFormula, ChargeDefaultFormula)
@@ -209,7 +214,7 @@ TEST(ChemicalFormula, ChargeDefaultFormula)
     ChemicalFun::set_charge_from_formula(true);
 
     ChemicalFun::FormulaToken token("CaC2");
-    EXPECT_EQ(token.charge(), 10.0);  // from valences
+    EXPECT_EQ(token.charge(), 0.0);
 
     auto properties = token.properties(all_elements.elements()); // charge from formula
     EXPECT_NEAR(properties.atomic_mass, 64.09959983825681, 1e-30);

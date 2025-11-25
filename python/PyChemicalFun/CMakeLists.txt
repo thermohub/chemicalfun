@@ -19,5 +19,11 @@ pybind11_add_module(PyChemicalFun ${SOURCE_FILES} NO_EXTRAS) # NO_EXTRAS used to
 # Link PyChemicalData against ChemicalData library
 target_link_libraries(PyChemicalFun PUBLIC ChemicalFun::ChemicalFun)
 
+# install(TARGETS PyChemicalFun DESTINATION site-packages)
+
+# https://github.com/pybind/cmake_example/blob/master/.pre-commit-config.yaml
+
+# https://pybind11.readthedocs.io/en/stable/cmake/index.html
+
 
 

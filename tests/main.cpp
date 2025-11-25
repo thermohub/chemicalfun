@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 {
     auto ar_logger = spdlog::get("chemicalfun");
     if (ar_logger) {
-        ar_logger->set_level(spdlog::level::info);
+        ar_logger->set_level(spdlog::level::off);
     } else {
         spdlog::set_level(spdlog::level::off);
     }

@@ -151,8 +151,9 @@ public:
     }
     /// Calculated charge in Mol.
     /// If undefined valence throw exception.
-    double charge(const ElementsData& dbelements = {}) const  {
-        return calculate_charge(dbelements);
+    double charge(const ElementsData& dbelements = {},
+                  bool use_formula_charge = charge_from_formula()) const  {
+        return get_charge(dbelements, use_formula_charge);
     }
     /// Get stoichiometric coefficients for elements in the formula.
     const std::map<ElementKey, double>& getStoichCoefficients() const {
@@ -199,7 +200,7 @@ protected:
 
     void clear();
     void unpack(std::list<ElementsTerm>& parsed_data);
-    double calculate_charge(const ElementsData& dbelements) const;
+    double get_charge(const ElementsData& dbelements, bool use_formula_charge) const;
 };
 
 class DBElements final

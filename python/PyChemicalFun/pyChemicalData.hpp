@@ -85,7 +85,17 @@ void exportChemicalData(py::module& m)
         .def("formula", &FormulaToken::formula)
         .def("elementsList", &FormulaToken::getElementsList)
         .def("parsed_list", &FormulaToken::parsed_list, py::arg("dense")  = false)
-        .def("charge", &FormulaToken::charge, py::arg("dbelements")  = ElementsData({}))
+        .def("charge", [](const FormulaToken& self, const ElementsData& dbelements, py::object use_charge_from_formula)
+             {
+                 bool useformula = false;
+                 if (py::isinstance<py::none>(use_charge_from_formula)) {
+                     useformula = charge_from_formula();
+                 } else {
+                     useformula = use_charge_from_formula.cast<bool>();
+                 }
+                 return self.charge(dbelements, useformula);
+             },
+             py::arg("dbelements") = ElementsData({}), py::arg("use_charge_from_formula") = py::none())
         .def("stoichCoefficients", &FormulaToken::getStoichCoefficients)
         .def("testChargeImbalance", &FormulaToken::testChargeImbalance)
         .def("properties", [](FormulaToken& self, const ElementsData& elements, py::object use_charge_from_formula)
