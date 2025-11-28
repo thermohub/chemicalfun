@@ -31,4 +31,6 @@ target_link_libraries(PyChemicalFun PUBLIC ChemicalFun::ChemicalFun)
 #! https://pybind11.readthedocs.io/en/stable/compiling.html
 
 
-
+# to do
+# 1. generate version as setup.py.in
+# 2. generate default python install path
