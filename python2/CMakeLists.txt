@@ -25,6 +25,7 @@ if(NOT DEFINED CHEMICALFUN_PYTHON_INSTALL_PREFIX)
 endif()
 
 set(CHEMICALFUN_PYTHON_MODULE_FILENAME PyChemicalFun${PYTHON_MODULE_EXTENSION})
+
 # If the path is already in Windows format (with backslashes), it can't be added directly
 # to the string below, otherwise CMake will later complain about "Invalid escape sequence".
 file(TO_CMAKE_PATH "${CHEMICALFUN_PYTHON_INSTALL_PREFIX}" CHEMICALFUN_PYTHON_INSTALL_PREFIX)
@@ -34,6 +35,13 @@ message(STATUS "CHEMICALFUN_PYTHON_INSTALL_PREFIX: ${CHEMICALFUN_PYTHON_INSTALL_
 install(CODE
 "
     file(TO_NATIVE_PATH \"${CHEMICALFUN_PYTHON_INSTALL_PREFIX}\" CHEMICALFUN_PYTHON_INSTALL_PREFIX_NATIVE)
+
+   if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+      execute_process(
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:PyChemicalFun>
+                ${CMAKE_CURRENT_BINARY_DIR}/src/chemicalfun/$<TARGET_FILE_NAME:PyChemicalFun>
+      )
+   endif()
 
     if(EXISTS ${CMAKE_CURRENT_BINARY_DIR}/src/chemicalfun/PyChemicalFun.pdb)
         string(REPLACE .pyd .pdb CHEMICALFUN_PDB_FILENAME \"${CHEMICALFUN_PYTHON_MODULE_FILENAME}\")
