@@ -2,7 +2,7 @@ name: ci-build
 on:
   push:
     branches:
-      - charge_calculation
+      - python_install
       - master
       - main
   pull_request:

@@ -26,4 +26,9 @@ target_link_libraries(PyChemicalFun PUBLIC ChemicalFun::ChemicalFun)
 # https://pybind11.readthedocs.io/en/stable/cmake/index.html
 
 
+#! https://realpython.com/python-pyproject-toml/
+
+#! https://pybind11.readthedocs.io/en/stable/compiling.html
+
+
 

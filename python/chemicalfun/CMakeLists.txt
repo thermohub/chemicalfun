@@ -6,11 +6,11 @@ set(CHEMICALFUN_PYTHON_MODULE_FILENAME PyChemicalFun${PYTHON_MODULE_EXTENSION})
 #message(STATUS "CHEMICALFUN_PYTHON_MODULE_FILENAME: ${CHEMICALFUN_PYTHON_MODULE_FILENAME}")
 
 # Configure the setup.py file
-set(SETUP_PY_IN ${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in)
-set(SETUP_PY ${CMAKE_CURRENT_BINARY_DIR}/setup.py)
+#set(SETUP_PY_IN ${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in)
+#set(SETUP_PY ${CMAKE_CURRENT_BINARY_DIR}/setup.py)
 
 # Configure the setup.py script with the provided CMake variables
-configure_file(${SETUP_PY_IN} ${SETUP_PY})
+#configure_file(${SETUP_PY_IN} ${SETUP_PY})
 
 # https://www.scivision.dev/cmake-install-python-package/
 # https://pip.pypa.io/en/stable/topics/local-project-installs/#editable-installs
