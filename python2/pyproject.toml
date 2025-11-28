@@ -1,8 +1,7 @@
 [build-system]
 requires = [
     "setuptools >= 61.2",
-    "wheel",
-    "pybind11"
+    "wheel"
 ]
 build-backend = "setuptools.build_meta"
 
@@ -25,11 +24,5 @@ keywords = ["element", "valence", "entropy", "atomic mass", "heat capacity", "re
 Homepage = "https://thermohub.org"
 Repository = "https://github.com/thermohub/chemicalfun.git"
 
-[tool.setuptools]
-include-package-data = true
-
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["*.so", "PyChemicalFun*", "*.py"]
-
-
+[tool.setuptools.package-data]
+chemicalfun = ["PyChemicalFun*", "*.pdb"]
