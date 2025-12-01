@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "chemicalfun"
-dynamic = ["version"]
+version= "${PROJECT_VERSION}"
 requires-python = ">= 3.8"
 authors = [
   {name = "G.D. Miron", email = "dan.miron@psi.ch"},

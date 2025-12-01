@@ -1,10 +1,15 @@
 message(STATUS "Building python")
-file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/pyproject.toml" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+#file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/pyproject.toml.in" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
 
 # to test without install run into src: python test_elements.py
 #file(COPY "${CMAKE_SOURCE_DIR}/examples/test_elements.py" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/src")
 #file(COPY "${CMAKE_SOURCE_DIR}/examples/test_elements2.py" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/src")
 #file(COPY "${CMAKE_SOURCE_DIR}/examples/test_generator.py" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/src")
+
+# Configure the pyproject.toml script with the provided CMake variables
+#set(TOML_IN ${CMAKE_CURRENT_SOURCE_DIR}/pyproject.toml.in)
+set(TOML ${CMAKE_CURRENT_BINARY_DIR}/pyproject.toml)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/pyproject.toml.in ${CMAKE_CURRENT_BINARY_DIR}/pyproject.toml)
 
 add_subdirectory(src/chemicalfun)
 set(CHEMICALFUN_PYTHON_MODULE_FILENAME PyChemicalFun${PYTHON_MODULE_EXTENSION})
