@@ -74,6 +74,8 @@ jobs:
           cd build || goto :eof
           cd python2 || goto :eof
           cd build || goto :eof
+          cd lib || goto :eof
+          cd chemicalfun || goto :eof
           ls || goto :eof
           python -c "import chemicalfun" || goto :eof
           ctest -C Release --test-dir "build/tests" || goto :eof
