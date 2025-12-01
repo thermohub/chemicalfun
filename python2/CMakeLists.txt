@@ -52,7 +52,7 @@ install(CODE
     endif()
 
     execute_process(
-        COMMAND ${Python3_EXECUTABLE} -m pip ${CMAKE_CURRENT_BINARY_DIR}
+        COMMAND ${Python3_EXECUTABLE} -m pip install ${CMAKE_CURRENT_BINARY_DIR}
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 "
 )
