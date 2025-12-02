@@ -1,1 +1,0 @@
-from chemicalfun.PyChemicalFun import *
