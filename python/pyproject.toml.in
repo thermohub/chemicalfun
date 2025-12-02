@@ -1,0 +1,31 @@
+[build-system]
+requires = [
+    "setuptools >= 61.2",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chemicalfun"
+version= "${PROJECT_VERSION}"
+requires-python = ">= 3.8"
+authors = [
+  {name = "G.D. Miron", email = "dan.miron@psi.ch"},
+  {name = "S.Dmytriieva", email = "sv.dmytr@gmail.com"}
+]
+maintainers = [
+  {name = "G.D. Miron", email = "dan.miron@psi.ch"}
+]
+description = "C++ and Python API for Chemical Formula Parser and Reactions Generator."
+license = "GPL-3.0-or-later"
+keywords = ["element", "valence", "entropy", "atomic mass", "heat capacity", "reactions"]
+
+[project.urls]
+Homepage = "https://thermohub.org"
+Repository = "https://github.com/thermohub/chemicalfun.git"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+chemicalfun = ["PyChemicalFun*", "*.pdb"]
