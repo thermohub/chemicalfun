@@ -128,12 +128,7 @@ endif()
 
 # Build python wraper
 if(CHEMICALFUN_BUILD_PYTHON)
-	if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-		include_directories("${CMAKE_CURRENT_SOURCE_DIR}/extern/installed/include/eigen3")
-	elseif(CMAKE_HOST_WIN32 AND EMSCRIPTEN)
-		include_directories("${CMAKE_CURRENT_SOURCE_DIR}/extern/installedwasm/include/eigen3")
-	endif()
-    add_subdirectory(python2)
+    add_subdirectory(python)
 endif()
 
 # Install the cmake config files that permit users to use find_package(ChemicalFun)
