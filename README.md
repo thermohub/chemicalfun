@@ -1,6 +1,6 @@
 # ChemicalFun
 
-ChemicalFun is a C++ library (Python and C++ API) for generating balanced chemical reactions and for parsing and calculating properties of chemical formulas.
+ChemicalFun is a C++ library (Python and C++ API) for generating [balanced chemical reactions](#example-for-generating-reactions) and for parsing and calculating [properties of chemical formulas](#example-for-chemical-formula-parser).
 
 [![ci-build](https://github.com/thermohub/chemicalfun/actions/workflows/ci-build.yml/badge.svg?branch=master)](https://github.com/thermohub/chemicalfun/actions/workflows/ci-build.yml)
 
@@ -73,7 +73,7 @@ cmake .. -DCMAKE_INSTALL_PREFIX=/home/username/local/
 
 The chemical reactions generator generates all independent balanced chemical reactions for a given list of substances. The library uses the method described by Smith and Missen (1997) to generate reactions of dependent substances from master substances. 
 
-## Example
+## Example for generating reactions 
 
 ```python
 import chemicalfun as cf
@@ -220,6 +220,48 @@ SO2(gas) + 2OH- + 2Fe+3 = SO4-2 + 2H+ + 2Fe+2
 master: ['Ca+2', 'Fe+2', 'Fe+3', 'H+', 'OH-', 'SO4-2']
 dependent: ['CaSO4(aq)', 'CaOH+', 'FeO(aq)', 'HFeO2(aq)', 'FeOH+', 'FeOH+2', 'H2O(aq)', 'Pyrrhotite', 'Pyrite', 'SO2(gas)']
 ```
+
+## Example for chemical formula parser 
+
+The class that holds formula information is called `FormulaToken`. It is constructed from a given formula string. The parser relies on a [default database of elements](https://github.com/thermohub/chemicalfun/blob/master/src/FormulaParser/ElementsDB.h), which can be [overwritten](https://github.com/thermohub/chemicalfun/blob/master/examples/test_elements.py) with custom element properties.  
+
+ChemicalFun uses the oxidation state (valence) of each element to calculate formula properties such as charge. By default, the oxidation state is taken from the elements database unless explicitly specified in the formula.  
+
+For example:  
+- `Fe|3|(OH)4-` → The oxidation state of Fe is explicitly set to +3 using the bars `|3|`.  
+- `Fe(OH)4-` → The parser uses the default oxidation state of Fe from the database (+2). This leads to a mismatch between the calculated charge and the charge indicated in the formula.  
+
+
+```python
+# Enable logging to file (info and warnings)
+cf.update_loggers(True, "chemicalfun.log", 1)
+
+# Initialize default elements database
+dbelements = cf.DBElements()
+
+# Example 1: Formula without explicit valence, default 4 for Si and -2 for O
+token = cf.FormulaToken("SiO3-2")
+print("formula properties:", token.properties(dbelements.elements()))
+# Charge is calculated from default valences or explicit valences (via bars ||)
+print("charge:", token.charge())
+# Stoichiometry output (Zz represents the charge)
+print("stoichiometry:", token.stoichCoefficients())
+
+# Example 2: Formula with explicit Fe valence
+token = cf.FormulaToken("Fe|3|(OH)4-")
+print("formula properties:", token.properties(dbelements.elements()))
+print("charge:", token.charge())
+
+# Example 3: Formula without explicit valence
+token.setFormula("Fe(OH)4-")
+print("default valence of Fe in DB:", dbelements.defaultValence("Fe"))
+# Charge mismatch warning: default valence (+2) gives -2, while formula indicates -1
+print("charge from valences:", token.charge())
+print("charge from formula:", token.charge(use_charge_from_formula=True))
+print("formula properties:", token.properties(dbelements.elements()))
+```
+
+For more examples, see the /examples directory.
 
 
 

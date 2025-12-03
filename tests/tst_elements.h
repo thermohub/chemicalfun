@@ -367,7 +367,7 @@ TEST(ChemicalFormula, FormulaTokenAlOH)
     EXPECT_EQ(els_list[3], R"({"key":{"class_":4,"symbol":"Zz"},"stoich_coef":1.0,"valence":0})");
     EXPECT_EQ(token.charge(), 1);
 
-    auto properties = token.properties(all_elements.elements());
+    auto properties = token.properties(all_elements.elements(), false); // calculate charge from valences
     EXPECT_NEAR(properties.atomic_mass, 60.996240854263306, 1e-30);
     EXPECT_NEAR(properties.atoms_formula_unit, 6, 1e-30);
     EXPECT_NEAR(properties.charge, 1, 1e-30);
@@ -395,7 +395,7 @@ TEST(ChemicalFormula, FormulaTokenH)
     EXPECT_EQ(els_list[1], R"({"key":{"class_":4,"symbol":"Zz"},"stoich_coef":1.0,"valence":0})");
     EXPECT_EQ(token.charge(), 1);
 
-    auto properties = token.properties(all_elements.elements());
+    auto properties = token.properties(all_elements.elements(), false); // calculate charge from valences
     EXPECT_NEAR(properties.atomic_mass, 1.0079499483108501, 1e-30);
     EXPECT_NEAR(properties.atoms_formula_unit, 2, 1e-30);
     EXPECT_NEAR(properties.charge, 1, 1e-30);
@@ -423,7 +423,7 @@ TEST(ChemicalFormula, FormulaTokenO2)
     EXPECT_EQ(els_list[1], R"({"key":{"class_":4,"symbol":"Zz"},"stoich_coef":0.0,"valence":0})");
     EXPECT_EQ(token.charge(), 0);
 
-    auto properties = token.properties(all_elements.elements());
+    auto properties = token.properties(all_elements.elements(), false); // calculate charge from valences
     EXPECT_NEAR(properties.atomic_mass, 31.99880027771, 1e-30);
     EXPECT_NEAR(properties.atoms_formula_unit, 2, 1e-30);
     EXPECT_NEAR(properties.charge, 0, 1e-30);
@@ -442,7 +442,7 @@ TEST(ChemicalFormula, FormulaTokenO2)
     EXPECT_EQ(els_list[0], R"({"key":{"symbol":"O"},"stoich_coef":2.0,"valence":0})");
     EXPECT_EQ(token.charge(), 0);
 
-    properties = token.properties(all_elements.elements());
+    properties = token.properties(all_elements.elements(), false); // calculate charge from valences
     EXPECT_NEAR(properties.atomic_mass, 31.99880027771, 1e-30);
     EXPECT_NEAR(properties.atoms_formula_unit, 2, 1e-30);
     EXPECT_NEAR(properties.charge, 0, 1e-30);
@@ -472,7 +472,7 @@ TEST(ChemicalFormula, FormulaTokenHOO)
     EXPECT_EQ(els_list[3], R"({"key":{"class_":4,"symbol":"Zz"},"stoich_coef":-1.0,"valence":0})");
     EXPECT_EQ(token.charge(), -1);
 
-    auto properties = token.properties(all_elements.elements());
+    auto properties = token.properties(all_elements.elements(), false); // calculate charge from valences
     EXPECT_NEAR(properties.atomic_mass, 33.00675022602085, 1e-30);
     EXPECT_NEAR(properties.atoms_formula_unit, 2, 1e-30);
     EXPECT_NEAR(properties.charge, -1, 1e-30);
@@ -502,7 +502,8 @@ TEST(ChemicalFormula, FormulaTokenNumber)
     EXPECT_EQ(els_list[3], R"({"key":{"symbol":"Si"},"stoich_coef":1.0,"valence":4})");
     EXPECT_DOUBLE_EQ(token.charge(), 0);
 
-    EXPECT_THROW(token.properties(all_elements.elements()), std::exception);
+    // calculate charge from valences
+    EXPECT_THROW(token.properties(all_elements.elements(), false), std::exception);
 
     auto st_row = token.makeStoichiometryRow(all_elements.elementsKeysList());
     std::vector<double> row = { 0, 0, 0, 0, 0, 2.666666, 0, 0, 0, 4.166666, 0, 1, 0, 0 };
@@ -534,7 +535,7 @@ TEST(ChemicalFormula, FormulaTokenComplex)
     EXPECT_EQ(els_list[7], R"({"key":{"symbol":"Si"},"stoich_coef":10.473,"valence":4})");
     EXPECT_NEAR(token.charge(), -7.105427357601002e-15, 1e-30);
 
-    auto properties = token.properties(all_elements.elements());
+    auto properties = token.properties(all_elements.elements(), false); // calculate charge from valences
     EXPECT_NEAR(properties.atomic_mass, 1211.5590944863566, 1e-30);
     EXPECT_NEAR(properties.atoms_formula_unit, 91.843, 1e-30);
     EXPECT_NEAR(properties.charge, -7.105427357601002e-15, 1e-30);
@@ -549,7 +550,11 @@ TEST(ChemicalFormula, FormulaTokenComplex)
     }
 
     EXPECT_TRUE(token.testElements("NaSi10.473Al4.132Mg.737Fe|3|.237Fe|2|.211O44.316H30.737", all_elements.elementsKeys()).empty()) ;
-}
+
+    auto properties2 = token.properties(all_elements.elements(), true); // get charge from formula
+    EXPECT_NEAR(properties2.atomic_mass, 1211.5590944863566, 1e-30);
+    EXPECT_NEAR(properties2.charge, 0, 1e-30);
+    }
 
 TEST(ChemicalFormula, FormulaTokenIsotope)
 {
@@ -565,7 +570,7 @@ TEST(ChemicalFormula, FormulaTokenIsotope)
     EXPECT_EQ(els_list[1], R"({"key":{"symbol":"O"},"stoich_coef":1.0,"valence":-2})");
     EXPECT_EQ(token.charge(), 0);
 
-    auto properties = token.properties(all_elements.elements());
+    auto properties = token.properties(all_elements.elements(), false); // calculate charge from valences
     EXPECT_NEAR(properties.atomic_mass, 18.0153000354767, 1e-30);
     EXPECT_NEAR(properties.atoms_formula_unit, 3, 1e-30);
     EXPECT_NEAR(properties.charge, 0, 1e-30);
@@ -593,7 +598,8 @@ TEST(ChemicalFormula, FormulaTokenNoMnS)
     EXPECT_EQ(els_list[1], R"({"key":{"symbol":"S"},"stoich_coef":1.0,"valence":-2})");
     EXPECT_DOUBLE_EQ(token.charge(), 0);
 
-    EXPECT_THROW(token.properties(all_elements.elements()), std::exception);
+    // calculate charge from valences
+    EXPECT_THROW(token.properties(all_elements.elements(), false), std::exception);
 
     auto st_row = token.makeStoichiometryRow(all_elements.elementsKeysList());
     std::vector<double> row = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -617,7 +623,8 @@ TEST(ChemicalFormula, FormulaTokenNoFeSS)
     EXPECT_EQ(els_list[2], R"({"key":{"symbol":"S"},"stoich_coef":1.0,"valence":0})");
     EXPECT_DOUBLE_EQ(token.charge(), 0);
 
-    EXPECT_THROW(token.properties(all_elements.elements()), std::exception);
+    // calculate charge from valences
+    EXPECT_THROW(token.properties(all_elements.elements(), false), std::exception);
 
     auto st_row = token.makeStoichiometryRow(all_elements.elementsKeysList());
     std::vector<double> row = { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -770,7 +777,7 @@ TEST(ChemicalFormula, FormulaTokenOxa)
     EXPECT_EQ(token.charge(all_elements.elements()), 3);
     EXPECT_THROW(token.testChargeImbalance(), std::exception);
 
-    auto properties = token.properties(all_elements.elements());
+    auto properties = token.properties(all_elements.elements(), false); // calculate charge from valences
     EXPECT_NEAR(properties.atomic_mass, 507.11800000000005, 1e-30);
     EXPECT_NEAR(properties.atoms_formula_unit, 1, 1e-30);
     EXPECT_NEAR(properties.charge, 3, 1e-30);
@@ -782,4 +789,12 @@ TEST(ChemicalFormula, FormulaTokenOxa)
     EXPECT_EQ(st_row, row);
 
     EXPECT_TRUE(token.testElements("Am|3|(Oxa)3-3", all_elements.elementsKeys()).empty()) ;
+
+    auto properties2 = token.properties(all_elements.elements(), true); // calculate charge from formula
+    EXPECT_NEAR(properties2.atomic_mass, 507.11800000000005, 1e-30);
+    EXPECT_NEAR(properties2.atoms_formula_unit, 1, 1e-30);
+    EXPECT_NEAR(properties2.charge, -3, 1e-30);
+    EXPECT_NEAR(properties2.elemental_entropy, 251.4199890136718, 1e-30);
+    EXPECT_EQ(properties2.formula, "Am|3|(Oxa)3-3");
 }
+

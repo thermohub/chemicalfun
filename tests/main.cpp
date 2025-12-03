@@ -3,6 +3,7 @@
 
 #include "tst_parser.h"
 #include "tst_elements.h"
+#include "tst_elements2.h"
 #include "tst_generator.h"
 #include <spdlog/spdlog.h>
 

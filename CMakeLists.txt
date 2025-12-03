@@ -1,8 +1,8 @@
 # Require a certain version of cmake
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.16...4.2)
 
 # Set the name of the project
-project(ChemicalFun VERSION 0.1.12 LANGUAGES CXX)
+project(ChemicalFun VERSION 0.1.13 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -81,21 +81,6 @@ endif()
 #set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=thread")
 #set (CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_LINKER_FLAGS_DEBUG} -fsanitize=thread")
 
-# Find the Python interpreter
-if(CHEMICALFUN_BUILD_PYTHON)
-	if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-		find_package(pybind11 2.2.0 REQUIRED PATHS "${CMAKE_CURRENT_SOURCE_DIR}/extern/installed/share/cmake/pybind11")
-	else()
-		find_package(pybind11 2.2.0 REQUIRED)
-	endif()
-	message(STATUS "Found pybind11 v${pybind11_VERSION}: ${pybind11_INCLUDE_DIRS}")
-	if(NOT pybind11_FOUND)
-		set(CHEMICALFUN_BUILD_PYTHON OFF)
-		message(WARNING "pybind11 has not been found. "
-			"Cannot build python bindings for chemicalfun")
-	endif()
-endif()
-
 # Set the thermofun source directory path
 set(CHEMICALFUN_SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
 
@@ -143,11 +128,6 @@ endif()
 
 # Build python wraper
 if(CHEMICALFUN_BUILD_PYTHON)
-	if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-		include_directories("${CMAKE_CURRENT_SOURCE_DIR}/extern/installed/include/eigen3")
-	elseif(CMAKE_HOST_WIN32 AND EMSCRIPTEN)
-		include_directories("${CMAKE_CURRENT_SOURCE_DIR}/extern/installedwasm/include/eigen3")
-	endif()
     add_subdirectory(python)
 endif()
 

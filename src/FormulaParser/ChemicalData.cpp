@@ -361,9 +361,9 @@ void FormulaToken::unpack(std::list<ElementsTerm>& parsed_data)
     }
 }
 
-double FormulaToken::calculate_charge(const ElementsData& dbelements) const
+double FormulaToken::get_charge(const ElementsData& dbelements, bool use_formula_charge) const
 {
-    double Zz=0.0;
+    double Zz=0.0, Zzval=0.0;
     for(const auto& token: extracted_data) {
         auto valence = token.valence;
         if(is_undefined_valence(valence))  {
@@ -372,14 +372,30 @@ double FormulaToken::calculate_charge(const ElementsData& dbelements) const
                 valence =  elm_inf->second.valence;
             }
             else {
-                funError("Charge for undefined valense", token.key.to_string(), __LINE__, __FILE__);
+                funError("Charge for undefined valence", token.key.to_string(), __LINE__, __FILE__);
             }
         }
-        if(token.key.Class()!=CHARGE_CLASS) {
+        if(token.key.Class() == CHARGE_CLASS) {
+            Zzval += token.stoich_coef;
+        }
+        else {
             Zz += token.stoich_coef * valence;
         }
     }
-    return Zz;
+
+    if(fabs(Zz - Zzval) > 1e-6)  {
+        std::string str = "In the formula: ";
+        str +=  current_formula + " (calculated formula charge) ";
+        str +=  std::to_string(Zz) + " != " + std::to_string(Zzval)+ " (given formula charge). Set explicit element valence with bars ||.";
+        ChemicalFun::chfun_logger->warn(str);
+    }
+
+    if(use_formula_charge) {
+        return Zzval;
+    }
+    else {
+        return Zz;
+    }
 }
 
 void FormulaToken::clear()
@@ -439,10 +455,10 @@ std::string FormulaToken::testElements(const std::string& aformula, const Elemen
     return notPresent;
 }
 
-FormulaProperties FormulaToken::properties(const ElementsData& dbelements)
+FormulaProperties FormulaToken::properties(const ElementsData& dbelements, bool use_formula_charge)
 {
     FormulaProperties propert;
-    double Sc;
+    double Sc, aZ=0.0, Zzval=0.0;
     int valence;
     propert.formula = current_formula;
     propert.charge = propert.atomic_mass = 0.0;
@@ -462,9 +478,26 @@ FormulaProperties FormulaToken::properties(const ElementsData& dbelements)
         if(is_undefined_valence(valence)) {
             valence = itrdb->second.valence;
         }
-        if(token.key.Class() != CHARGE_CLASS) {
-            propert.charge += Sc * valence;
+        if(token.key.Class() == CHARGE_CLASS) {
+            Zzval += Sc;
         }
+        else {
+            aZ += Sc * valence;
+        }
+    }
+
+    if(use_formula_charge) {
+        propert.charge = Zzval;
+    }
+    else {
+        propert.charge = aZ;
+    }
+
+    if(fabs(aZ - Zzval) > 1e-6)  {
+        std::string str = "In the formula: ";
+        str +=  current_formula + " (calculated formula charge) ";
+        str +=  std::to_string(aZ) + " != " + std::to_string(Zzval)+ " (given formula charge). Set explicit element valence with bars ||.";
+        ChemicalFun::chfun_logger->warn(str);
     }
     return propert;
 }
@@ -488,25 +521,32 @@ StoichiometryRowData FormulaToken::makeStoichiometryRow(const std::vector<Elemen
     return rowA;
 }
 
-void FormulaToken::testChargeImbalance(const ElementsData& dbelements)
+bool FormulaToken::testChargeImbalance(const ElementsData& dbelements, bool no_throw)
 {
+    double Zzval = 0.0;  // by default 0
     ElementKey chargeKey(CHARGE_NAME,CHARGE_CLASS,0);
-    if(elements.find(chargeKey) == elements.end())
-        return;
 
     auto aZ = charge(dbelements);
 
     auto itZz = std::find_if(extracted_data.rbegin(), extracted_data.rend(),
                              [=](const FormulaValues& token) { return token.key == chargeKey; });
     if(itZz != extracted_data.rend()) {
-        double Zzval = itZz->stoich_coef;
-        if(fabs(aZ - Zzval) > 1e-6)  {
-            std::string str = "In the formula: ";
-            str +=  current_formula + "\n calculated charge: ";
-            str +=  std::to_string(aZ) + " != " + std::to_string(Zzval);
+        Zzval = itZz->stoich_coef;
+    }
+    if(fabs(aZ - Zzval) > 1e-6)  {
+        std::string str = "In the formula: ";
+        str +=  current_formula + " (calculated formula charge) ";
+        str +=  std::to_string(aZ) + " != " + std::to_string(Zzval)+ " (given formula charge). Set explicit element valence with bars ||.";
+        if(no_throw) {
+            ChemicalFun::chfun_logger->warn(str);
+            return true;
+        }
+        else {
             funError("Charge imbalance", str, __LINE__, __FILE__);
         }
     }
+
+    return false;
 }
 
 //------------------------------------------
@@ -789,11 +829,12 @@ ElementsKeys DBElements::formulasElements(const std::vector<std::string>& formul
     return elements;
 }
 
-std::vector<FormulaProperties> DBElements::formulasProperties(const std::vector<std::string>& formulalist)
+std::vector<FormulaProperties> DBElements::formulasProperties(const std::vector<std::string>& formulalist, bool use_formula_charge)
 {
     std::vector<FormulaProperties> thermo;
+    ChemicalFun::chfun_logger->debug("get_charge_from_formula {} ", charge_from_formula());
     for(const auto& aformula: formulalist) {
-        thermo.push_back(formulasProperties(aformula));
+        thermo.push_back(formulasProperties(aformula, use_formula_charge));
     }
     return thermo;
 }
@@ -827,9 +868,11 @@ void DBElements::printStoichiometryMatrix(std::ostream& stream, const std::vecto
     }
 }
 
-void DBElements::formulasPropertiesCSV(std::ostream& stream, const std::vector<std::string>& formulalist)
+void DBElements::formulasPropertiesCSV(std::ostream& stream,
+                                       const std::vector<std::string>& formulalist,
+                                       bool use_formula_charge)
 {
-    std::vector<FormulaProperties> thermo = formulasProperties(formulalist);
+    std::vector<FormulaProperties> thermo = formulasProperties(formulalist, use_formula_charge);
     stream << "formula,charge,atomic_mass,elemental_entropy,atoms_formula\n";
     for( const auto& row: thermo) {
         stream << row.formula << ","<< row.charge << "," << row.atomic_mass << ",";
@@ -884,6 +927,21 @@ StoichiometryMatrixData stoichiometryMatrix(const std::vector<std::string> &form
         matrA.push_back(formula.makeStoichiometryRow(all_elements));
     }
     return matrA;
+}
+
+/// Global default settings for calculating the charge method.
+/// If get_charge_from_formula false, calculate the charge based on the elements and their default
+/// or specified valence; otherwise, take the charge based on the symbol in the given formula.
+static bool get_charge_from_formula = false;
+
+bool charge_from_formula()
+{
+    return get_charge_from_formula;
+}
+
+void set_charge_from_formula(bool cond)
+{
+    get_charge_from_formula = cond;
 }
 
 }

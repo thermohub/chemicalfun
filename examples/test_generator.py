@@ -43,7 +43,7 @@ print(reactionsDB.formulaMatrix())
 print(reactionsDB.sizeSubstancesMap())
 
 print(reactionsDB.getCharge("Ca+2"))
-print(reactionsDB.getCharge("ClO4-"))
+print(reactionsDB.getCharge("Cl|7|O4-"))
 print(reactionsDB.getCharge("H2O@"))
 print(reactionsDB.getCharge(11))
 

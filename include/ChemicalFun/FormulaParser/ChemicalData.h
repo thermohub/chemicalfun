@@ -27,6 +27,8 @@
 namespace ChemicalFun {
 
 void update_loggers( bool use_cout, const std::string& logfile_name, size_t log_level);
+bool charge_from_formula();
+void set_charge_from_formula(bool cond);
 
 class DBElements;
 class ElementsTerm;
@@ -149,8 +151,9 @@ public:
     }
     /// Calculated charge in Mol.
     /// If undefined valence throw exception.
-    double charge(const ElementsData& dbelements = {}) const  {
-        return calculate_charge(dbelements);
+    double charge(const ElementsData& dbelements = {},
+                  bool use_formula_charge = charge_from_formula()) const  {
+        return get_charge(dbelements, use_formula_charge);
     }
     /// Get stoichiometric coefficients for elements in the formula.
     const std::map<ElementKey, double>& getStoichCoefficients() const {
@@ -174,11 +177,14 @@ public:
     /// Build list of elements not present into system.
     std::string testElements(const std::string& aformula, const ElementsKeys& dbelementkeys);
     /// Throw exeption if charge imbalance.
-    void testChargeImbalance(const ElementsData& dbelements = {});
+    bool testChargeImbalance(const ElementsData& dbelements = {}, bool no_throw=false);
 
     /// Calculate charge, molar mass, elemental entropy, atoms per formula unit
     /// for chemical formulae.
-    FormulaProperties properties(const ElementsData& dbelements);
+    /// If use_formula_charge false, calculate the charge based on the elements and their default
+    /// or specified valence; otherwise, take the charge based on the symbol in the given formula.
+    FormulaProperties properties(const ElementsData& dbelements,
+                                 bool use_formula_charge = charge_from_formula());
 
 protected:
     /// If we need a matrix with separate element valences
@@ -194,7 +200,7 @@ protected:
 
     void clear();
     void unpack(std::list<ElementsTerm>& parsed_data);
-    double calculate_charge(const ElementsData& dbelements) const;
+    double get_charge(const ElementsData& dbelements, bool use_formula_charge) const;
 };
 
 class DBElements final
@@ -222,11 +228,18 @@ public:
     }
 
     /// Calculate charge, molar mass, elemental entropy, atoms per formula.
-    FormulaProperties formulasProperties(const std::string aformula) const {
-        return FormulaToken(aformula).properties(this->dbElements_);
+    /// If use_formula_charge false, calculate the charge based on the elements and their default
+    /// or specified valence; otherwise, take the charge based on the symbol in the given formula.
+    FormulaProperties formulasProperties(const std::string aformula,
+                                         bool use_formula_charge = charge_from_formula()) const
+    {
+        return FormulaToken(aformula).properties(this->dbElements_, use_formula_charge);
     }
     /// Calculate charge, molar mass, elemental entropy, atoms per formula list.
-    std::vector<FormulaProperties> formulasProperties(const std::vector<std::string>& formulalist);
+    /// If use_formula_charge false, calculate the charge based on the elements and their default
+    /// or specified valence; otherwise, take the charge based on the symbol in the given formula.
+    std::vector<FormulaProperties> formulasProperties(const std::vector<std::string>& formulalist,
+                                                      bool use_formula_charge = charge_from_formula());
 
     /// Generate stoichiometry matrix from the formula list.
     StoichiometryMatrixData stoichiometryMatrix(const std::vector<std::string>& formulalist);
@@ -237,7 +250,8 @@ public:
     std::string writeElements(bool dense = false) const;
 
     void printCSV(std::ostream &stream);
-    void formulasPropertiesCSV(std::ostream &stream, const std::vector<std::string> &formulalist);
+    void formulasPropertiesCSV(std::ostream &stream, const std::vector<std::string> &formulalist,
+                               bool use_formula_charge = charge_from_formula());
     void printStoichiometryMatrix(std::ostream &stream, const std::vector<std::string> &formulalist);
 
 protected:
@@ -245,7 +259,6 @@ protected:
     ElementsData dbElements_;
     /// Set of keys of elements downloaded from the database
     ElementsKeys dbElementsKeys_;
-
 };
 
 std::string to_string(const std::vector<ElementKey>& keys );
@@ -261,6 +274,8 @@ StoichiometryMatrixData stoichiometryMatrix(const std::vector<std::string> &form
 /// Generate elements used list
 std::vector<ElementKey> elementsInFormulas(const std::vector<std::string> &formulalist,
                                                      bool valence = false);
+
+
 }
 
 
