@@ -73,10 +73,6 @@ jobs:
           cmake --build build --target install --config Release || goto :eof
           python -c "import chemicalfun" || goto :eof
           ctest -C Release --test-dir "build/tests" || goto :eof
-          cd build || goto :eof
-          cd bin || goto :eof
-          cd Release || goto :eof
-          ls || goto :eof
 
 
       - name: Check conda

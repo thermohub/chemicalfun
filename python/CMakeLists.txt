@@ -9,13 +9,8 @@ message(STATUS "Building python")
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/pyproject.toml.in ${CMAKE_CURRENT_BINARY_DIR}/pyproject.toml)
 
 add_subdirectory(src/chemicalfun)
-set(CHEMICALFUN_PYTHON_MODULE_FILENAME PyChemicalFun${PYTHON_MODULE_EXTENSION})
-message(STATUS "CHEMICALFUN_PYTHON_INSTALL_PREFIX: ${CHEMICALFUN_PYTHON_INSTALL_PREFIX}")
 
-if(MSVC)
-   set(CHEMICALFUN_PDB_FILEPATH $<TARGET_PDB_FILE:PyChemicalFun>)
-   string(REPLACE .pyd .pdb CHEMICALFUN_PDB_FILENAME ${CHEMICALFUN_PYTHON_MODULE_FILENAME})
-endif()
+#set(CHEMICALFUN_PYTHON_MODULE_FILENAME PyChemicalFun${PYTHON_MODULE_EXTENSION})
 
 # Install where the python package is installed to CMAKE_INSTALL_PREFIX if not given
 if(NOT DEFINED CHEMICALFUN_PYTHON_INSTALL_PREFIX)
@@ -28,12 +23,6 @@ install(CODE
         COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:PyChemicalFun>
                 ${CMAKE_CURRENT_BINARY_DIR}/src/chemicalfun/$<TARGET_FILE_NAME:PyChemicalFun>
       )
-   endif()
-
-   if(EXISTS ${CHEMICALFUN_PDB_FILEPATH})
-        execute_process(
-            COMMAND \${CMAKE_COMMAND} -E copy ${CHEMICALFUN_PDB_FILEPATH}
-            ${CMAKE_CURRENT_BINARY_DIR}/src/chemicalfun/${CHEMICALFUN_PDB_FILENAME})
    endif()
 
    execute_process(
@@ -59,13 +48,6 @@ install(CODE
         COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:PyChemicalFun>
                 ${CMAKE_CURRENT_BINARY_DIR}/src/chemicalfun/$<TARGET_FILE_NAME:PyChemicalFun>
         )
-
-      if(EXISTS ${CHEMICALFUN_PDB_FILEPATH})
-        execute_process(
-            COMMAND ${CMAKE_COMMAND} -E copy ${CHEMICALFUN_PDB_FILEPATH}
-            ${CMAKE_CURRENT_BINARY_DIR}/src/chemicalfun/${CHEMICALFUN_PDB_FILENAME}
-        )
-       endif()
     endif()
 
     execute_process(
