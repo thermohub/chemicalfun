@@ -223,19 +223,45 @@ dependent: ['CaSO4(aq)', 'CaOH+', 'FeO(aq)', 'HFeO2(aq)', 'FeOH+', 'FeOH+2', 'H2
 
 ## Example for chemical formula parser 
 
-The class holing the formula information is called a `FormulaToken` and is constructed from given a formula string. The formula parser uses a [default database for elements](https://github.com/thermohub/chemicalfun/blob/master/src/FormulaParser/ElementsDB.h). This database can be [overwritten](https://github.com/thermohub/chemicalfun/blob/master/examples/test_elements.py) with given properties of elements. 
+The class that holds formula information is called `FormulaToken`. It is constructed from a given formula string. The parser relies on a [default database of elements](https://github.com/thermohub/chemicalfun/blob/master/src/FormulaParser/ElementsDB.h), which can be [overwritten](https://github.com/thermohub/chemicalfun/blob/master/examples/test_elements.py) with custom element properties.  
 
-ChemicalFun formula parser uses the provided element oxidation state (valence) to calculate the formula properties such as charge. The default oxidation state is provided in the elements database and is used if no other oxidation state is assigned. For example in formula `Fe|3|(OH)4-` the oxidation state of Fe is set ot +3  by the bars || immediately after the element. In contrast, `Fe(OH)4-` would use the default oxidation state of Fe which in the database is +2 leading to a mismatch between the formula calculated charge and the formula given charge. 
+ChemicalFun uses the oxidation state (valence) of each element to calculate formula properties such as charge. By default, the oxidation state is taken from the elements database unless explicitly specified in the formula.  
+
+For example:  
+- `Fe|3|(OH)4-` → The oxidation state of Fe is explicitly set to +3 using the bars `|3|`.  
+- `Fe(OH)4-` → The parser uses the default oxidation state of Fe from the database (+2). This leads to a mismatch between the calculated charge and the charge indicated in the formula.  
+
 
 ```python
-token = cf.FormulaToken("Fe|3|(OH)4-");
-print(r'charge', token.charge())
-print(r'stoichiometry', token.stoichCoefficients())
+# Enable logging to file (info and warnings)
+cf.update_loggers(True, "chemicalfun.log", 1)
+
+# Initialize default elements database
+dbelements = cf.DBElements()
+
+# Example 1: Formula without explicit valence, default 4 for Si and -2 for O
+token = cf.FormulaToken("SiO3-2")
+print("formula properties:", token.properties(dbelements.elements()))
+# Charge is calculated from default valences or explicit valences (via bars ||)
+print("charge:", token.charge())
+# Stoichiometry output (Zz represents the charge)
+print("stoichiometry:", token.stoichCoefficients())
+
+# Example 2: Formula with explicit Fe valence
+token = cf.FormulaToken("Fe|3|(OH)4-")
+print("formula properties:", token.properties(dbelements.elements()))
+print("charge:", token.charge())
+
+# Example 3: Formula without explicit valence
 token.setFormula("Fe(OH)4-")
-print("Take the charge based on the symbol in the given formula")
-print( token.properties(all_elements.elements(), True) )
-print(r'charge', token.charge())
+print("default valence of Fe in DB:", dbelements.defaultValence("Fe"))
+# Charge mismatch warning: default valence (+2) gives -2, while formula indicates -1
+print("charge from valences:", token.charge())
+print("charge from formula:", token.charge(use_charge_from_formula=True))
+print("formula properties:", token.properties(dbelements.elements()))
 ```
+
+For more examples, see the /examples directory.
 
 
 
