@@ -28,4 +28,4 @@ Repository = "https://github.com/thermohub/chemicalfun.git"
 where = ["src"]
 
 [tool.setuptools.package-data]
-chemicalfun = ["PyChemicalFun*", "*.pdb"]
+chemicalfun = ["PyChemicalFun*"]
