@@ -233,6 +233,8 @@ For example:
 
 
 ```python
+import chemicalfun as cf
+
 # Enable logging to file (info and warnings)
 cf.update_loggers(True, "chemicalfun.log", 1)
 
