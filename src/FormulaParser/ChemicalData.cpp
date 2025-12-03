@@ -387,7 +387,7 @@ double FormulaToken::get_charge(const ElementsData& dbelements, bool use_formula
         std::string str = "In the formula: ";
         str +=  current_formula + " (calculated formula charge) ";
         str +=  std::to_string(Zz) + " != " + std::to_string(Zzval)+ " (given formula charge). Set explicit element valence with bars ||.";
-        ChemicalFun::chfun_logger->info(str);
+        ChemicalFun::chfun_logger->warn(str);
     }
 
     if(use_formula_charge) {
@@ -497,7 +497,7 @@ FormulaProperties FormulaToken::properties(const ElementsData& dbelements, bool 
         std::string str = "In the formula: ";
         str +=  current_formula + " (calculated formula charge) ";
         str +=  std::to_string(aZ) + " != " + std::to_string(Zzval)+ " (given formula charge). Set explicit element valence with bars ||.";
-        ChemicalFun::chfun_logger->info(str);
+        ChemicalFun::chfun_logger->warn(str);
     }
     return propert;
 }
@@ -538,7 +538,7 @@ bool FormulaToken::testChargeImbalance(const ElementsData& dbelements, bool no_t
         str +=  current_formula + " (calculated formula charge) ";
         str +=  std::to_string(aZ) + " != " + std::to_string(Zzval)+ " (given formula charge). Set explicit element valence with bars ||.";
         if(no_throw) {
-            ChemicalFun::chfun_logger->info(str);
+            ChemicalFun::chfun_logger->warn(str);
             return true;
         }
         else {
