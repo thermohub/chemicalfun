@@ -258,7 +258,7 @@ print("default valence of Fe in DB:", dbelements.defaultValence("Fe"))
 # Charge mismatch warning: default valence (+2) gives -2, while formula indicates -1
 print("charge from valences:", token.charge())
 print("charge from formula:", token.charge(use_charge_from_formula=True))
-print("formula properties:", token.properties(dbelements.elements()))
+print("formula properties:", token.properties(dbelements.elements(), use_charge_from_formula=True))
 ```
 
 For more examples, see the /examples directory.
