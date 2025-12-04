@@ -2,7 +2,7 @@ name: ci-build
 on:
   push:
     branches:
-      - python_install
+      - test_conda
       - master
       - main
   pull_request:
@@ -74,6 +74,12 @@ jobs:
           python -c "import chemicalfun" || goto :eof
           ctest -C Release --test-dir "build/tests" || goto :eof
 
+      - name: Run tests that read chemicalfun
+        shell: bash -l {0}
+        run: |
+          conda activate chemicalfun
+          python -c "import chemicalfun"
+          conda list
 
       - name: Check conda
         run: |
